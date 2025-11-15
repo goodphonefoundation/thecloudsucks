@@ -1,4 +1,4 @@
-﻿# The Cloud Sucks
+# The Cloud Sucks
 
 Documentation site built with [Zensical](https://zensical.org/).
 
@@ -12,35 +12,38 @@ Documentation site built with [Zensical](https://zensical.org/).
 
 1. Create and activate a virtual environment:
 
-\\\powershell
-# Windows
+**Windows:**
+```powershell
 python -m venv .venv
 .venv\Scripts\activate
-\\\`n
-\\\ash
-# macOS/Linux
+```
+
+**macOS/Linux:**
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
-\\\`n
+```
+
 2. Install Zensical:
 
-\\\ash
+```bash
 pip install zensical
-\\\`n
+```
+
 ### Commands
 
-- **Preview locally**: \zensical serve\ - Opens at http://localhost:8000
-- **Build site**: \zensical build\ - Generates static site in \site/\ directory
+- **Preview locally**: `zensical serve` - Opens at http://localhost:8000
+- **Build site**: `zensical build` - Generates static site in `site/` directory
 
 ## Documentation
 
-All documentation content is in the \docs/\ directory written in Markdown.
+All documentation content is in the `docs/` directory written in Markdown.
 
-Configuration is in \zensical.toml\.
+Configuration is in `zensical.toml`.
 
 ## Deployment
 
 This site can be deployed to:
-- GitHub Pages
+- GitHub Pages (see `.github/workflows/deploy.yml`)
 - Any static hosting service (Netlify, Vercel, Cloudflare Pages, etc.)
 - CDN or web server
