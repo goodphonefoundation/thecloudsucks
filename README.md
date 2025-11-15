@@ -1,61 +1,46 @@
-# 🚀 Getting started with Strapi
+﻿# The Cloud Sucks
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+Documentation site built with [Zensical](https://zensical.org/).
 
-### `develop`
+## Local Development
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+### Prerequisites
 
-```
-npm run develop
-# or
-yarn develop
-```
+- Python 3.10 or higher
 
-### `start`
+### Setup
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
+1. Create and activate a virtual environment:
 
-```
-npm run start
-# or
-yarn start
-```
+\\\powershell
+# Windows
+python -m venv .venv
+.venv\Scripts\activate
+\\\`n
+\\\ash
+# macOS/Linux
+python3 -m venv .venv
+source .venv/bin/activate
+\\\`n
+2. Install Zensical:
 
-### `build`
+\\\ash
+pip install zensical
+\\\`n
+### Commands
 
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
+- **Preview locally**: \zensical serve\ - Opens at http://localhost:8000
+- **Build site**: \zensical build\ - Generates static site in \site/\ directory
 
-```
-npm run build
-# or
-yarn build
-```
+## Documentation
 
-## ⚙️ Deployment
+All documentation content is in the \docs/\ directory written in Markdown.
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+Configuration is in \zensical.toml\.
 
-```
-yarn strapi deploy
-```
+## Deployment
 
-## 📚 Learn more
-
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
-
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
-
-## ✨ Community
-
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
-
----
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+This site can be deployed to:
+- GitHub Pages
+- Any static hosting service (Netlify, Vercel, Cloudflare Pages, etc.)
+- CDN or web server
