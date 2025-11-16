@@ -44,10 +44,85 @@ Copyright &copy; 2025 The authors
 # can be defined using TOML syntax.
 #
 # Read more: https://zensical.org/docs/setup/navigation/
-# nav = [
-#   { "Get started" = "index.md" },
-#   { "Markdown in 5min" = "markdown.md" },
-# ]
+nav = [
+  { "Home" = "index.md" },
+  { "About" = [
+    { "About The Cloud Sucks" = "about.md" },
+    { "Privacy Policy" = "privacy.md" },
+    { "Code of Conduct" = "CODE_OF_CONDUCT.md" },
+  ]},
+  { "Basics" = [
+    { "basics/index.md" = "basics/index.md" },
+  ]},
+  { "Tools & Software" = [
+    { "All Tools" = "tools.md" },
+    { "AI Chat" = "ai-chat.md" },
+    { "Browsers" = [
+      { "Desktop Browsers" = "desktop-browsers.md" },
+      { "Mobile Browsers" = "mobile-browsers.md" },
+      { "Browser Extensions" = "browser-extensions.md" },
+    ]},
+    { "Communication" = [
+      { "Real-Time Communication" = "real-time-communication.md" },
+      { "Social Networks" = "social-networks.md" },
+      { "Email" = "email.md" },
+      { "Email Clients" = "email-clients.md" },
+      { "Email Aliasing" = "email-aliasing.md" },
+    ]},
+    { "Privacy & Security" = [
+      { "VPN" = "vpn.md" },
+      { "DNS" = "dns.md" },
+      { "Tor" = "tor.md" },
+      { "Passwords" = "passwords.md" },
+      { "Multi-Factor Authentication" = "multi-factor-authentication.md" },
+      { "Security Keys" = "security-keys.md" },
+      { "Encryption" = "encryption.md" },
+    ]},
+    { "Productivity" = [
+      { "Calendar" = "calendar.md" },
+      { "Cloud Storage" = "cloud.md" },
+      { "Document Collaboration" = "document-collaboration.md" },
+      { "File Sharing" = "file-sharing.md" },
+      { "Notebooks" = "notebooks.md" },
+      { "Office Suites" = "office-suites.md" },
+      { "Pastebins" = "pastebins.md" },
+    ]},
+    { "Media & Content" = [
+      { "News Aggregators" = "news-aggregators.md" },
+      { "Photo Management" = "photo-management.md" },
+      { "Frontends" = "frontends.md" },
+    ]},
+    { "Services" = [
+      { "Alternative Networks" = "alternative-networks.md" },
+      { "Cryptocurrency" = "cryptocurrency.md" },
+      { "Data Broker Removals" = "data-broker-removals.md" },
+      { "Data Redaction" = "data-redaction.md" },
+      { "Financial Services" = "financial-services.md" },
+      { "Health & Wellness" = "health-and-wellness.md" },
+      { "Language Tools" = "language-tools.md" },
+      { "Maps" = "maps.md" },
+      { "Search Engines" = "search-engines.md" },
+    ]},
+  ]},
+  { "Operating Systems" = [
+    { "Desktop" = "desktop.md" },
+    { "Mobile Phones" = "mobile-phones.md" },
+    { "Android" = [
+      { "android/index.md" = "android/index.md" },
+    ]},
+    { "Router" = "router.md" },
+  ]},
+  { "Self-Hosting" = [
+    { "self-hosting/index.md" = "self-hosting/index.md" },
+  ]},
+  { "Advanced" = [
+    { "advanced/index.md" = "advanced/index.md" },
+    { "Device Integrity" = "device-integrity.md" },
+  ]},
+  { "Meta" = [
+    { "meta/index.md" = "meta/index.md" },
+  ]},
+]
 
 # With the "extra_css" option you can add your own CSS styling to customize
 # your Zensical project according to your needs. You can add any number of
@@ -57,7 +132,7 @@ Copyright &copy; 2025 The authors
 #
 # Read more: https://zensical.org/docs/customization/#additional-css
 #
-#extra_css = ["assets/stylesheets/extra.css"]
+extra_css = ["stylesheets/home.css"]
 
 # With the `extra_javascript` option you can add your own JavaScript to your
 # project to customize the behavior according to your needs.
@@ -65,7 +140,7 @@ Copyright &copy; 2025 The authors
 # The path provided should be relative to the "docs_dir".
 #
 # Read more: https://zensical.org/docs/customization/#additional-javascript
-#extra_javascript = ["assets/javascript/extra.js"]
+extra_javascript = ["javascripts/home.js"]
 
 # ----------------------------------------------------------------------------
 # Section for configuring theme options
@@ -83,7 +158,7 @@ Copyright &copy; 2025 The authors
 # Read more:
 # - https://zensical.org/docs/customization/#extending-the-theme
 #
-#custom_dir = "overrides"
+custom_dir = "overrides"
 
 # With the "favicon" option you can set your own image to use as the icon
 # browsers will use in the browser title bar or tab bar. The path provided

@@ -1,0 +1,474 @@
+/* ========================================================================
+   Custom Home Page Styles - Inspired by Modern Landing Pages
+   ======================================================================== */
+
+/* Hero Section */
+.tcs-hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-md-color-scheme="slate"] .tcs-hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.tcs-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+  opacity: 0.3;
+}
+
+.tcs-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Loading Animation */
+.tcs-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.tcs-live-badge {
+  background: #ff0000;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.tcs-loading-text {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero Text */
+.tcs-hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
+  animation: slideUp 0.8s ease-out 0.3s both;
+}
+
+.tcs-hero-subtitle {
+  font-size: 1.3rem;
+  margin: 0 0 2.5rem 0;
+  opacity: 0.95;
+  line-height: 1.6;
+  animation: slideUp 0.8s ease-out 0.5s both;
+}
+
+.tcs-hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: slideUp 0.8s ease-out 0.7s both;
+}
+
+/* Buttons */
+.tcs-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+}
+
+.tcs-btn-primary {
+  background: white;
+  color: #667eea;
+}
+
+.tcs-btn-primary:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.tcs-btn-secondary {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 2px solid white;
+}
+
+.tcs-btn-secondary:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+[data-md-color-scheme="slate"] .tcs-btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+[data-md-color-scheme="slate"] .tcs-btn-primary:hover {
+  background: #5568d3;
+}
+
+/* Container */
+.tcs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Feature Badges */
+.tcs-features {
+  padding: 3rem 0;
+  background: var(--md-default-bg-color);
+}
+
+.tcs-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+
+.tcs-feature-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: var(--md-code-bg-color);
+  transition: transform 0.3s ease;
+}
+
+.tcs-feature-badge:hover {
+  transform: translateY(-5px);
+}
+
+.tcs-icon {
+  width: 40px;
+  height: 40px;
+  color: #667eea;
+}
+
+[data-md-color-scheme="slate"] .tcs-icon {
+  color: #8b9cee;
+}
+
+.tcs-feature-badge span {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Tagline Section */
+.tcs-tagline {
+  padding: 5rem 0 3rem;
+  text-align: center;
+  background: var(--md-default-bg-color);
+}
+
+.tcs-tagline h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--md-default-fg-color);
+}
+
+.tcs-tagline p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  color: var(--md-default-fg-color--light);
+}
+
+/* Pillars Section */
+.tcs-pillars {
+  padding: 4rem 0;
+  background: var(--md-code-bg-color);
+}
+
+.tcs-pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+}
+
+.tcs-pillar {
+  background: var(--md-default-bg-color);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tcs-pillar:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.tcs-pillar-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1.5rem;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tcs-pillar-icon svg {
+  width: 100%;
+  height: 100%;
+  color: white;
+  stroke-width: 2;
+}
+
+.tcs-pillar h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--md-default-fg-color);
+}
+
+.tcs-pillar-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 1.5rem 0;
+  color: var(--md-default-fg-color--light);
+}
+
+.tcs-pillar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.tcs-pillar-links a {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.tcs-pillar-links a::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  transition: transform 0.2s ease;
+}
+
+.tcs-pillar-links a:hover {
+  color: #5568d3;
+}
+
+.tcs-pillar-links a:hover::before {
+  transform: translateX(4px);
+}
+
+.tcs-pillar-cta {
+  display: inline-block;
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+}
+
+.tcs-pillar-cta:hover {
+  color: #5568d3;
+  transform: translateX(4px);
+}
+
+/* About Section */
+.tcs-about {
+  padding: 5rem 0;
+  background: var(--md-default-bg-color);
+}
+
+.tcs-about-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tcs-about h2 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: var(--md-default-fg-color);
+}
+
+.tcs-about p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0 0 1.2rem 0;
+  color: var(--md-default-fg-color--light);
+}
+
+.tcs-about-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.tcs-check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.05rem;
+  color: var(--md-default-fg-color);
+  font-weight: 500;
+}
+
+/* CTA Section */
+.tcs-cta {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+[data-md-color-scheme="slate"] .tcs-cta {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.tcs-cta h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.tcs-cta p {
+  font-size: 1.3rem;
+  margin: 0 0 2.5rem 0;
+  opacity: 0.95;
+}
+
+.tcs-cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tcs-hero {
+    min-height: 60vh;
+    padding: 3rem 1.5rem;
+  }
+
+  .tcs-hero-title {
+    font-size: 2rem;
+  }
+
+  .tcs-hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .tcs-tagline h2 {
+    font-size: 1.8rem;
+  }
+
+  .tcs-tagline p {
+    font-size: 1.05rem;
+  }
+
+  .tcs-pillar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tcs-about h2 {
+    font-size: 1.9rem;
+  }
+
+  .tcs-cta h2 {
+    font-size: 1.9rem;
+  }
+
+  .tcs-cta p {
+    font-size: 1.1rem;
+  }
+
+  .tcs-container {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tcs-hero-buttons,
+  .tcs-cta-buttons {
+    flex-direction: column;
+  }
+
+  .tcs-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .tcs-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tcs-about-features {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Remove default page margins for home page */
+.tcs-home .md-content {
+  padding: 0;
+  max-width: 100%;
+}
+
+.tcs-home .md-content__inner {
+  margin: 0;
+  padding: 0;
+}

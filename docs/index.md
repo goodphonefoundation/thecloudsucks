@@ -1,166 +1,175 @@
 ---
-icon: lucide/rocket
+meta_title: "The Cloud Sucks: Independent Privacy & Security Resources"
+description: "Established in 2021, The Cloud Sucks is the most popular & trustworthy non-profit resource to find privacy tools and learn about protecting your digital life."
+social:
+  cards_layout: home
+hide:
+  - navigation
+  - toc
+  - feedback
 ---
 
-# Get started
+<style>
+.md-header, .md-tabs, .md-sidebar { display: none !important; }
+.md-content__inner { max-width: 100%; padding: 0; }
+.md-content { max-width: 100%; }
+</style>
 
-For full documentation visit [zensical.org](https://zensical.org/docs/).
+<div class="tcs-home">
 
-## Commands
+<!-- Hero Section with Loading Animation -->
+<section class="tcs-hero">
+  <div class="tcs-hero-content">
+    <div class="tcs-loading" id="loadingText">
+      <span class="tcs-live-badge">LIVE</span>
+      <span class="tcs-loading-text">Loading...</span>
+    </div>
+    <h1 class="tcs-hero-title" id="heroTitle" style="display: none;">
+      The Cloud Sucks: Your Trusted Compass for Privacy & Security
+    </h1>
+    <p class="tcs-hero-subtitle" id="heroSubtitle" style="display: none;">
+      From cutting-edge security insights to unbiased comparison tools – we empower your privacy journey, independently and intelligently.
+    </p>
+    <div class="tcs-hero-buttons" id="heroButtons" style="display: none;">
+      <a href="basics/" class="tcs-btn tcs-btn-primary">Start Exploring Privacy</a>
+      <a href="tools/" class="tcs-btn tcs-btn-secondary">Find Your Best Tools</a>
+    </div>
+  </div>
+</section>
 
-* [`zensical new`][new] - Create a new project
-* [`zensical serve`][serve] - Start local web server
-* [`zensical build`][build] - Build your site
+<!-- Feature Badges -->
+<section class="tcs-features">
+  <div class="tcs-container">
+    <div class="tcs-feature-grid">
+      <div class="tcs-feature-badge">
+        <svg class="tcs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>SSL Secured</span>
+      </div>
+      <div class="tcs-feature-badge">
+        <svg class="tcs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        </svg>
+        <span>Ad-Free Experience</span>
+      </div>
+      <div class="tcs-feature-badge">
+        <svg class="tcs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Independent Research</span>
+      </div>
+      <div class="tcs-feature-badge">
+        <svg class="tcs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Community-Driven</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-  [new]: https://zensical.org/docs/usage/new/
-  [serve]: https://zensical.org/docs/usage/preview/
-  [build]: https://zensical.org/docs/usage/build/
+<!-- Main Content Tagline -->
+<section class="tcs-tagline">
+  <div class="tcs-container">
+    <h2>Your Privacy Journey, Elevated.</h2>
+    <p>At The Cloud Sucks, we believe that understanding and security are the keys to thriving in the digital world. We bring together expert knowledge, timely information, and practical tools across three core pillars.</p>
+  </div>
+</section>
 
-## Examples
+<!-- Three Pillars Section -->
+<section class="tcs-pillars">
+  <div class="tcs-container">
+    <div class="tcs-pillar-grid">
+      
+      <!-- Pillar 1: Security -->
+      <div class="tcs-pillar">
+        <div class="tcs-pillar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h3>Fortify Your Digital Future</h3>
+        <p class="tcs-pillar-description">The bedrock of your digital safety. Master secure practices, understand encryption, and stay ahead of emerging security threats.</p>
+        <div class="tcs-pillar-links">
+          <a href="basics/threat-modeling/">Understanding Threat Modeling</a>
+          <a href="encryption/">How to Secure Your Data</a>
+          <a href="basics/common-threats/">Latest Threats & How to Avoid Them</a>
+        </div>
+        <a href="basics/" class="tcs-pillar-cta">Fortify Your Security →</a>
+      </div>
 
-### Admonitions
+      <!-- Pillar 2: Knowledge -->
+      <div class="tcs-pillar">
+        <div class="tcs-pillar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+        <h3>Stay Informed & Empowered</h3>
+        <p class="tcs-pillar-description">Navigate the dynamic privacy landscape with confidence. Get insights, analyses, and explainers on the biggest stories shaping digital privacy.</p>
+        <div class="tcs-pillar-links">
+          <a href="basics/why-privacy-matters/">Why Privacy Matters</a>
+          <a href="basics/account-creation/">Creating Secure Accounts</a>
+          <a href="about/">Understanding Our Mission</a>
+        </div>
+        <a href="basics/" class="tcs-pillar-cta">Learn More →</a>
+      </div>
 
-> Go to [documentation](https://zensical.org/docs/authoring/admonitions/)
+      <!-- Pillar 3: Tools -->
+      <div class="tcs-pillar">
+        <div class="tcs-pillar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="10" y1="14" x2="21" y2="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          </svg>
+        </div>
+        <h3>Make Informed Decisions, Effortlessly</h3>
+        <p class="tcs-pillar-description">Empower your choices with our unbiased reviews, comprehensive rankings, and comparison guides for privacy tools and services.</p>
+        <div class="tcs-pillar-links">
+          <a href="desktop-browsers/">Best Privacy Browsers</a>
+          <a href="vpn/">Top VPN Services Compared</a>
+          <a href="passwords/">Secure Password Managers</a>
+        </div>
+        <a href="tools/" class="tcs-pillar-cta">Compare Tools →</a>
+      </div>
 
-!!! note
+    </div>
+  </div>
+</section>
 
-    This is a **note** admonition. Use it to provide helpful information.
+<!-- About Section -->
+<section class="tcs-about">
+  <div class="tcs-container">
+    <div class="tcs-about-content">
+      <div class="tcs-about-text">
+        <h2>About The Cloud Sucks</h2>
+        <p>Established in 2021, <strong>The Cloud Sucks</strong> is the most popular, trustworthy, non-profit resource to find privacy tools and learn about protecting your digital life. Our crowdsourced recommendations and reviews set us apart from other blogs and content creators.</p>
+        <p>The team behind this project has been researching privacy and security in the open-source space for over 5 years. We're trusted by journalists and millions of readers worldwide.</p>
+        <p><em>Our website is free of advertisements and not affiliated with any of the listed providers.</em></p>
+        <div class="tcs-about-features">
+          <div class="tcs-check-item">✓ Ad-Free Recommendations</div>
+          <div class="tcs-check-item">✓ Complete Editorial Independence</div>
+          <div class="tcs-check-item">✓ Non-Profit & Open Source</div>
+          <div class="tcs-check-item">✓ Frequent Updates</div>
+          <div class="tcs-check-item">✓ Trusted by Journalists</div>
+          <div class="tcs-check-item">✓ Trusted by Readers</div>
+        </div>
+        <a href="about/" class="tcs-btn tcs-btn-primary">Learn More About Us</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-!!! warning
+<!-- CTA Section -->
+<section class="tcs-cta">
+  <div class="tcs-container">
+    <h2>Ready to Take Control of Your Privacy?</h2>
+    <p>Start your journey towards digital security and privacy today.</p>
+    <div class="tcs-cta-buttons">
+      <a href="basics/threat-modeling/" class="tcs-btn tcs-btn-primary">Start with Threat Modeling</a>
+      <a href="tools/" class="tcs-btn tcs-btn-secondary">Browse Privacy Tools</a>
+    </div>
+  </div>
+</section>
 
-    This is a **warning** admonition. Be careful!
-
-### Details
-
-> Go to [documentation](https://zensical.org/docs/authoring/admonitions/#collapsible-blocks)
-
-??? info "Click to expand for more info"
-    
-    This content is hidden until you click to expand it.
-    Great for FAQs or long explanations.
-
-## Code Blocks
-
-> Go to [documentation](https://zensical.org/docs/authoring/code-blocks/)
-
-``` python hl_lines="2" title="Code blocks"
-def greet(name):
-    print(f"Hello, {name}!") # (1)!
-
-greet("Python")
-```
-
-1.  > Go to [documentation](https://zensical.org/docs/authoring/code-blocks/#code-annotations)
-
-    Code annotations allow to attach notes to lines of code.
-
-Code can also be highlighted inline: `#!python print("Hello, Python!")`.
-
-## Content tabs
-
-> Go to [documentation](https://zensical.org/docs/authoring/content-tabs/)
-
-=== "Python"
-
-    ``` python
-    print("Hello from Python!")
-    ```
-
-=== "Rust"
-
-    ``` rs
-    println!("Hello from Rust!");
-    ```
-
-## Diagrams
-
-> Go to [documentation](https://zensical.org/docs/authoring/diagrams/)
-
-``` mermaid
-graph LR
-  A[Start] --> B{Error?};
-  B -->|Yes| C[Hmm...];
-  C --> D[Debug];
-  D --> B;
-  B ---->|No| E[Yay!];
-```
-
-## Footnotes
-
-> Go to [documentation](https://zensical.org/docs/authoring/footnotes/)
-
-Here's a sentence with a footnote.[^1]
-
-Hover it, to see a tooltip.
-
-[^1]: This is the footnote.
-
-
-## Formatting
-
-> Go to [documentation](https://zensical.org/docs/authoring/formatting/)
-
-- ==This was marked (highlight)==
-- ^^This was inserted (underline)^^
-- ~~This was deleted (strikethrough)~~
-- H~2~O
-- A^T^A
-- ++ctrl+alt+del++
-
-## Icons, Emojis
-
-> Go to [documentation](https://zensical.org/docs/authoring/icons-emojis/)
-
-* :sparkles: `:sparkles:`
-* :rocket: `:rocket:`
-* :tada: `:tada:`
-* :memo: `:memo:`
-* :eyes: `:eyes:`
-
-## Maths
-
-> Go to [documentation](https://zensical.org/docs/authoring/math/)
-
-$$
-\cos x=\sum_{k=0}^{\infty}\frac{(-1)^k}{(2k)!}x^{2k}
-$$
-
-!!! warning "Needs configuration"
-    Note that MathJax is included via a `script` tag on this page and is not
-    configured in the generated default configuration to avoid including it
-    in a pages that do not need it. See the documentation for details on how
-    to configure it on all your pages if they are more Maths-heavy than these
-    simple starter pages.
-
-<script id="MathJax-script" async src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-<script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [["\\(", "\\)"]],
-      displayMath: [["\\[", "\\]"]],
-      processEscapes: true,
-      processEnvironments: true
-    },
-    options: {
-      ignoreHtmlClass: ".*|",
-      processHtmlClass: "arithmatex"
-    }
-  };
-</script>
-
-## Task Lists
-
-> Go to [documentation](https://zensical.org/docs/authoring/lists/#using-task-lists)
-
-* [x] Install Zensical
-* [x] Configure `zensical.toml`
-* [x] Write amazing documentation
-* [ ] Deploy anywhere
-
-## Tooltips
-
-> Go to [documentation](https://zensical.org/docs/authoring/tooltips/)
-
-[Hover me][example]
-
-  [example]: https://example.com "I'm a tooltip!"
+</div>
