@@ -18,7 +18,11 @@ const {
 			readItems('help_collections', {
 				filter: {
 					articles: {
-						_nnull: true,
+						_some: {
+							id: {
+								_nnull: true,
+							},
+						},
 					},
 				},
 			}),
