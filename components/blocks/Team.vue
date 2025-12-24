@@ -9,7 +9,17 @@ defineProps<{
 const { data: team }: { data: Ref<Team[]> } = await useAsyncData(
 	'team',
 	() => {
-		return useDirectus(readItems('team', {}));
+		return useDirectus(
+			readItems('team', {
+				filter: {
+					status: {
+						_eq: 'published',
+					},
+				},
+				fields: ['*', { image: ['id', 'title', 'description'] }],
+				sort: ['sort'],
+			}),
+		);
 	},
 	{
 		transform: (data) => data,
