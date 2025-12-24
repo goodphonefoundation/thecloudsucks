@@ -16,7 +16,7 @@ const { data: team }: { data: Ref<Team[]> } = await useAsyncData(
 						_eq: 'published',
 					},
 				},
-				fields: ['*', { image: ['id', 'title', 'description'] }],
+				fields: ['*'],
 				sort: ['sort'],
 			}),
 		);
