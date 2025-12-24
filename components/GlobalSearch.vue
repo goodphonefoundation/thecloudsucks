@@ -7,7 +7,7 @@ const props = defineProps({
 		required: true,
 		validator: (value: string[]) => {
 			return value.every((collection) => {
-				return ['posts', 'pages', 'categories', 'projects'].includes(collection);
+				return ['posts', 'pages', 'categories', 'projects', 'help_articles'].includes(collection);
 			});
 		},
 	},
