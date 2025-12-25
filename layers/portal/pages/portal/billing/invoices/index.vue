@@ -125,7 +125,6 @@ const columns = [
 	},
 ];
 
-const { getPortalLink, loading: stripeLoading } = useStripe();
 
 // Watch the search query and update the URL
 watch([debouncedSearch, status, page], ([search, status, page]) => {
@@ -160,17 +159,6 @@ function clearFilters() {
 				},
 			]"
 		>
-			<template #actions>
-				<UButton
-					color="primary"
-					variant="outline"
-					size="xl"
-					:loading="stripeLoading"
-					@click="getPortalLink('cus_OlTbJKVanSb1zN')"
-				>
-					Update Payment Settings
-				</UButton>
-			</template>
 		</PortalPageHeader>
 		<UCard class="mt-6">
 			<template #header>

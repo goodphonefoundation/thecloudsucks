@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { handleCheckout, loading: stripeLoading } = useStripe();
 const { path, params } = useRoute();
 const { globals } = useAppConfig();
 
@@ -100,9 +99,6 @@ const billingAddress = computed(() => {
 				</div>
 			</template>
 			<template #actions>
-				<UButton v-if="!isPaid" color="primary" size="xl" :loading="stripeLoading" @click="handleCheckout(invoice?.id)">
-					Pay Invoice
-				</UButton>
 				<div v-if="isPaid" class="inline-flex items-center gap-2 px-4 py-2 border rounded-button border-primary">
 					<UIcon name="material-symbols:price-check-rounded" class="w-8 h-8 text-primary" />
 					<VText size="lg" class="font-bold uppercase font-display">Paid</VText>

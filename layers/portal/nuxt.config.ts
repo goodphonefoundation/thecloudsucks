@@ -9,11 +9,4 @@ export default defineNuxtConfig({
 		'/portal/**': { ssr: false, index: false },
 	},
 
-	runtimeConfig: {
-		public: {
-			stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-		},
-		stripeSecretKey: process.env.STRIPE_SECRET_KEY,
-		stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-	},
 });

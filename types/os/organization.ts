@@ -24,7 +24,6 @@ export interface Organization {
 	contacts?: (string | OrganizationContact)[];
 	addresses?: (string | OrganizationAddress)[];
 	billing?: string;
-	stripe_customer_id?: string | null;
 }
 
 export interface OrganizationAddress {

@@ -11,7 +11,6 @@ export interface OsPayment {
 	date_updated?: string | null;
 	payment_date?: string | null;
 	amount?: number | null;
-	stripe_payment_id?: string;
 	transaction_fee?: number | null;
 	organization?: (string | Organization) | null;
 	contact?: (string | Contact) | null;
