@@ -20,9 +20,9 @@ export default defineNuxtModule({
 	meta: {
 		name: 'agencyos-nuxt-directus',
 		configKey: 'directus',
-		compatibility: {
-			nuxt: '^3.0.0',
-		},
+	compatibility: {
+		nuxt: '^3.0.0 || ^4.0.0',
+	},
 
 		defaults: {
 			rest: {
