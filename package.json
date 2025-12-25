@@ -31,7 +31,7 @@
 		"vue-tsc": "^2.2.8"
 	},
 	"dependencies": {
-		"@directus/sdk": "^19.1.0",
+		"@directus/sdk": "^20.3.0",
 		"@formkit/auto-animate": "^0.8.2",
 		"@headlessui/vue": "^1.7.23",
 		"@nuxt/icon": "^1.11.0",
