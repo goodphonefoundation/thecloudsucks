@@ -106,12 +106,6 @@ export default defineNuxtConfig({
 		sources: ['/api/_sitemap-urls'],
 	},
 
-	postcss: {
-		plugins: {
-			'@tailwindcss/postcss': {},
-		},
-	},
-
 	build: {
 		transpile: ['v-perfect-signature'],
 	},
