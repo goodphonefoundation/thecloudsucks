@@ -4,7 +4,7 @@ import type { App } from '~/types';
 const route = useRoute();
 const slug = route.params.slug as string;
 
-// Fetch app details with assessments and sources
+// Fetch app details
 const { data: app } = await useAsyncData(`app-${slug}`, () => {
 	return useDirectus(
 		readItems('apps', {
@@ -13,23 +13,11 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 				'categories.app_categories_id.id',
 				'categories.app_categories_id.name',
 				'categories.app_categories_id.slug',
-				'assessments.id',
-				'assessments.assessment_date',
-				'assessments.verdict',
-				'assessments.recommendation',
-				'assessments.score_privacy',
-				'assessments.score_autonomy',
-				'assessments.score_transparency',
-				'assessments.score_governance',
-				'assessments.score_overall',
-				'assessments.sources.sources_id.id',
-				'assessments.sources.sources_id.title',
-				'assessments.sources.sources_id.url',
-				'assessments.sources.sources_id.publication_date',
-				'assessments.sources.sources_id.author',
-				'assessments.sources.sources_id.publisher',
-				'assessments.sources.sources_id.source_type',
-				'assessments.sources.sources_id.summary',
+				'score_privacy',
+				'score_autonomy',
+				'score_transparency',
+				'score_governance',
+				'score_overall',
 			],
 			filter: {
 				slug: { _eq: slug },
@@ -38,73 +26,6 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 			limit: 1,
 		}),
 	).then((items: any[]) => items[0] || null);
-});
-
-// Collect unique sources from all assessments
-const allSources = computed(() => {
-	if (!app.value?.assessments) return [];
-	
-	const sourceMap = new Map();
-	app.value.assessments.forEach((assessment: any) => {
-		if (assessment.sources) {
-			assessment.sources.forEach((item: any) => {
-				const source = item.sources_id;
-				if (source && !sourceMap.has(source.id)) {
-					sourceMap.set(source.id, source);
-				}
-			});
-		}
-	});
-	
-	return Array.from(sourceMap.values());
-});
-
-// Helper to format source type badge
-const getSourceTypeBadge = (type: string) => {
-	const badges: Record<string, { color: string; label: string }> = {
-		official: { color: 'green', label: 'Official' },
-		documentation: { color: 'blue', label: 'Documentation' },
-		whitepaper: { color: 'purple', label: 'Whitepaper' },
-		paper: { color: 'purple', label: 'Research Paper' },
-		article: { color: 'gray', label: 'Article' },
-		blog: { color: 'gray', label: 'Blog' },
-		video: { color: 'red', label: 'Video' },
-		social: { color: 'cyan', label: 'Social Media' },
-		other: { color: 'gray', label: 'Other' },
-	};
-	return badges[type] || badges.other;
-};
-
-// Helper to format date
-const formatDate = (dateString: string | null) => {
-	if (!dateString) return null;
-	try {
-		return new Date(dateString).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		});
-	} catch {
-		return null;
-	}
-};
-
-// Helper to get score label and color
-const getScoreInfo = (score: number | null | undefined) => {
-	if (score === null || score === undefined) return { label: 'Not Rated', color: 'gray', percentage: 0 };
-	const labels = ['Hostile', 'Weak', 'Mixed', 'Strong', 'Best-in-Class'];
-	const colors = ['red', 'orange', 'yellow', 'green', 'blue'];
-	return {
-		label: labels[score],
-		color: colors[score],
-		percentage: (score / 4) * 100,
-	};
-};
-
-// Get the most recent assessment with scores
-const latestAssessment = computed(() => {
-	if (!app.value?.assessments || app.value.assessments.length === 0) return null;
-	return app.value.assessments[0];
 });
 
 // If app not found, show 404
@@ -146,6 +67,42 @@ const getBadgeColor = (type: string, value: any) => {
 		if (value === 'watch') return 'yellow';
 	}
 	return 'gray';
+};
+
+// Helper to get score label and color
+const getScoreInfo = (score: number | null | undefined) => {
+	if (score === null || score === undefined) return { label: 'Not Rated', color: 'gray', percentage: 0 };
+	const labels = ['Hostile', 'Weak', 'Mixed', 'Strong', 'Best-in-Class'];
+	const colors = ['red', 'orange', 'yellow', 'green', 'blue'];
+	return {
+		label: labels[score],
+		color: colors[score],
+		percentage: (score / 4) * 100,
+	};
+};
+
+// Helper to format tier label
+const getTierLabel = (tier: string | null | undefined) => {
+	if (!tier) return null;
+	const labels: Record<string, string> = {
+		A_Sovereign: 'A - Sovereign',
+		B_Aligned: 'B - Aligned',
+		C_Transitional: 'C - Transitional',
+		D_Extractive: 'D - Extractive',
+	};
+	return labels[tier] || tier;
+};
+
+// Helper to format recommendation label
+const getRecommendationLabel = (rec: string | null | undefined) => {
+	if (!rec) return null;
+	const labels: Record<string, string> = {
+		recommended: 'Recommended',
+		situational: 'Situational',
+		avoid: 'Avoid',
+		compare_only: 'Compare Only',
+	};
+	return labels[rec] || rec;
 };
 </script>
 
@@ -302,133 +259,155 @@ const getBadgeColor = (type: string, value: any) => {
 					</div>
 				</div>
 
+				<!-- Assessment Summary -->
+				<div v-if="app.assessment_tier || app.assessment_recommended_use || app.assessment_summary" class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+					<div class="flex flex-wrap items-center gap-3 mb-4">
+						<h2 class="text-2xl font-bold">GoodPhone Assessment</h2>
+						<span v-if="app.assessment_tier" class="px-3 py-1 text-sm font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+							{{ getTierLabel(app.assessment_tier) }}
+						</span>
+						<span v-if="app.assessment_recommended_use" :class="[
+							'px-3 py-1 text-sm font-bold rounded-full',
+							app.assessment_recommended_use === 'recommended' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+							app.assessment_recommended_use === 'situational' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+							app.assessment_recommended_use === 'avoid' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+							app.assessment_recommended_use === 'compare_only' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+						]">
+							{{ getRecommendationLabel(app.assessment_recommended_use) }}
+						</span>
+					</div>
+					<p v-if="app.assessment_summary" class="text-gray-700 dark:text-gray-300">{{ app.assessment_summary }}</p>
+				</div>
+
+				<!-- Assessment Content Sections -->
+				<div v-if="app.assessment_what_it_does" class="prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">What It Does</h2>
+					<div v-html="app.assessment_what_it_does"></div>
+				</div>
+
+				<div v-if="app.assessment_why_people_use_it" class="prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">Why People Use It</h2>
+					<div v-html="app.assessment_why_people_use_it"></div>
+				</div>
+
+				<div v-if="app.assessment_tradeoffs" class="prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">Tradeoffs</h2>
+					<div v-html="app.assessment_tradeoffs"></div>
+				</div>
+
+				<div v-if="app.assessment_data_and_control" class="prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">Data & Control</h2>
+					<div v-html="app.assessment_data_and_control"></div>
+				</div>
+
+				<div v-if="app.assessment_governance_and_business" class="prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">Governance & Business</h2>
+					<div v-html="app.assessment_governance_and_business"></div>
+				</div>
+
+				<div v-if="app.assessment_goodphone_assessment" class="prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">GoodPhone's Assessment</h2>
+					<div v-html="app.assessment_goodphone_assessment"></div>
+				</div>
+
 				<!-- Assessment Scores -->
-				<div v-if="latestAssessment && (latestAssessment.score_overall !== null || latestAssessment.score_privacy !== null)">
+				<div v-if="app.score_overall !== null || app.score_privacy !== null">
 					<h2 class="text-2xl font-bold mb-4">Assessment Scores</h2>
 					<div class="border rounded-lg p-6 dark:border-gray-700 space-y-4">
 						<!-- Overall Score -->
-						<div v-if="latestAssessment.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
+						<div v-if="app.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
 							<div class="flex items-center justify-between mb-2">
 								<span class="text-lg font-semibold">Overall Rating</span>
-								<span
-									:class="[
-										'px-3 py-1 text-sm font-bold rounded-full',
-										getScoreInfo(latestAssessment.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-										getScoreInfo(latestAssessment.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-										getScoreInfo(latestAssessment.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-										getScoreInfo(latestAssessment.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-										getScoreInfo(latestAssessment.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-									]"
-								>
-									{{ getScoreInfo(latestAssessment.score_overall).label }}
+								<span :class="[
+									'px-3 py-1 text-sm font-bold rounded-full',
+									getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+									getScoreInfo(app.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+									getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+									getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+									getScoreInfo(app.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+								]">
+									{{ getScoreInfo(app.score_overall).label }}
 								</span>
 							</div>
 							<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-								<div
-									:class="[
-										'h-3 rounded-full transition-all',
-										getScoreInfo(latestAssessment.score_overall).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(latestAssessment.score_overall).color === 'green' && 'bg-green-600',
-										getScoreInfo(latestAssessment.score_overall).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(latestAssessment.score_overall).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(latestAssessment.score_overall).color === 'red' && 'bg-red-600',
-									]"
-									:style="{ width: getScoreInfo(latestAssessment.score_overall).percentage + '%' }"
-								></div>
+								<div :class="[
+									'h-3 rounded-full transition-all',
+									getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-600',
+									getScoreInfo(app.score_overall).color === 'green' && 'bg-green-600',
+									getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-600',
+									getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-600',
+									getScoreInfo(app.score_overall).color === 'red' && 'bg-red-600',
+								]" :style="{ width: getScoreInfo(app.score_overall).percentage + '%' }"></div>
 							</div>
 						</div>
 
 						<!-- Individual Scores -->
 						<div class="space-y-3">
-							<!-- Privacy Score -->
-							<div v-if="latestAssessment.score_privacy !== null">
+							<div v-if="app.score_privacy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Privacy</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(latestAssessment.score_privacy).label }}
-									</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_privacy).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div
-										:class="[
-											'h-2 rounded-full transition-all',
-											getScoreInfo(latestAssessment.score_privacy).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(latestAssessment.score_privacy).color === 'green' && 'bg-green-600',
-											getScoreInfo(latestAssessment.score_privacy).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(latestAssessment.score_privacy).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(latestAssessment.score_privacy).color === 'red' && 'bg-red-600',
-										]"
-										:style="{ width: getScoreInfo(latestAssessment.score_privacy).percentage + '%' }"
-									></div>
+									<div :class="[
+										'h-2 rounded-full transition-all',
+										getScoreInfo(app.score_privacy).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(app.score_privacy).color === 'green' && 'bg-green-600',
+										getScoreInfo(app.score_privacy).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(app.score_privacy).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(app.score_privacy).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(app.score_privacy).percentage + '%' }"></div>
 								</div>
 							</div>
 
-							<!-- Autonomy Score -->
-							<div v-if="latestAssessment.score_autonomy !== null">
+							<div v-if="app.score_autonomy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">User Autonomy</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(latestAssessment.score_autonomy).label }}
-									</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_autonomy).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div
-										:class="[
-											'h-2 rounded-full transition-all',
-											getScoreInfo(latestAssessment.score_autonomy).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(latestAssessment.score_autonomy).color === 'green' && 'bg-green-600',
-											getScoreInfo(latestAssessment.score_autonomy).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(latestAssessment.score_autonomy).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(latestAssessment.score_autonomy).color === 'red' && 'bg-red-600',
-										]"
-										:style="{ width: getScoreInfo(latestAssessment.score_autonomy).percentage + '%' }"
-									></div>
+									<div :class="[
+										'h-2 rounded-full transition-all',
+										getScoreInfo(app.score_autonomy).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(app.score_autonomy).color === 'green' && 'bg-green-600',
+										getScoreInfo(app.score_autonomy).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(app.score_autonomy).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(app.score_autonomy).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(app.score_autonomy).percentage + '%' }"></div>
 								</div>
 							</div>
 
-							<!-- Transparency Score -->
-							<div v-if="latestAssessment.score_transparency !== null">
+							<div v-if="app.score_transparency !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Transparency</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(latestAssessment.score_transparency).label }}
-									</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_transparency).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div
-										:class="[
-											'h-2 rounded-full transition-all',
-											getScoreInfo(latestAssessment.score_transparency).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(latestAssessment.score_transparency).color === 'green' && 'bg-green-600',
-											getScoreInfo(latestAssessment.score_transparency).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(latestAssessment.score_transparency).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(latestAssessment.score_transparency).color === 'red' && 'bg-red-600',
-										]"
-										:style="{ width: getScoreInfo(latestAssessment.score_transparency).percentage + '%' }"
-									></div>
+									<div :class="[
+										'h-2 rounded-full transition-all',
+										getScoreInfo(app.score_transparency).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(app.score_transparency).color === 'green' && 'bg-green-600',
+										getScoreInfo(app.score_transparency).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(app.score_transparency).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(app.score_transparency).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(app.score_transparency).percentage + '%' }"></div>
 								</div>
 							</div>
 
-							<!-- Governance Score -->
-							<div v-if="latestAssessment.score_governance !== null">
+							<div v-if="app.score_governance !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Governance</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(latestAssessment.score_governance).label }}
-									</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_governance).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div
-										:class="[
-											'h-2 rounded-full transition-all',
-											getScoreInfo(latestAssessment.score_governance).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(latestAssessment.score_governance).color === 'green' && 'bg-green-600',
-											getScoreInfo(latestAssessment.score_governance).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(latestAssessment.score_governance).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(latestAssessment.score_governance).color === 'red' && 'bg-red-600',
-										]"
-										:style="{ width: getScoreInfo(latestAssessment.score_governance).percentage + '%' }"
-									></div>
+									<div :class="[
+										'h-2 rounded-full transition-all',
+										getScoreInfo(app.score_governance).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(app.score_governance).color === 'green' && 'bg-green-600',
+										getScoreInfo(app.score_governance).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(app.score_governance).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(app.score_governance).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(app.score_governance).percentage + '%' }"></div>
 								</div>
 							</div>
 						</div>
@@ -442,115 +421,6 @@ const getBadgeColor = (type: string, value: any) => {
 								<span class="px-2 py-1 rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">2 - Mixed</span>
 								<span class="px-2 py-1 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">3 - Strong</span>
 								<span class="px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">4 - Best-in-Class</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Sources -->
-				<div v-if="allSources.length > 0">
-					<h2 class="text-2xl font-bold mb-4">Sources & References</h2>
-					<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-						Information about this app is based on the following sources:
-					</p>
-					<div class="space-y-4">
-						<div
-							v-for="source in allSources"
-							:key="source.id"
-							class="border rounded-lg p-4 dark:border-gray-700 hover:shadow-md transition-shadow"
-						>
-							<div class="flex items-start gap-3">
-								<!-- Icon based on source type -->
-								<div class="flex-shrink-0 mt-1">
-									<svg
-										v-if="source.source_type === 'official' || source.source_type === 'documentation'"
-										class="w-5 h-5 text-green-600 dark:text-green-400"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-									<svg
-										v-else
-										class="w-5 h-5 text-gray-400"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-								</div>
-
-								<div class="flex-1 min-w-0">
-									<!-- Source title and type -->
-									<div class="flex items-start justify-between gap-2 mb-2">
-										<h3 class="font-semibold text-gray-900 dark:text-gray-100">
-											<a
-												v-if="source.url"
-												:href="source.url"
-												target="_blank"
-												rel="noopener noreferrer"
-												class="hover:text-primary transition-colors"
-											>
-												{{ source.title }}
-												<svg
-													class="inline w-4 h-4 ml-1"
-													fill="none"
-													stroke="currentColor"
-													viewBox="0 0 24 24"
-												>
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														stroke-width="2"
-														d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-													/>
-												</svg>
-											</a>
-											<span v-else>{{ source.title }}</span>
-										</h3>
-										<span
-											v-if="source.source_type"
-											:class="[
-												'inline-flex items-center px-2 py-1 text-xs font-medium rounded-full capitalize flex-shrink-0',
-												getSourceTypeBadge(source.source_type).color === 'green' &&
-													'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-												getSourceTypeBadge(source.source_type).color === 'blue' &&
-													'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-												getSourceTypeBadge(source.source_type).color === 'purple' &&
-													'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-												getSourceTypeBadge(source.source_type).color === 'gray' &&
-													'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
-											]"
-										>
-											{{ getSourceTypeBadge(source.source_type).label }}
-										</span>
-									</div>
-
-									<!-- Source metadata -->
-									<div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-										<div v-if="source.author || source.publisher" class="flex flex-wrap gap-2">
-											<span v-if="source.author">By {{ source.author }}</span>
-											<span v-if="source.author && source.publisher">•</span>
-											<span v-if="source.publisher">{{ source.publisher }}</span>
-										</div>
-										<div v-if="source.publication_date">
-											Published: {{ formatDate(source.publication_date) }}
-										</div>
-									</div>
-
-									<!-- Source summary -->
-									<p v-if="source.summary" class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-										{{ source.summary }}
-									</p>
-								</div>
 							</div>
 						</div>
 					</div>

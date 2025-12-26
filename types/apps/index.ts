@@ -30,8 +30,21 @@ export interface App {
 	federated?: boolean;
 	end_to_end_encryption?: 'yes' | 'partial' | 'no' | 'unknown';
 	default_tracking?: 'none' | 'low' | 'moderate' | 'high' | 'unknown';
+	score_privacy?: 0 | 1 | 2 | 3 | 4 | null;
+	score_autonomy?: 0 | 1 | 2 | 3 | 4 | null;
+	score_transparency?: 0 | 1 | 2 | 3 | 4 | null;
+	score_governance?: 0 | 1 | 2 | 3 | 4 | null;
+	score_overall?: 0 | 1 | 2 | 3 | 4 | null;
+	assessment_tier?: 'A_Sovereign' | 'B_Aligned' | 'C_Transitional' | 'D_Extractive' | null;
+	assessment_summary?: string | null;
+	assessment_what_it_does?: string | null;
+	assessment_why_people_use_it?: string | null;
+	assessment_tradeoffs?: string | null;
+	assessment_data_and_control?: string | null;
+	assessment_governance_and_business?: string | null;
+	assessment_goodphone_assessment?: string | null;
+	assessment_recommended_use?: 'recommended' | 'situational' | 'avoid' | 'compare_only' | null;
 	categories?: AppCategoryJunction[];
-	assessments?: AppAssessment[];
 }
 
 export interface AppCategory {
@@ -61,25 +74,4 @@ export interface Source {
 	source_type?: 'article' | 'paper' | 'blog' | 'documentation' | 'whitepaper' | 'video' | 'social' | 'official' | 'other';
 	summary?: string | null;
 	access_date?: string | null;
-}
-
-export interface AppAssessment {
-	id: string;
-	status?: 'draft' | 'published' | 'archived';
-	app_id: string | App;
-	assessment_date?: string | null;
-	verdict?: string | null;
-	recommendation?: string | null;
-	score_privacy?: 0 | 1 | 2 | 3 | 4 | null;
-	score_autonomy?: 0 | 1 | 2 | 3 | 4 | null;
-	score_transparency?: 0 | 1 | 2 | 3 | 4 | null;
-	score_governance?: 0 | 1 | 2 | 3 | 4 | null;
-	score_overall?: 0 | 1 | 2 | 3 | 4 | null;
-	sources?: AppAssessmentSource[];
-}
-
-export interface AppAssessmentSource {
-	id: string;
-	app_assessments_id: string;
-	sources_id: string | Source;
 }
