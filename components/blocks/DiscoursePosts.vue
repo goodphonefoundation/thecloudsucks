@@ -23,16 +23,30 @@ const props = defineProps<{
 	data?: BlockDiscoursePosts;
 }>();
 
-// Fetch global data with Discourse posts
-const { data: globalsData } = await useAsyncData('globals-discourse', () => {
-	const directus = useDirectus();
-	return directus.items('globals').readByQuery({
-		fields: ['discourse_posts'],
-	});
-});
+// Fetch Discourse posts from dedicated collection
+const { data: postsData } = await useAsyncData(
+	'discourse-posts',
+	() => {
+		return useDirectus(
+			readItems('discourse_posts', {
+				fields: ['id', 'discourse_id', 'title', 'slug', 'excerpt', 'url', 'created_at', 'views', 'reply_count', 'like_count', 'image_url'],
+				filter: {
+					status: {
+						_eq: 'published',
+					},
+				},
+				sort: ['-created_at'],
+				limit: 10,
+			}),
+		);
+	},
+	{
+		transform: (data) => data || [],
+	},
+);
 
 const posts = computed(() => {
-	const discoursePosts = globalsData.value?.discourse_posts;
+	const discoursePosts = unref(postsData);
 	if (!discoursePosts || !Array.isArray(discoursePosts)) return [];
 	return discoursePosts as DiscoursePost[];
 });
