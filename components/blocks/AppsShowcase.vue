@@ -298,7 +298,9 @@ const resetFilters = () => {
 								<NuxtImg :src="app.icon" :alt="app.name" class="w-12 h-12 rounded-lg" />
 							</div>
 							<div class="flex-1 min-w-0">
-								<h3 class="text-xl font-semibold">{{ app.name }}</h3>
+								<NuxtLink :to="`/apps/${app.slug}`" class="hover:text-primary transition-colors">
+									<h3 class="text-xl font-semibold">{{ app.name }}</h3>
+								</NuxtLink>
 								<div class="flex flex-wrap gap-2 mt-2">
 									<span
 										v-if="app.is_open_source"
