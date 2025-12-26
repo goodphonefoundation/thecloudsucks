@@ -31,6 +31,7 @@ export interface App {
 	end_to_end_encryption?: 'yes' | 'partial' | 'no' | 'unknown';
 	default_tracking?: 'none' | 'low' | 'moderate' | 'high' | 'unknown';
 	categories?: AppCategoryJunction[];
+	assessments?: AppAssessment[];
 }
 
 export interface AppCategory {
@@ -47,4 +48,33 @@ export interface AppCategoryJunction {
 	id: string;
 	apps_id: string;
 	app_categories_id: string | AppCategory;
+}
+
+export interface Source {
+	id: string;
+	status?: 'draft' | 'published' | 'archived';
+	title: string;
+	url?: string | null;
+	publication_date?: string | null;
+	author?: string | null;
+	publisher?: string | null;
+	source_type?: 'article' | 'paper' | 'blog' | 'documentation' | 'whitepaper' | 'video' | 'social' | 'official' | 'other';
+	summary?: string | null;
+	access_date?: string | null;
+}
+
+export interface AppAssessment {
+	id: string;
+	status?: 'draft' | 'published' | 'archived';
+	app_id: string | App;
+	assessment_date?: string | null;
+	verdict?: string | null;
+	recommendation?: string | null;
+	sources?: AppAssessmentSource[];
+}
+
+export interface AppAssessmentSource {
+	id: string;
+	app_assessments_id: string;
+	sources_id: string | Source;
 }
