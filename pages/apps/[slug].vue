@@ -17,6 +17,11 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 				'assessments.assessment_date',
 				'assessments.verdict',
 				'assessments.recommendation',
+				'assessments.score_privacy',
+				'assessments.score_autonomy',
+				'assessments.score_transparency',
+				'assessments.score_governance',
+				'assessments.score_overall',
 				'assessments.sources.sources_id.id',
 				'assessments.sources.sources_id.title',
 				'assessments.sources.sources_id.url',
@@ -83,6 +88,24 @@ const formatDate = (dateString: string | null) => {
 		return null;
 	}
 };
+
+// Helper to get score label and color
+const getScoreInfo = (score: number | null | undefined) => {
+	if (score === null || score === undefined) return { label: 'Not Rated', color: 'gray', percentage: 0 };
+	const labels = ['Hostile', 'Weak', 'Mixed', 'Strong', 'Best-in-Class'];
+	const colors = ['red', 'orange', 'yellow', 'green', 'blue'];
+	return {
+		label: labels[score],
+		color: colors[score],
+		percentage: (score / 4) * 100,
+	};
+};
+
+// Get the most recent assessment with scores
+const latestAssessment = computed(() => {
+	if (!app.value?.assessments || app.value.assessments.length === 0) return null;
+	return app.value.assessments[0];
+});
 
 // If app not found, show 404
 if (!app.value) {
@@ -276,6 +299,151 @@ const getBadgeColor = (type: string, value: any) => {
 						>
 							{{ cat.app_categories_id.name }}
 						</NuxtLink>
+					</div>
+				</div>
+
+				<!-- Assessment Scores -->
+				<div v-if="latestAssessment && (latestAssessment.score_overall !== null || latestAssessment.score_privacy !== null)">
+					<h2 class="text-2xl font-bold mb-4">Assessment Scores</h2>
+					<div class="border rounded-lg p-6 dark:border-gray-700 space-y-4">
+						<!-- Overall Score -->
+						<div v-if="latestAssessment.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
+							<div class="flex items-center justify-between mb-2">
+								<span class="text-lg font-semibold">Overall Rating</span>
+								<span
+									:class="[
+										'px-3 py-1 text-sm font-bold rounded-full',
+										getScoreInfo(latestAssessment.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+										getScoreInfo(latestAssessment.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+										getScoreInfo(latestAssessment.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+										getScoreInfo(latestAssessment.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+										getScoreInfo(latestAssessment.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+									]"
+								>
+									{{ getScoreInfo(latestAssessment.score_overall).label }}
+								</span>
+							</div>
+							<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+								<div
+									:class="[
+										'h-3 rounded-full transition-all',
+										getScoreInfo(latestAssessment.score_overall).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(latestAssessment.score_overall).color === 'green' && 'bg-green-600',
+										getScoreInfo(latestAssessment.score_overall).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(latestAssessment.score_overall).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(latestAssessment.score_overall).color === 'red' && 'bg-red-600',
+									]"
+									:style="{ width: getScoreInfo(latestAssessment.score_overall).percentage + '%' }"
+								></div>
+							</div>
+						</div>
+
+						<!-- Individual Scores -->
+						<div class="space-y-3">
+							<!-- Privacy Score -->
+							<div v-if="latestAssessment.score_privacy !== null">
+								<div class="flex items-center justify-between mb-1">
+									<span class="text-sm font-medium">Privacy</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(latestAssessment.score_privacy).label }}
+									</span>
+								</div>
+								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(latestAssessment.score_privacy).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(latestAssessment.score_privacy).color === 'green' && 'bg-green-600',
+											getScoreInfo(latestAssessment.score_privacy).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(latestAssessment.score_privacy).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(latestAssessment.score_privacy).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(latestAssessment.score_privacy).percentage + '%' }"
+									></div>
+								</div>
+							</div>
+
+							<!-- Autonomy Score -->
+							<div v-if="latestAssessment.score_autonomy !== null">
+								<div class="flex items-center justify-between mb-1">
+									<span class="text-sm font-medium">User Autonomy</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(latestAssessment.score_autonomy).label }}
+									</span>
+								</div>
+								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(latestAssessment.score_autonomy).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(latestAssessment.score_autonomy).color === 'green' && 'bg-green-600',
+											getScoreInfo(latestAssessment.score_autonomy).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(latestAssessment.score_autonomy).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(latestAssessment.score_autonomy).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(latestAssessment.score_autonomy).percentage + '%' }"
+									></div>
+								</div>
+							</div>
+
+							<!-- Transparency Score -->
+							<div v-if="latestAssessment.score_transparency !== null">
+								<div class="flex items-center justify-between mb-1">
+									<span class="text-sm font-medium">Transparency</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(latestAssessment.score_transparency).label }}
+									</span>
+								</div>
+								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(latestAssessment.score_transparency).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(latestAssessment.score_transparency).color === 'green' && 'bg-green-600',
+											getScoreInfo(latestAssessment.score_transparency).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(latestAssessment.score_transparency).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(latestAssessment.score_transparency).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(latestAssessment.score_transparency).percentage + '%' }"
+									></div>
+								</div>
+							</div>
+
+							<!-- Governance Score -->
+							<div v-if="latestAssessment.score_governance !== null">
+								<div class="flex items-center justify-between mb-1">
+									<span class="text-sm font-medium">Governance</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(latestAssessment.score_governance).label }}
+									</span>
+								</div>
+								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(latestAssessment.score_governance).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(latestAssessment.score_governance).color === 'green' && 'bg-green-600',
+											getScoreInfo(latestAssessment.score_governance).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(latestAssessment.score_governance).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(latestAssessment.score_governance).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(latestAssessment.score_governance).percentage + '%' }"
+									></div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Score Legend -->
+						<div class="pt-4 border-t dark:border-gray-700">
+							<p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Rating Scale:</p>
+							<div class="flex flex-wrap gap-2 text-xs">
+								<span class="px-2 py-1 rounded bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">0 - Hostile</span>
+								<span class="px-2 py-1 rounded bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">1 - Weak</span>
+								<span class="px-2 py-1 rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">2 - Mixed</span>
+								<span class="px-2 py-1 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">3 - Strong</span>
+								<span class="px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">4 - Best-in-Class</span>
+							</div>
+						</div>
 					</div>
 				</div>
 

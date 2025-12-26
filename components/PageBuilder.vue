@@ -36,5 +36,7 @@ const blocks = computed(() => {
 		<template v-for="block in blocks" :key="block.id">
 			<component :is="componentMap[block.collection]" v-if="block && block.collection" :data="block.item" />
 		</template>
+		<!-- Discourse Community Posts -->
+		<BlocksDiscoursePosts v-if="page.permalink === '/'" />
 	</div>
 </template>

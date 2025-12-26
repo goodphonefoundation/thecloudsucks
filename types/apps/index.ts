@@ -70,6 +70,11 @@ export interface AppAssessment {
 	assessment_date?: string | null;
 	verdict?: string | null;
 	recommendation?: string | null;
+	score_privacy?: 0 | 1 | 2 | 3 | 4 | null;
+	score_autonomy?: 0 | 1 | 2 | 3 | 4 | null;
+	score_transparency?: 0 | 1 | 2 | 3 | 4 | null;
+	score_governance?: 0 | 1 | 2 | 3 | 4 | null;
+	score_overall?: 0 | 1 | 2 | 3 | 4 | null;
 	sources?: AppAssessmentSource[];
 }
 
