@@ -1,3 +1,4 @@
+export type * from './apps';
 export type * from './blocks';
 export type * from './content';
 export type * from './meta';

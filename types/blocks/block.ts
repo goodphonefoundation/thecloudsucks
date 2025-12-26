@@ -13,8 +13,10 @@ import type { BlockTeam } from './block-team';
 import type { BlockTestimonial } from './block-testimonial';
 import type { BlockVideo } from './block-video';
 import type { BlockDivider } from './block-divider';
+import type { BlockAppsShowcase } from './block-apps-showcase';
 
 export type BlockType =
+	| 'block_apps_showcase'
 	| 'block_columns'
 	| 'block_cta'
 	| 'block_faqs'
@@ -32,6 +34,7 @@ export type BlockType =
 	| 'block_divider';
 
 export type Block =
+	| BlockAppsShowcase
 	| BlockColumn
 	| BlockCta
 	| BlockFaq

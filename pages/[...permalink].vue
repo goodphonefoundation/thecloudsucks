@@ -161,6 +161,13 @@ const { data: page } = await useAsyncData(
 									block_html: ['*'],
 									block_video: ['*'],
 									block_cardgroup: ['*'],
+									block_apps_showcase: [
+										'id',
+										'headline',
+										'content',
+										'display_style',
+										{ filter_by_category: ['id', 'name'] },
+									],
 								},
 							},
 						],

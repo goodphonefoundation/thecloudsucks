@@ -2,6 +2,7 @@
 import type { Page, OsProposal, PageBlock, BlockType } from '~/types';
 
 const componentMap: Record<BlockType, any> = {
+	block_apps_showcase: resolveComponent('BlocksAppsShowcase'),
 	block_hero: resolveComponent('BlocksHero'),
 	block_faqs: resolveComponent('BlocksFaqs'),
 	block_richtext: resolveComponent('BlocksRichText'),
