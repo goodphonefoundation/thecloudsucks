@@ -31,10 +31,14 @@ runs:
       name: Setup pnpm cache
       with:
         path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}-node-20
         restore-keys: |
           ${{ runner.os }}-pnpm-store-
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install
+      run: pnpm install --no-frozen-lockfile
+
+    - name: Rebuild native modules
+      shell: bash
+      run: pnpm rebuild sharp
