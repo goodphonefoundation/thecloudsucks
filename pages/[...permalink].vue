@@ -164,13 +164,38 @@ const { data: page } = await useAsyncData(
 									block_html: ['*'],
 									block_video: ['*'],
 									block_cardgroup: ['*'],
-								block_apps_showcase: [
+						block_services_showcase: [
+							'id',
+							'headline',
+							'content',
+							'display_style',
+						],
+						block_youtube_carousel: [
+							'id',
+							'title',
+							'slug',
+							'headline',
+							'max_videos',
+							{
+								videos: [
 									'id',
-									'headline',
-									'content',
-									'display_style',
+									'sort',
+									{
+										youtube_videos_id: [
+											'id',
+											'video_id',
+											'title',
+											'description',
+											'thumbnail_url',
+											'duration',
+											'view_count',
+											'status',
+										],
+									},
 								],
-								},
+							},
+						],
+						},
 							},
 						],
 					},

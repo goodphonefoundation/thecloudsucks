@@ -13,10 +13,11 @@ import type { BlockTeam } from './block-team';
 import type { BlockTestimonial } from './block-testimonial';
 import type { BlockVideo } from './block-video';
 import type { BlockDivider } from './block-divider';
-import type { BlockAppsShowcase } from './block-apps-showcase';
+import type { BlockServicesShowcase } from './block-services-showcase';
+import type { BlockYouTubeCarousel } from './block-youtube-carousel';
 
 export type BlockType =
-	| 'block_apps_showcase'
+	| 'block_services_showcase'
 	| 'block_columns'
 	| 'block_cta'
 	| 'block_faqs'
@@ -31,10 +32,11 @@ export type BlockType =
 	| 'block_team'
 	| 'block_testimonials'
 	| 'block_video'
-	| 'block_divider';
+	| 'block_divider'
+	| 'block_youtube_carousel';
 
 export type Block =
-	| BlockAppsShowcase
+	| BlockServicesShowcase
 	| BlockColumn
 	| BlockCta
 	| BlockFaq
@@ -49,4 +51,5 @@ export type Block =
 	| BlockTeam
 	| BlockTestimonial
 	| BlockVideo
-	| BlockDivider;
+	| BlockDivider
+	| BlockYouTubeCarousel;

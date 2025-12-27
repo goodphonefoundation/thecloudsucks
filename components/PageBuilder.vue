@@ -2,7 +2,7 @@
 import type { Page, OsProposal, PageBlock, BlockType } from '~/types';
 
 const componentMap: Record<BlockType, any> = {
-	block_apps_showcase: resolveComponent('BlocksAppsShowcase'),
+	block_services_showcase: resolveComponent('BlocksServicesShowcase'),
 	block_hero: resolveComponent('BlocksHero'),
 	block_faqs: resolveComponent('BlocksFaqs'),
 	block_richtext: resolveComponent('BlocksRichText'),
@@ -18,6 +18,7 @@ const componentMap: Record<BlockType, any> = {
 	block_steps: resolveComponent('BlocksSteps'),
 	block_columns: resolveComponent('BlocksColumns'),
 	block_divider: resolveComponent('BlocksDivider'),
+	block_youtube_carousel: resolveComponent('BlocksYouTubeCarousel'),
 };
 
 const props = defineProps<{
