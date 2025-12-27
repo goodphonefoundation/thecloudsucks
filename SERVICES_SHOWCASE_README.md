@@ -1,18 +1,18 @@
-# Apps Showcase Block - Implementation Guide
+# Services Showcase Block - Implementation Guide
 
 ## Overview
-The Apps Showcase block has been successfully implemented in your Nuxt 3 application. It displays apps from your Directus CMS with filtering, styling options, and beautiful animations.
+The Services Showcase block has been successfully implemented in your Nuxt 3 application. It displays services from your Directus CMS with filtering, styling options, and beautiful animations.
 
 ## Files Created/Modified
 
 ### Type Definitions
-1. **`types/apps/index.ts`** - Core app and category interfaces
-2. **`types/blocks/block-apps-showcase.ts`** - Block-specific interface
+1. **`types/services/index.ts`** - Core service and category interfaces
+2. **`types/blocks/block-services-showcase.ts`** - Block-specific interface
 3. **`types/blocks/block.ts`** - Updated to include new block type
-4. **`types/index.ts`** - Updated to export apps types
+4. **`types/index.ts`** - Updated to export services types
 
 ### Components
-5. **`components/blocks/AppsShowcase.vue`** - Main Vue component
+5. **`components/blocks/ServicesShowcase.vue`** - Main Vue component
 6. **`components/PageBuilder.vue`** - Updated to register new block
 
 ## Features
@@ -22,9 +22,9 @@ The Apps Showcase block has been successfully implemented in your Nuxt 3 applica
 - **List**: Single column list view
 - **Featured**: 2-column featured layout
 
-### App Cards Include
-- App icon (if available)
-- App name
+### Service Cards Include
+- Service icon (if available)
+- Service name
 - Short description
 - Feature badges (Open Source, E2E Encrypted, No Tracking)
 - Links to website and source code
@@ -32,23 +32,23 @@ The Apps Showcase block has been successfully implemented in your Nuxt 3 applica
 - Dark mode support
 
 ### Filtering
-- Can filter apps by category
-- Only shows published apps
+- Can filter services by category
+- Only shows published services
 - Alphabetically sorted by name
 
 ## Usage
 
 ### In Directus Admin
-1. Go to the Services page or any page where you want to add apps
-2. Add a "Block Apps Showcase" block
+1. Go to the Services page or any page where you want to add services
+2. Add a "Block Services Showcase" block
 3. Fill in:
-   - **Headline**: Rich text heading (e.g., "Secure Messaging Apps")
+   - **Headline**: Rich text heading (e.g., "Secure Messaging Services")
    - **Content**: Description text
    - **Display Style**: Choose grid, list, or featured
-   - **Filter by Category**: Optional - select a category to filter apps
+   - **Filter by Category**: Optional - select a category to filter services
 
 ### API Query
-The component fetches apps with these fields:
+The component fetches services with these fields:
 ```typescript
 fields: [
   'id', 'name', 'slug', 'short_description',
@@ -60,7 +60,7 @@ fields: [
 ### Current Implementation
 ✅ Block added to Services page (`/services`)
 ✅ Filtered by "Messaging" category
-✅ Shows Signal, Telegram, and Session apps
+✅ Shows Signal, Telegram, and Session services
 ✅ Grid layout with animations
 
 ## Customization
@@ -79,10 +79,10 @@ Current badges display for:
 - `default_tracking === 'none'` → "No Tracking" (purple)
 
 ### Adding More Fields
-To display additional app data:
-1. Add fields to the query in `AppsShowcase.vue`
+To display additional service data:
+1. Add fields to the query in `ServicesShowcase.vue`
 2. Update the template to display the new data
-3. Optionally update `types/apps/index.ts` if adding new fields
+3. Optionally update `types/services/index.ts` if adding new fields
 
 ## Testing
 
@@ -91,8 +91,8 @@ To display additional app data:
 - **Frontend**: Visit `/services` on your Nuxt site
 
 ### Troubleshooting
-If apps don't appear:
-1. Check that apps are published in Directus
+If services don't appear:
+1. Check that services are published in Directus
 2. Verify the category filter is correct
 3. Check browser console for API errors
 4. Ensure Directus API is accessible
@@ -100,12 +100,12 @@ If apps don't appear:
 ## Next Steps
 
 ### Potential Enhancements
-- Add app detail pages (`/apps/:slug`)
+- Add service detail pages (`/services/:slug`)
 - Implement search/filter UI on frontend
 - Add comparison features
 - Include ratings or reviews
-- Add "Featured" flag to apps
-- Create dedicated apps directory page
+- Add "Featured" flag to services
+- Create dedicated services directory page
 
 ### Additional Categories
 You can create more categories:

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import type { App } from '~/types';
+import type { Service } from '~/types';
 
 const route = useRoute();
 const slug = route.params.slug as string;
 
-// Fetch app details
-const { data: app } = await useAsyncData(`app-${slug}`, () => {
+// Fetch service details
+const { data: service } = await useAsyncData(`service-${slug}`, () => {
 	return useDirectus(
-		readItems('apps', {
+		readItems('services', {
 			fields: [
 				'*',
-				'categories.app_categories_id.id',
-				'categories.app_categories_id.name',
-				'categories.app_categories_id.slug',
+				'categories.service_categories_id.id',
+				'categories.service_categories_id.name',
+				'categories.service_categories_id.slug',
 				'score_privacy',
 				'score_autonomy',
 				'score_transparency',
@@ -28,21 +28,21 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 	).then((items: any[]) => items[0] || null);
 });
 
-// If app not found, show 404
-if (!app.value) {
+// If service not found, show 404
+if (!service.value) {
 	throw createError({
 		statusCode: 404,
-		statusMessage: 'App Not Found',
+		statusMessage: 'Service Not Found',
 	});
 }
 
 // SEO
 useHead({
-	title: app.value.name,
+	title: service.value.name,
 	meta: [
 		{
 			name: 'description',
-			content: app.value.short_description || app.value.long_description || '',
+			content: service.value.short_description || service.value.long_description || '',
 		},
 	],
 });
@@ -61,7 +61,7 @@ const getBadgeColor = (type: string, value: any) => {
 	if (type === 'default_tracking' && value === 'none') return 'purple';
 	if (type === 'self_hostable' && value) return 'orange';
 	if (type === 'federated' && value) return 'pink';
-	if (type === 'app_status') {
+	if (type === 'service_status') {
 		if (value === 'active') return 'green';
 		if (value === 'deprecated') return 'red';
 		if (value === 'watch') return 'yellow';
@@ -107,69 +107,69 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 </script>
 
 <template>
-	<BlockContainer v-if="app">
+	<BlockContainer v-if="service">
 		<!-- Header Section -->
 		<div class="mb-8">
 			<NuxtLink
 				to="/services"
 				class="inline-flex items-center text-sm text-primary hover:underline mb-4"
 			>
-				← Back to Apps
+				← Back to Services
 			</NuxtLink>
 			
 			<div class="flex items-start gap-6">
-				<div v-if="app.icon" class="flex-shrink-0">
-					<NuxtImg :src="app.icon" :alt="app.name" class="w-24 h-24 rounded-xl" />
+				<div v-if="service.icon" class="flex-shrink-0">
+					<NuxtImg :src="service.icon" :alt="service.name" class="w-24 h-24 rounded-xl" />
 				</div>
 				<div class="flex-1">
-					<h1 class="text-4xl font-bold mb-2">{{ app.name }}</h1>
+					<h1 class="text-4xl font-bold mb-2">{{ service.name }}</h1>
 					<p class="text-xl text-gray-600 dark:text-gray-400 mb-4">
-						{{ app.short_description }}
+						{{ service.short_description }}
 					</p>
 					
 					<!-- Main Badges -->
 					<div class="flex flex-wrap gap-2">
 						<span
-							v-if="app.is_open_source"
+							v-if="service.is_open_source"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
 						>
 							Open Source
 						</span>
 						<span
-							v-if="app.end_to_end_encryption === 'yes'"
+							v-if="service.end_to_end_encryption === 'yes'"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
 						>
 							E2E Encrypted
 						</span>
 						<span
-							v-if="app.default_tracking === 'none'"
+							v-if="service.default_tracking === 'none'"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
 						>
 							No Tracking
 						</span>
 						<span
-							v-if="app.self_hostable"
+							v-if="service.self_hostable"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
 						>
 							Self-Hostable
 						</span>
 						<span
-							v-if="app.federated"
+							v-if="service.federated"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200"
 						>
 							Federated
 						</span>
 						<span
-							v-if="app.app_status"
+							v-if="service.service_status"
 							:class="[
 								'inline-flex items-center px-3 py-1 text-sm font-medium rounded-full capitalize',
-								app.app_status === 'active' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-								app.app_status === 'deprecated' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-								app.app_status === 'watch' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-								app.app_status === 'unknown' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+								service.service_status === 'active' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+								service.service_status === 'deprecated' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+								service.service_status === 'watch' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+								service.service_status === 'unknown' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
 							]"
 						>
-							{{ app.app_status }}
+							{{ service.service_status }}
 						</span>
 					</div>
 				</div>
@@ -179,8 +179,8 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 		<!-- Action Buttons -->
 		<div class="flex flex-wrap gap-3 mb-8 pb-8 border-b dark:border-gray-700">
 			<UButton
-				v-if="app.website_url"
-				:to="app.website_url"
+				v-if="service.website_url"
+				:to="service.website_url"
 				target="_blank"
 				color="primary"
 				size="lg"
@@ -189,8 +189,8 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				Visit Website
 			</UButton>
 			<UButton
-				v-if="app.repo_url"
-				:to="app.repo_url"
+				v-if="service.repo_url"
+				:to="service.repo_url"
 				target="_blank"
 				color="gray"
 				variant="outline"
@@ -200,8 +200,8 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				Source Code
 			</UButton>
 			<UButton
-				v-if="app.docs_url"
-				:to="app.docs_url"
+				v-if="service.docs_url"
+				:to="service.docs_url"
 				target="_blank"
 				color="gray"
 				variant="outline"
@@ -211,8 +211,8 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				Documentation
 			</UButton>
 			<UButton
-				v-if="app.privacy_policy_url"
-				:to="app.privacy_policy_url"
+				v-if="service.privacy_policy_url"
+				:to="service.privacy_policy_url"
 				target="_blank"
 				color="gray"
 				variant="outline"
@@ -222,8 +222,8 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				Privacy Policy
 			</UButton>
 			<UButton
-				v-if="app.terms_url"
-				:to="app.terms_url"
+				v-if="service.terms_url"
+				:to="service.terms_url"
 				target="_blank"
 				color="gray"
 				variant="outline"
@@ -239,75 +239,75 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 			<!-- Left Column: Description & Categories -->
 			<div class="md:col-span-2 space-y-6">
 				<!-- Long Description -->
-				<div v-if="app.long_description" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.long_description" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">About</h2>
-					<div v-html="app.long_description"></div>
+					<div v-html="service.long_description"></div>
 				</div>
 
 				<!-- Categories -->
-				<div v-if="app.categories && app.categories.length > 0">
+				<div v-if="service.categories && service.categories.length > 0">
 					<h2 class="text-2xl font-bold mb-4">Categories</h2>
 					<div class="flex flex-wrap gap-2">
 						<NuxtLink
-							v-for="cat in app.categories"
+							v-for="cat in service.categories"
 							:key="cat.id"
-							:to="`/services?category=${cat.app_categories_id.slug}`"
+							:to="`/services?category=${cat.service_categories_id.slug}`"
 							class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
 						>
-							{{ cat.app_categories_id.name }}
+							{{ cat.service_categories_id.name }}
 						</NuxtLink>
 					</div>
 				</div>
 
 				<!-- Assessment Summary -->
-				<div v-if="app.assessment_tier || app.assessment_recommended_use || app.assessment_summary" class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+				<div v-if="service.assessment_tier || service.assessment_recommended_use || service.assessment_summary" class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
 					<div class="flex flex-wrap items-center gap-3 mb-4">
 						<h2 class="text-2xl font-bold">GoodPhone Assessment</h2>
-						<span v-if="app.assessment_tier" class="px-3 py-1 text-sm font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-							{{ getTierLabel(app.assessment_tier) }}
+						<span v-if="service.assessment_tier" class="px-3 py-1 text-sm font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+							{{ getTierLabel(service.assessment_tier) }}
 						</span>
-						<span v-if="app.assessment_recommended_use" :class="[
+						<span v-if="service.assessment_recommended_use" :class="[
 							'px-3 py-1 text-sm font-bold rounded-full',
-							app.assessment_recommended_use === 'recommended' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-							app.assessment_recommended_use === 'situational' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-							app.assessment_recommended_use === 'avoid' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-							app.assessment_recommended_use === 'compare_only' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+							service.assessment_recommended_use === 'recommended' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+							service.assessment_recommended_use === 'situational' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+							service.assessment_recommended_use === 'avoid' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+							service.assessment_recommended_use === 'compare_only' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
 						]">
-							{{ getRecommendationLabel(app.assessment_recommended_use) }}
+							{{ getRecommendationLabel(service.assessment_recommended_use) }}
 						</span>
 					</div>
-					<p v-if="app.assessment_summary" class="text-gray-700 dark:text-gray-300">{{ app.assessment_summary }}</p>
+					<p v-if="service.assessment_summary" class="text-gray-700 dark:text-gray-300">{{ service.assessment_summary }}</p>
 				</div>
 
 				<!-- Assessment Content Sections -->
-				<div v-if="app.assessment_what_it_does" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.assessment_what_it_does" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">What It Does</h2>
-					<div v-html="app.assessment_what_it_does"></div>
+					<div v-html="service.assessment_what_it_does"></div>
 				</div>
 
-				<div v-if="app.assessment_why_people_use_it" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.assessment_why_people_use_it" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">Why People Use It</h2>
-					<div v-html="app.assessment_why_people_use_it"></div>
+					<div v-html="service.assessment_why_people_use_it"></div>
 				</div>
 
-				<div v-if="app.assessment_tradeoffs" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.assessment_tradeoffs" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">Tradeoffs</h2>
-					<div v-html="app.assessment_tradeoffs"></div>
+					<div v-html="service.assessment_tradeoffs"></div>
 				</div>
 
-				<div v-if="app.assessment_data_and_control" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.assessment_data_and_control" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">Data & Control</h2>
-					<div v-html="app.assessment_data_and_control"></div>
+					<div v-html="service.assessment_data_and_control"></div>
 				</div>
 
-				<div v-if="app.assessment_governance_and_business" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.assessment_governance_and_business" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">Governance & Business</h2>
-					<div v-html="app.assessment_governance_and_business"></div>
+					<div v-html="service.assessment_governance_and_business"></div>
 				</div>
 
-				<div v-if="app.assessment_goodphone_assessment" class="prose dark:prose-invert max-w-none">
+				<div v-if="service.assessment_goodphone_assessment" class="prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">GoodPhone's Assessment</h2>
-					<div v-html="app.assessment_goodphone_assessment"></div>
+					<div v-html="service.assessment_goodphone_assessment"></div>
 				</div>
 
 				<!-- Assessment Scores -->
