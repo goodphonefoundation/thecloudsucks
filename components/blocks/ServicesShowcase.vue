@@ -18,7 +18,7 @@ const advancedFilters = ref({
 });
 
 // Fetch categories
-const { data: categories } = await useAsyncData('service-categories', () => {
+const { data: categories } = await useAsyncData('service-categories-v2', () => {
 	return useDirectus(
 		readItems('service_categories', {
 			fields: ['id', 'name', 'slug'],
@@ -31,7 +31,7 @@ const { data: categories } = await useAsyncData('service-categories', () => {
 });
 
 // Fetch all services with categories
-const { data: servicesData } = await useAsyncData('services-showcase-v4', () => {
+const { data: servicesData } = await useAsyncData('services-showcase-v5', () => {
 	return useDirectus(
 		readItems('services', {
 			fields: [

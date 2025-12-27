@@ -14,7 +14,6 @@ import type { BlockTestimonial } from './block-testimonial';
 import type { BlockVideo } from './block-video';
 import type { BlockDivider } from './block-divider';
 import type { BlockServicesShowcase } from './block-services-showcase';
-import type { BlockYouTubeCarousel } from './block-youtube-carousel';
 
 export type BlockType =
 	| 'block_services_showcase'
@@ -32,8 +31,7 @@ export type BlockType =
 	| 'block_team'
 	| 'block_testimonials'
 	| 'block_video'
-	| 'block_divider'
-	| 'block_youtube_carousel';
+	| 'block_divider';
 
 export type Block =
 	| BlockServicesShowcase
@@ -51,5 +49,4 @@ export type Block =
 	| BlockTeam
 	| BlockTestimonial
 	| BlockVideo
-	| BlockDivider
-	| BlockYouTubeCarousel;
+	| BlockDivider;

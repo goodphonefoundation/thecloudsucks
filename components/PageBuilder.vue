@@ -18,7 +18,6 @@ const componentMap: Record<BlockType, any> = {
 	block_steps: resolveComponent('BlocksSteps'),
 	block_columns: resolveComponent('BlocksColumns'),
 	block_divider: resolveComponent('BlocksDivider'),
-	block_youtube_carousel: resolveComponent('BlocksYouTubeCarousel'),
 };
 
 const props = defineProps<{
