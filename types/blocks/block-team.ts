@@ -3,4 +3,5 @@ export interface BlockTeam {
 	headline?: string | null;
 	id?: string;
 	title?: string | null;
+	slug?: string | null;
 }

@@ -25,7 +25,7 @@ function loadMore() {
 </script>
 
 <template>
-	<BlockContainer>
+	<BlockContainer :block-id="data.slug">
 		<div
 			:class="[
 				{

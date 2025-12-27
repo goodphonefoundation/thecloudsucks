@@ -4,6 +4,7 @@ import type { BlockButtonGroup } from '../blocks';
 export interface BlockHero {
 	id?: string;
 	title?: string | null;
+	slug?: string | null;
 	headline?: string | null;
 	content?: string | null;
 	image?: (string | File) | null;

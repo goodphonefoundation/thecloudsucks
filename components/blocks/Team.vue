@@ -88,7 +88,7 @@ const duration = computed(() => {
 </script>
 <template>
 	<section>
-		<BlockContainer>
+		<BlockContainer :block-id="data.slug">
 			<div class="flex flex-col mx-auto lg:flex-row">
 				<!-- Text -->
 				<div class="flex flex-col pr-4 lg:w-3/5">

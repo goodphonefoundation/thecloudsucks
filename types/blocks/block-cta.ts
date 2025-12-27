@@ -6,5 +6,6 @@ export interface BlockCta {
 	headline?: string | null;
 	id?: string;
 	title?: string | null;
+	slug?: string | null;
 	button_group?: (string | BlockButtonGroup) | null;
 }

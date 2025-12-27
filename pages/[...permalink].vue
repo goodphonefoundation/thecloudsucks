@@ -38,18 +38,19 @@ const { data: page } = await useAsyncData(
 							'collection',
 							'hide_block',
 							{
-								item: {
-									block_hero: [
-										'id',
-										'title',
-										'headline',
-										'content',
-										'image',
-										'image_position',
-										{ button_group: ['*', { buttons: ['*', { page: ['permalink'], post: ['slug'] }] }] },
-									],
-									block_faqs: ['id', 'title', 'faqs', 'headline', 'alignment'],
-									block_richtext: ['id', 'title', 'headline', 'content', 'alignment'],
+							item: {
+								block_hero: [
+									'id',
+									'title',
+									'slug',
+									'headline',
+									'content',
+									'image',
+									'image_position',
+									{ button_group: ['*', { buttons: ['*', { page: ['permalink'], post: ['slug'] }] }] },
+								],
+								block_faqs: ['id', 'title', 'slug', 'faqs', 'headline', 'alignment'],
+								block_richtext: ['id', 'title', 'slug', 'headline', 'content', 'alignment'],
 									block_testimonials: [
 										'id',
 										'title',
@@ -71,11 +72,12 @@ const { data: page } = await useAsyncData(
 										},
 									],
 									block_quote: ['id', 'title', 'subtitle', 'content'],
-									block_cta: [
-										'id',
-										'title',
-										'headline',
-										'content',
+						block_cta: [
+							'id',
+							'title',
+							'slug',
+							'headline',
+							'content',
 										{
 											button_group: [
 												'*',
@@ -134,10 +136,11 @@ const { data: page } = await useAsyncData(
 											],
 										},
 									],
-									block_columns: [
-										'id',
-										'title',
-										'headline',
+						block_columns: [
+							'id',
+							'title',
+							'slug',
+							'headline',
 										{
 											rows: [
 												'title',

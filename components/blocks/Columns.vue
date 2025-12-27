@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-	<BlockContainer>
+	<BlockContainer :block-id="data.slug">
 		<TypographyTitle v-if="data?.title">{{ data?.title }}</TypographyTitle>
 		<TypographyHeadline v-if="data?.headline" :content="data?.headline" />
 		<div class="mt-12 space-y-16">

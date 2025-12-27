@@ -5,6 +5,7 @@ export interface BlockColumn {
 	headline?: string | null;
 	id?: string;
 	title?: string | null;
+	slug?: string | null;
 	rows?: (number | BlockColumnRow)[];
 }
 
