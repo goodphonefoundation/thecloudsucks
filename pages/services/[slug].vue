@@ -28,6 +28,36 @@ const { data: service } = await useAsyncData(`service-${slug}`, () => {
 	).then((items: any[]) => items[0] || null);
 });
 
+// Fetch change log entries for this service
+const { data: changeLogs } = await useAsyncData(`service-changelog-${slug}`, async () => {
+	if (!service.value) return [];
+	return useDirectus(
+		readItems('service_change_log', {
+			fields: ['*'],
+			filter: {
+				service: { _eq: service.value.id },
+				status: { _eq: 'published' },
+			},
+			sort: ['-date'],
+		}),
+	);
+});
+
+// Fetch sources for this service
+const { data: sources } = await useAsyncData(`service-sources-${slug}`, async () => {
+	if (!service.value) return [];
+	return useDirectus(
+		readItems('service_sources', {
+			fields: ['*'],
+			filter: {
+				service: { _eq: service.value.id },
+				status: { _eq: 'published' },
+			},
+			sort: ['type', 'title'],
+		}),
+	);
+});
+
 // If service not found, show 404
 if (!service.value) {
 	throw createError({
@@ -104,6 +134,19 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 	};
 	return labels[rec] || rec;
 };
+
+// Helper to format dates
+const formatDate = (date: string | null | undefined) => {
+	if (!date) return 'Unknown date';
+	try {
+		return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+	} catch {
+		return date;
+	}
+};
+
+// Tab state
+const activeTab = ref('overview');
 </script>
 
 <template>
@@ -127,14 +170,14 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 						{{ service.short_description }}
 					</p>
 					
-					<!-- Main Badges -->
-					<div class="flex flex-wrap gap-2">
-						<span
-							v-if="service.is_open_source"
-							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-						>
-							Open Source
-						</span>
+				<!-- Main Badges -->
+				<div class="flex flex-wrap gap-2">
+					<span
+						v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes'"
+						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+					>
+						Open Source
+					</span>
 						<span
 							v-if="service.end_to_end_encryption === 'yes'"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
@@ -234,8 +277,53 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 			</UButton>
 		</div>
 
-		<!-- Main Content Grid -->
-		<div class="grid md:grid-cols-3 gap-8">
+		<!-- Tabs Navigation -->
+		<div class="border-b dark:border-gray-700 mb-8">
+			<nav class="flex gap-8" aria-label="Tabs">
+				<button
+					@click="activeTab = 'overview'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'overview'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Overview
+				</button>
+				<button
+					@click="activeTab = 'changelog'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'changelog'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Change Log
+					<span v-if="changeLogs && changeLogs.length" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700">
+						{{ changeLogs.length }}
+					</span>
+				</button>
+				<button
+					@click="activeTab = 'sources'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'sources'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Sources
+					<span v-if="sources && sources.length" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700">
+						{{ sources.length }}
+					</span>
+				</button>
+			</nav>
+		</div>
+
+		<!-- Overview Tab Content -->
+		<div v-show="activeTab === 'overview'" class="grid md:grid-cols-3 gap-8">
 			<!-- Left Column: Description & Categories -->
 			<div class="md:col-span-2 space-y-6">
 				<!-- Long Description -->
@@ -311,103 +399,103 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				</div>
 
 				<!-- Assessment Scores -->
-				<div v-if="app.score_overall !== null || app.score_privacy !== null">
+				<div v-if="service.score_overall !== null || service.score_privacy !== null">
 					<h2 class="text-2xl font-bold mb-4">Assessment Scores</h2>
 					<div class="border rounded-lg p-6 dark:border-gray-700 space-y-4">
 						<!-- Overall Score -->
-						<div v-if="app.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
+						<div v-if="service.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
 							<div class="flex items-center justify-between mb-2">
 								<span class="text-lg font-semibold">Overall Rating</span>
-								<span :class="[
-									'px-3 py-1 text-sm font-bold rounded-full',
-									getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-									getScoreInfo(app.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-									getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-									getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-									getScoreInfo(app.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-								]">
-									{{ getScoreInfo(app.score_overall).label }}
-								</span>
-							</div>
-							<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-								<div :class="[
-									'h-3 rounded-full transition-all',
-									getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-600',
-									getScoreInfo(app.score_overall).color === 'green' && 'bg-green-600',
-									getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-600',
-									getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-600',
-									getScoreInfo(app.score_overall).color === 'red' && 'bg-red-600',
-								]" :style="{ width: getScoreInfo(app.score_overall).percentage + '%' }"></div>
+							<span :class="[
+								'px-3 py-1 text-sm font-bold rounded-full',
+								getScoreInfo(service.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+								getScoreInfo(service.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+								getScoreInfo(service.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+								getScoreInfo(service.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+								getScoreInfo(service.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+							]">
+								{{ getScoreInfo(service.score_overall).label }}
+							</span>
+						</div>
+						<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+							<div :class="[
+								'h-3 rounded-full transition-all',
+								getScoreInfo(service.score_overall).color === 'blue' && 'bg-blue-600',
+								getScoreInfo(service.score_overall).color === 'green' && 'bg-green-600',
+								getScoreInfo(service.score_overall).color === 'yellow' && 'bg-yellow-600',
+								getScoreInfo(service.score_overall).color === 'orange' && 'bg-orange-600',
+								getScoreInfo(service.score_overall).color === 'red' && 'bg-red-600',
+							]" :style="{ width: getScoreInfo(service.score_overall).percentage + '%' }"></div>
 							</div>
 						</div>
 
 						<!-- Individual Scores -->
 						<div class="space-y-3">
-							<div v-if="app.score_privacy !== null">
+							<div v-if="service.score_privacy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Privacy</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_privacy).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(service.score_privacy).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div :class="[
 										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_privacy).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_privacy).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_privacy).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_privacy).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_privacy).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_privacy).percentage + '%' }"></div>
+										getScoreInfo(service.score_privacy).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(service.score_privacy).color === 'green' && 'bg-green-600',
+										getScoreInfo(service.score_privacy).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(service.score_privacy).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(service.score_privacy).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(service.score_privacy).percentage + '%' }"></div>
 								</div>
 							</div>
 
-							<div v-if="app.score_autonomy !== null">
+							<div v-if="service.score_autonomy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">User Autonomy</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_autonomy).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(service.score_autonomy).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div :class="[
 										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_autonomy).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_autonomy).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_autonomy).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_autonomy).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_autonomy).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_autonomy).percentage + '%' }"></div>
+										getScoreInfo(service.score_autonomy).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(service.score_autonomy).color === 'green' && 'bg-green-600',
+										getScoreInfo(service.score_autonomy).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(service.score_autonomy).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(service.score_autonomy).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(service.score_autonomy).percentage + '%' }"></div>
 								</div>
 							</div>
 
-							<div v-if="app.score_transparency !== null">
+							<div v-if="service.score_transparency !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Transparency</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_transparency).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(service.score_transparency).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div :class="[
 										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_transparency).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_transparency).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_transparency).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_transparency).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_transparency).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_transparency).percentage + '%' }"></div>
+										getScoreInfo(service.score_transparency).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(service.score_transparency).color === 'green' && 'bg-green-600',
+										getScoreInfo(service.score_transparency).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(service.score_transparency).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(service.score_transparency).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(service.score_transparency).percentage + '%' }"></div>
 								</div>
 							</div>
 
-							<div v-if="app.score_governance !== null">
+							<div v-if="service.score_governance !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Governance</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_governance).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(service.score_governance).label }}</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div :class="[
 										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_governance).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_governance).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_governance).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_governance).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_governance).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_governance).percentage + '%' }"></div>
+										getScoreInfo(service.score_governance).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(service.score_governance).color === 'green' && 'bg-green-600',
+										getScoreInfo(service.score_governance).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(service.score_governance).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(service.score_governance).color === 'red' && 'bg-red-600',
+									]" :style="{ width: getScoreInfo(service.score_governance).percentage + '%' }"></div>
 								</div>
 							</div>
 						</div>
@@ -435,15 +523,15 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 					<dl class="space-y-3 text-sm">
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">End-to-End Encryption</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.end_to_end_encryption) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.end_to_end_encryption) }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Default Tracking</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.default_tracking) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.default_tracking) }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Data Portability</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.data_portability) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.data_portability) }}</dd>
 						</div>
 					</dl>
 				</div>
@@ -452,22 +540,26 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				<div class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4">Technical Information</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="app.license_type">
+						<div v-if="service.license_type">
 							<dt class="text-gray-500 dark:text-gray-400">License</dt>
-							<dd class="font-medium">{{ app.license_type }}</dd>
+							<dd class="font-medium">{{ service.license_type }}</dd>
 						</div>
-						<div>
-							<dt class="text-gray-500 dark:text-gray-400">Open Source</dt>
-							<dd class="font-medium">{{ formatField(app.is_open_source) }}</dd>
-						</div>
-						<div>
-							<dt class="text-gray-500 dark:text-gray-400">Self-Hostable</dt>
-							<dd class="font-medium">{{ formatField(app.self_hostable) }}</dd>
-						</div>
-						<div>
-							<dt class="text-gray-500 dark:text-gray-400">Federated</dt>
-							<dd class="font-medium">{{ formatField(app.federated) }}</dd>
-						</div>
+					<div v-if="service.open_source_clients">
+						<dt class="text-gray-500 dark:text-gray-400">Open Source Clients</dt>
+						<dd class="font-medium capitalize">{{ formatField(service.open_source_clients) }}</dd>
+					</div>
+					<div v-if="service.open_source_server">
+						<dt class="text-gray-500 dark:text-gray-400">Open Source Server</dt>
+						<dd class="font-medium capitalize">{{ formatField(service.open_source_server) }}</dd>
+					</div>
+					<div>
+						<dt class="text-gray-500 dark:text-gray-400">Self-Hostable</dt>
+						<dd class="font-medium">{{ formatField(service.self_hostable) }}</dd>
+					</div>
+					<div>
+						<dt class="text-gray-500 dark:text-gray-400">Federated</dt>
+						<dd class="font-medium">{{ formatField(service.federated) }}</dd>
+					</div>
 					</dl>
 				</div>
 
@@ -475,20 +567,68 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				<div class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4">Organization</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="app.vendor">
+						<div v-if="service.vendor">
 							<dt class="text-gray-500 dark:text-gray-400">Vendor</dt>
-							<dd class="font-medium">{{ app.vendor }}</dd>
+							<dd class="font-medium">{{ service.vendor }}</dd>
 						</div>
-						<div v-if="app.governance_model">
+						<div v-if="service.governance_model">
 							<dt class="text-gray-500 dark:text-gray-400">Governance Model</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.governance_model) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.governance_model) }}</dd>
 						</div>
-						<div v-if="app.primary_business_model">
+						<div v-if="service.primary_business_model">
 							<dt class="text-gray-500 dark:text-gray-400">Business Model</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.primary_business_model) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.primary_business_model) }}</dd>
 						</div>
 					</dl>
 				</div>
+			</div>
+		</div>
+
+		<!-- Change Log Tab Content -->
+		<div v-show="activeTab === 'changelog'">
+			<div v-if="changeLogs && changeLogs.length > 0" class="space-y-4">
+				<div v-for="log in changeLogs" :key="log.id" class="border rounded-lg p-6 dark:border-gray-700">
+					<div class="flex items-start justify-between mb-3">
+						<h3 class="text-xl font-bold">{{ log.title }}</h3>
+						<span class="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap ml-4">
+							{{ formatDate(log.date) }}
+						</span>
+					</div>
+					<div v-if="log.description" class="prose dark:prose-invert max-w-none">
+						<div v-html="log.description"></div>
+					</div>
+				</div>
+			</div>
+			<div v-else class="text-center py-12">
+				<p class="text-gray-500 dark:text-gray-400">No change log entries available for this service.</p>
+			</div>
+		</div>
+
+		<!-- Sources Tab Content -->
+		<div v-show="activeTab === 'sources'">
+			<div v-if="sources && sources.length > 0" class="space-y-4">
+				<div v-for="source in sources" :key="source.id" class="border rounded-lg p-6 dark:border-gray-700">
+					<div class="flex items-start justify-between mb-2">
+						<h3 class="text-lg font-bold">{{ source.title }}</h3>
+						<span v-if="source.type" class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 capitalize whitespace-nowrap ml-4">
+							{{ source.type }}
+						</span>
+					</div>
+					<div v-if="source.url" class="mb-3">
+						<a :href="source.url" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline inline-flex items-center gap-1">
+							{{ source.url }}
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+							</svg>
+						</a>
+					</div>
+					<div v-if="source.description" class="text-gray-700 dark:text-gray-300 text-sm">
+						<div v-html="source.description"></div>
+					</div>
+				</div>
+			</div>
+			<div v-else class="text-center py-12">
+				<p class="text-gray-500 dark:text-gray-400">No sources available for this service.</p>
 			</div>
 		</div>
 	</BlockContainer>

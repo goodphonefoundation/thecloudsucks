@@ -45,7 +45,8 @@ const { data: servicesData } = await useAsyncData('services-showcase-v5', () => 
 				'docs_url',
 				'privacy_policy_url',
 				'icon',
-				'is_open_source',
+				'open_source_clients',
+				'open_source_server',
 				'end_to_end_encryption',
 				'default_tracking',
 				'self_hostable',
@@ -94,7 +95,9 @@ const filteredServices = computed(() => {
 
 	// Advanced filters
 	if (advancedFilters.value.open_source) {
-		filtered = filtered.filter((service: any) => service.is_open_source === true);
+		filtered = filtered.filter((service: any) => 
+			service.open_source_clients === 'yes' || service.open_source_server === 'yes'
+		);
 	}
 	if (advancedFilters.value.e2e_encryption) {
 		filtered = filtered.filter((service: any) => service.end_to_end_encryption === 'yes');
@@ -343,7 +346,7 @@ const resetFilters = () => {
 								</NuxtLink>
 								<div class="flex flex-wrap gap-2 mt-2">
 									<span
-										v-if="service.is_open_source"
+										v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes'"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
 									>
 										Open Source
