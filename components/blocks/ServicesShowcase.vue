@@ -341,13 +341,13 @@ const resetFilters = () => {
 					>
 						<!-- Service Header -->
 						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-							<div v-if="service.brand_logo_light || service.brand_symbol_light" class="flex-shrink-0">
-								<NuxtImg 
-									:src="`/api/proxy/assets/${service.brand_logo_light || service.brand_symbol_light}?width=100&height=100&fit=contain`" 
-									:alt="service.name" 
-									class="w-12 h-12 rounded-lg object-contain" 
-								/>
-							</div>
+						<div v-if="service.brand_logo_light || service.brand_symbol_light" class="flex-shrink-0">
+							<img 
+								:src="`/api/proxy/assets/${service.brand_logo_light || service.brand_symbol_light}`" 
+								:alt="service.name" 
+								class="w-12 h-12 rounded-lg object-contain" 
+							/>
+						</div>
 							<div class="flex-1 min-w-0">
 								<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
 									<h3 class="text-xl font-semibold">{{ service.name }}</h3>
