@@ -31,7 +31,7 @@ const { data: categories } = await useAsyncData('service-categories-v2', () => {
 });
 
 // Fetch all services with categories
-const { data: servicesData } = await useAsyncData('services-showcase-v5', () => {
+const { data: servicesData } = await useAsyncData('services-showcase-v6', () => {
 	return useDirectus(
 		readItems('services', {
 			fields: [
@@ -44,17 +44,21 @@ const { data: servicesData } = await useAsyncData('services-showcase-v5', () => 
 				'repo_url',
 				'docs_url',
 				'privacy_policy_url',
-				'icon',
+				'brand_logo_light',
+				'brand_logo_dark',
+				'brand_symbol_light',
+				'brand_symbol_dark',
 				'open_source_clients',
 				'open_source_server',
 				'end_to_end_encryption',
 				'default_tracking',
 				'self_hostable',
 				'federated',
-				'license_type',
-				'governance_model',
-				'primary_business_model',
-				'data_portability',
+				// Temporarily removed until permissions are fixed:
+				// 'license_type',
+				// 'governance_model',
+				// 'primary_business_model',
+				// 'data_portability',
 				'categories.service_categories_id.id',
 				'categories.service_categories_id.name',
 			],
@@ -337,8 +341,12 @@ const resetFilters = () => {
 					>
 						<!-- Service Header -->
 						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-							<div v-if="service.icon" class="flex-shrink-0">
-								<NuxtImg :src="service.icon" :alt="service.name" class="w-12 h-12 rounded-lg" />
+							<div v-if="service.brand_logo_light || service.brand_symbol_light" class="flex-shrink-0">
+								<NuxtImg 
+									:src="`/api/proxy/assets/${service.brand_logo_light || service.brand_symbol_light}?width=100&height=100&fit=contain`" 
+									:alt="service.name" 
+									class="w-12 h-12 rounded-lg object-contain" 
+								/>
 							</div>
 							<div class="flex-1 min-w-0">
 								<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
@@ -384,7 +392,8 @@ const resetFilters = () => {
 							<!-- Service Description -->
 							<p class="text-gray-600 dark:text-gray-400">{{ service.short_description }}</p>
 
-							<!-- Additional fields in list view -->
+						<!-- Additional fields in list view -->
+							<!-- Temporarily disabled until permissions are fixed
 							<div v-if="viewMode === 'list'" class="mt-4 grid grid-cols-2 gap-4 text-sm">
 								<div v-if="service.license_type">
 									<span class="text-gray-500 dark:text-gray-400">License:</span>
@@ -403,6 +412,7 @@ const resetFilters = () => {
 									<span class="ml-2 font-medium capitalize">{{ service.data_portability }}</span>
 								</div>
 							</div>
+							-->
 
 							<!-- Service Links -->
 							<div class="mt-6 flex flex-wrap gap-3">
