@@ -10,7 +10,7 @@ export interface Service {
 	docs_url?: string | null;
 	privacy_policy_url?: string | null;
 	terms_url?: string | null;
-	icon?: string | null;
+	icon?: string | null; // Brand icon URL (auto-fetched from Brandfetch)
 	service_status?: 'active' | 'deprecated' | 'watch' | 'unknown';
 	license_type?: string | null;
 	license_type_client?: 'MIT' | 'Apache-2.0' | 'GPL-3.0' | 'AGPL-3.0' | 'BSD-3-Clause' | 'MPL-2.0' | 'LGPL-3.0' | 'ISC' | 'EPL-2.0' | 'Proprietary' | 'Mixed' | 'Unknown' | null;
