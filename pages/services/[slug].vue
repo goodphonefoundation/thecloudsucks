@@ -58,6 +58,47 @@ const { data: sources } = await useAsyncData(`service-sources-${slug}`, async ()
 	);
 });
 
+// Fetch alternative services in the same categories
+const { data: alternatives } = await useAsyncData(`service-alternatives-${slug}`, async () => {
+	if (!service.value || !service.value.categories || service.value.categories.length === 0) return [];
+	
+	// Get category IDs
+	const categoryIds = service.value.categories.map((cat: any) => cat.service_categories_id.id);
+	
+	return useDirectus(
+		readItems('services', {
+			fields: [
+				'id',
+				'name',
+				'slug',
+				'short_description',
+				'brand_logo_light',
+				'brand_symbol_light',
+				'score_overall',
+				'end_to_end_encryption',
+				'default_tracking',
+				'self_hostable',
+				'federated',
+				'open_source_clients',
+				'open_source_server',
+				'categories.service_categories_id.id',
+				'categories.service_categories_id.name',
+			],
+			filter: {
+				status: { _eq: 'published' },
+				id: { _neq: service.value.id }, // Exclude current service
+				categories: {
+					service_categories_id: {
+						id: { _in: categoryIds },
+					},
+				},
+			},
+			sort: ['-score_overall', 'name'], // Sort by rating descending, then name
+			limit: 6, // Show up to 6 alternatives
+		}),
+	);
+});
+
 // If service not found, show 404
 if (!service.value) {
 	throw createError({
@@ -317,6 +358,20 @@ const activeTab = ref('overview');
 					Sources
 					<span v-if="sources && sources.length" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700">
 						{{ sources.length }}
+					</span>
+				</button>
+				<button
+					@click="activeTab = 'alternatives'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'alternatives'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Alternatives
+					<span v-if="alternatives && alternatives.length" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700">
+						{{ alternatives.length }}
 					</span>
 				</button>
 			</nav>
@@ -714,6 +769,89 @@ const activeTab = ref('overview');
 			</div>
 			<div v-else class="text-center py-12">
 				<p class="text-gray-500 dark:text-gray-400">No sources available for this service.</p>
+			</div>
+		</div>
+
+		<!-- Alternatives Tab Content -->
+		<div v-show="activeTab === 'alternatives'">
+			<div v-if="alternatives && alternatives.length > 0" class="grid md:grid-cols-2 gap-6">
+				<NuxtLink 
+					v-for="alt in alternatives" 
+					:key="alt.id" 
+					:to="`/services/${alt.slug}`"
+					class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700 hover:border-primary dark:hover:border-primary"
+				>
+					<div class="flex items-start gap-4 mb-4">
+						<div v-if="alt.brand_logo_light || alt.brand_symbol_light" class="flex-shrink-0">
+							<img 
+								:src="`/api/proxy/assets/${alt.brand_logo_light || alt.brand_symbol_light}`" 
+								:alt="alt.name" 
+								class="w-16 h-16 rounded-lg object-contain" 
+							/>
+						</div>
+						<div class="flex-1 min-w-0">
+							<div class="flex items-start justify-between gap-2 mb-2">
+								<h3 class="text-xl font-semibold">{{ alt.name }}</h3>
+								<span v-if="alt.score_overall !== null" :class="[
+									'px-3 py-1 text-xs font-bold rounded-full whitespace-nowrap flex-shrink-0',
+									getScoreInfo(alt.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+									getScoreInfo(alt.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+									getScoreInfo(alt.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+									getScoreInfo(alt.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+									getScoreInfo(alt.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+									getScoreInfo(alt.score_overall).color === 'gray' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+								]">
+									{{ getScoreInfo(alt.score_overall).label }}
+								</span>
+							</div>
+							<div class="flex flex-wrap gap-2">
+								<span
+									v-if="alt.open_source_clients === 'yes' || alt.open_source_server === 'yes'"
+									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+								>
+									Open Source
+								</span>
+								<span
+									v-if="alt.end_to_end_encryption === 'yes'"
+									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+								>
+									E2E Encrypted
+								</span>
+								<span
+									v-if="alt.default_tracking === 'none'"
+									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+								>
+									No Tracking
+								</span>
+								<span
+									v-if="alt.self_hostable"
+									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
+								>
+									Self-Hostable
+								</span>
+								<span
+									v-if="alt.federated"
+									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200"
+								>
+									Federated
+								</span>
+							</div>
+						</div>
+					</div>
+					<p class="text-gray-600 dark:text-gray-400 text-sm">{{ alt.short_description }}</p>
+					<div v-if="alt.categories && alt.categories.length" class="mt-4 flex flex-wrap gap-2">
+						<span
+							v-for="cat in alt.categories.slice(0, 3)"
+							:key="cat.id"
+							class="px-2 py-1 text-xs font-medium rounded bg-gray-100 dark:bg-gray-800"
+						>
+							{{ cat.service_categories_id.name }}
+						</span>
+					</div>
+				</NuxtLink>
+			</div>
+			<div v-else class="text-center py-12">
+				<p class="text-gray-500 dark:text-gray-400">No alternative services found in the same categories.</p>
 			</div>
 		</div>
 	</BlockContainer>
