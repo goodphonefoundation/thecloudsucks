@@ -533,6 +533,18 @@ const activeTab = ref('overview');
 							<dt class="text-gray-500 dark:text-gray-400">Data Portability</dt>
 							<dd class="font-medium capitalize">{{ formatField(service.data_portability) }}</dd>
 						</div>
+						<div v-if="service.logging_policy">
+							<dt class="text-gray-500 dark:text-gray-400">Logging Policy</dt>
+							<dd class="font-medium capitalize">{{ formatField(service.logging_policy) }}</dd>
+						</div>
+						<div v-if="service.audit_claimed !== null">
+							<dt class="text-gray-500 dark:text-gray-400">Security Audits</dt>
+							<dd class="font-medium">{{ formatField(service.audit_claimed) }}</dd>
+						</div>
+						<div v-if="service.warrant_canary !== null">
+							<dt class="text-gray-500 dark:text-gray-400">Warrant Canary</dt>
+							<dd class="font-medium">{{ formatField(service.warrant_canary) }}</dd>
+						</div>
 					</dl>
 				</div>
 
@@ -548,9 +560,17 @@ const activeTab = ref('overview');
 						<dt class="text-gray-500 dark:text-gray-400">Open Source Clients</dt>
 						<dd class="font-medium capitalize">{{ formatField(service.open_source_clients) }}</dd>
 					</div>
+					<div v-if="service.license_type_client">
+						<dt class="text-gray-500 dark:text-gray-400">Client License</dt>
+						<dd class="font-medium">{{ service.license_type_client }}</dd>
+					</div>
 					<div v-if="service.open_source_server">
 						<dt class="text-gray-500 dark:text-gray-400">Open Source Server</dt>
 						<dd class="font-medium capitalize">{{ formatField(service.open_source_server) }}</dd>
+					</div>
+					<div v-if="service.license_type_server">
+						<dt class="text-gray-500 dark:text-gray-400">Server License</dt>
+						<dd class="font-medium">{{ service.license_type_server }}</dd>
 					</div>
 					<div>
 						<dt class="text-gray-500 dark:text-gray-400">Self-Hostable</dt>
@@ -571,6 +591,10 @@ const activeTab = ref('overview');
 							<dt class="text-gray-500 dark:text-gray-400">Vendor</dt>
 							<dd class="font-medium">{{ service.vendor }}</dd>
 						</div>
+						<div v-if="service.ownership">
+							<dt class="text-gray-500 dark:text-gray-400">Ownership</dt>
+							<dd class="font-medium">{{ service.ownership }}</dd>
+						</div>
 						<div v-if="service.governance_model">
 							<dt class="text-gray-500 dark:text-gray-400">Governance Model</dt>
 							<dd class="font-medium capitalize">{{ formatField(service.governance_model) }}</dd>
@@ -578,6 +602,67 @@ const activeTab = ref('overview');
 						<div v-if="service.primary_business_model">
 							<dt class="text-gray-500 dark:text-gray-400">Business Model</dt>
 							<dd class="font-medium capitalize">{{ formatField(service.primary_business_model) }}</dd>
+						</div>
+						<div v-if="service.jurisdiction">
+							<dt class="text-gray-500 dark:text-gray-400">Jurisdiction</dt>
+							<dd class="font-medium">{{ service.jurisdiction }}</dd>
+						</div>
+					</dl>
+				</div>
+
+				<!-- Platform & Availability -->
+				<div v-if="service.platforms_supported || service.apps_download_url || service.simultaneous_devices" class="border rounded-lg p-6 dark:border-gray-700">
+					<h3 class="text-lg font-semibold mb-4">Platform & Availability</h3>
+					<dl class="space-y-3 text-sm">
+						<div v-if="service.platforms_supported && service.platforms_supported.length">
+							<dt class="text-gray-500 dark:text-gray-400 mb-2">Platforms</dt>
+							<dd class="flex flex-wrap gap-2">
+								<span v-for="platform in service.platforms_supported" :key="platform" class="px-2 py-1 text-xs font-medium rounded bg-gray-100 dark:bg-gray-800 capitalize">
+									{{ platform }}
+								</span>
+							</dd>
+						</div>
+						<div v-if="service.simultaneous_devices">
+							<dt class="text-gray-500 dark:text-gray-400">Simultaneous Devices</dt>
+							<dd class="font-medium">{{ service.simultaneous_devices }}</dd>
+						</div>
+						<div v-if="service.audience_level">
+							<dt class="text-gray-500 dark:text-gray-400">Audience Level</dt>
+							<dd class="font-medium capitalize">{{ formatField(service.audience_level) }}</dd>
+						</div>
+						<div v-if="service.apps_download_url">
+							<dt class="text-gray-500 dark:text-gray-400 mb-2">Download</dt>
+							<dd>
+								<a :href="service.apps_download_url" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline inline-flex items-center gap-1">
+									Get Apps
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+									</svg>
+								</a>
+							</dd>
+						</div>
+					</dl>
+				</div>
+
+				<!-- Features & Protocols -->
+				<div v-if="service.features || service.protocols" class="border rounded-lg p-6 dark:border-gray-700">
+					<h3 class="text-lg font-semibold mb-4">Features & Protocols</h3>
+					<dl class="space-y-3 text-sm">
+						<div v-if="service.protocols && service.protocols.length">
+							<dt class="text-gray-500 dark:text-gray-400 mb-2">Protocols</dt>
+							<dd class="flex flex-wrap gap-2">
+								<span v-for="protocol in service.protocols" :key="protocol" class="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+									{{ protocol }}
+								</span>
+							</dd>
+						</div>
+						<div v-if="service.features && service.features.length">
+							<dt class="text-gray-500 dark:text-gray-400 mb-2">Features</dt>
+							<dd class="flex flex-wrap gap-2">
+								<span v-for="feature in service.features" :key="feature" class="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 capitalize">
+									{{ feature.replace(/_/g, ' ') }}
+								</span>
+							</dd>
 						</div>
 					</dl>
 				</div>

@@ -12,8 +12,9 @@ export interface Service {
 	terms_url?: string | null;
 	icon?: string | null;
 	service_status?: 'active' | 'deprecated' | 'watch' | 'unknown';
-	is_open_source?: boolean;
 	license_type?: string | null;
+	license_type_client?: 'MIT' | 'Apache-2.0' | 'GPL-3.0' | 'AGPL-3.0' | 'BSD-3-Clause' | 'MPL-2.0' | 'LGPL-3.0' | 'ISC' | 'EPL-2.0' | 'Proprietary' | 'Mixed' | 'Unknown' | null;
+	license_type_server?: 'MIT' | 'Apache-2.0' | 'GPL-3.0' | 'AGPL-3.0' | 'BSD-3-Clause' | 'MPL-2.0' | 'LGPL-3.0' | 'ISC' | 'EPL-2.0' | 'Proprietary' | 'Mixed' | 'Unknown' | null;
 	vendor?: string | null;
 	primary_business_model?:
 		| 'subscription'
