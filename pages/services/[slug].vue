@@ -61,11 +61,13 @@ const getBadgeColor = (type: string, value: any) => {
 	if (type === 'default_tracking' && value === 'none') return 'purple';
 	if (type === 'self_hostable' && value) return 'orange';
 	if (type === 'federated' && value) return 'pink';
+
 	if (type === 'service_status') {
 		if (value === 'active') return 'green';
 		if (value === 'deprecated') return 'red';
 		if (value === 'watch') return 'yellow';
 	}
+
 	return 'gray';
 };
 
@@ -84,24 +86,28 @@ const getScoreInfo = (score: number | null | undefined) => {
 // Helper to format tier label
 const getTierLabel = (tier: string | null | undefined) => {
 	if (!tier) return null;
+
 	const labels: Record<string, string> = {
 		A_Sovereign: 'A - Sovereign',
 		B_Aligned: 'B - Aligned',
 		C_Transitional: 'C - Transitional',
 		D_Extractive: 'D - Extractive',
 	};
+
 	return labels[tier] || tier;
 };
 
 // Helper to format recommendation label
 const getRecommendationLabel = (rec: string | null | undefined) => {
 	if (!rec) return null;
+
 	const labels: Record<string, string> = {
 		recommended: 'Recommended',
 		situational: 'Situational',
 		avoid: 'Avoid',
 		compare_only: 'Compare Only',
 	};
+
 	return labels[rec] || rec;
 };
 </script>
@@ -110,13 +116,10 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 	<BlockContainer v-if="service">
 		<!-- Header Section -->
 		<div class="mb-8">
-			<NuxtLink
-				to="/services"
-				class="inline-flex items-center text-sm text-primary hover:underline mb-4"
-			>
+			<NuxtLink to="/services" class="inline-flex items-center text-sm text-primary hover:underline mb-4">
 				← Back to Services
 			</NuxtLink>
-			
+
 			<div class="flex items-start gap-6">
 				<div v-if="service.icon" class="flex-shrink-0">
 					<NuxtImg :src="service.icon" :alt="service.name" class="w-24 h-24 rounded-xl" />
@@ -126,7 +129,7 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 					<p class="text-xl text-gray-600 dark:text-gray-400 mb-4">
 						{{ service.short_description }}
 					</p>
-					
+
 					<!-- Main Badges -->
 					<div class="flex flex-wrap gap-2">
 						<span
@@ -163,9 +166,11 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 							v-if="service.service_status"
 							:class="[
 								'inline-flex items-center px-3 py-1 text-sm font-medium rounded-full capitalize',
-								service.service_status === 'active' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+								service.service_status === 'active' &&
+									'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
 								service.service_status === 'deprecated' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-								service.service_status === 'watch' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+								service.service_status === 'watch' &&
+									'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
 								service.service_status === 'unknown' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
 							]"
 						>
@@ -260,23 +265,38 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				</div>
 
 				<!-- Assessment Summary -->
-				<div v-if="service.assessment_tier || service.assessment_recommended_use || service.assessment_summary" class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+				<div
+					v-if="service.assessment_tier || service.assessment_recommended_use || service.assessment_summary"
+					class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6"
+				>
 					<div class="flex flex-wrap items-center gap-3 mb-4">
 						<h2 class="text-2xl font-bold">GoodPhone Assessment</h2>
-						<span v-if="service.assessment_tier" class="px-3 py-1 text-sm font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+						<span
+							v-if="service.assessment_tier"
+							class="px-3 py-1 text-sm font-bold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+						>
 							{{ getTierLabel(service.assessment_tier) }}
 						</span>
-						<span v-if="service.assessment_recommended_use" :class="[
-							'px-3 py-1 text-sm font-bold rounded-full',
-							service.assessment_recommended_use === 'recommended' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-							service.assessment_recommended_use === 'situational' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-							service.assessment_recommended_use === 'avoid' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-							service.assessment_recommended_use === 'compare_only' && 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
-						]">
+						<span
+							v-if="service.assessment_recommended_use"
+							:class="[
+								'px-3 py-1 text-sm font-bold rounded-full',
+								service.assessment_recommended_use === 'recommended' &&
+									'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+								service.assessment_recommended_use === 'situational' &&
+									'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+								service.assessment_recommended_use === 'avoid' &&
+									'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+								service.assessment_recommended_use === 'compare_only' &&
+									'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200',
+							]"
+						>
 							{{ getRecommendationLabel(service.assessment_recommended_use) }}
 						</span>
 					</div>
-					<p v-if="service.assessment_summary" class="text-gray-700 dark:text-gray-300">{{ service.assessment_summary }}</p>
+					<p v-if="service.assessment_summary" class="text-gray-700 dark:text-gray-300">
+						{{ service.assessment_summary }}
+					</p>
 				</div>
 
 				<!-- Assessment Content Sections -->
@@ -318,26 +338,36 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 						<div v-if="app.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
 							<div class="flex items-center justify-between mb-2">
 								<span class="text-lg font-semibold">Overall Rating</span>
-								<span :class="[
-									'px-3 py-1 text-sm font-bold rounded-full',
-									getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-									getScoreInfo(app.score_overall).color === 'green' && 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-									getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-									getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-									getScoreInfo(app.score_overall).color === 'red' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-								]">
+								<span
+									:class="[
+										'px-3 py-1 text-sm font-bold rounded-full',
+										getScoreInfo(app.score_overall).color === 'blue' &&
+											'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+										getScoreInfo(app.score_overall).color === 'green' &&
+											'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+										getScoreInfo(app.score_overall).color === 'yellow' &&
+											'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+										getScoreInfo(app.score_overall).color === 'orange' &&
+											'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+										getScoreInfo(app.score_overall).color === 'red' &&
+											'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+									]"
+								>
 									{{ getScoreInfo(app.score_overall).label }}
 								</span>
 							</div>
 							<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-								<div :class="[
-									'h-3 rounded-full transition-all',
-									getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-600',
-									getScoreInfo(app.score_overall).color === 'green' && 'bg-green-600',
-									getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-600',
-									getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-600',
-									getScoreInfo(app.score_overall).color === 'red' && 'bg-red-600',
-								]" :style="{ width: getScoreInfo(app.score_overall).percentage + '%' }"></div>
+								<div
+									:class="[
+										'h-3 rounded-full transition-all',
+										getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(app.score_overall).color === 'green' && 'bg-green-600',
+										getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(app.score_overall).color === 'red' && 'bg-red-600',
+									]"
+									:style="{ width: getScoreInfo(app.score_overall).percentage + '%' }"
+								></div>
 							</div>
 						</div>
 
@@ -346,68 +376,88 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 							<div v-if="app.score_privacy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Privacy</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_privacy).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(app.score_privacy).label }}
+									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div :class="[
-										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_privacy).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_privacy).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_privacy).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_privacy).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_privacy).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_privacy).percentage + '%' }"></div>
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(app.score_privacy).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(app.score_privacy).color === 'green' && 'bg-green-600',
+											getScoreInfo(app.score_privacy).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(app.score_privacy).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(app.score_privacy).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(app.score_privacy).percentage + '%' }"
+									></div>
 								</div>
 							</div>
 
 							<div v-if="app.score_autonomy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">User Autonomy</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_autonomy).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(app.score_autonomy).label }}
+									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div :class="[
-										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_autonomy).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_autonomy).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_autonomy).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_autonomy).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_autonomy).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_autonomy).percentage + '%' }"></div>
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(app.score_autonomy).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(app.score_autonomy).color === 'green' && 'bg-green-600',
+											getScoreInfo(app.score_autonomy).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(app.score_autonomy).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(app.score_autonomy).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(app.score_autonomy).percentage + '%' }"
+									></div>
 								</div>
 							</div>
 
 							<div v-if="app.score_transparency !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Transparency</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_transparency).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(app.score_transparency).label }}
+									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div :class="[
-										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_transparency).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_transparency).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_transparency).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_transparency).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_transparency).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_transparency).percentage + '%' }"></div>
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(app.score_transparency).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(app.score_transparency).color === 'green' && 'bg-green-600',
+											getScoreInfo(app.score_transparency).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(app.score_transparency).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(app.score_transparency).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(app.score_transparency).percentage + '%' }"
+									></div>
 								</div>
 							</div>
 
 							<div v-if="app.score_governance !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Governance</span>
-									<span class="text-xs text-gray-600 dark:text-gray-400">{{ getScoreInfo(app.score_governance).label }}</span>
+									<span class="text-xs text-gray-600 dark:text-gray-400">
+										{{ getScoreInfo(app.score_governance).label }}
+									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-									<div :class="[
-										'h-2 rounded-full transition-all',
-										getScoreInfo(app.score_governance).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_governance).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_governance).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_governance).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_governance).color === 'red' && 'bg-red-600',
-									]" :style="{ width: getScoreInfo(app.score_governance).percentage + '%' }"></div>
+									<div
+										:class="[
+											'h-2 rounded-full transition-all',
+											getScoreInfo(app.score_governance).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(app.score_governance).color === 'green' && 'bg-green-600',
+											getScoreInfo(app.score_governance).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(app.score_governance).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(app.score_governance).color === 'red' && 'bg-red-600',
+										]"
+										:style="{ width: getScoreInfo(app.score_governance).percentage + '%' }"
+									></div>
 								</div>
 							</div>
 						</div>
@@ -416,11 +466,21 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 						<div class="pt-4 border-t dark:border-gray-700">
 							<p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Rating Scale:</p>
 							<div class="flex flex-wrap gap-2 text-xs">
-								<span class="px-2 py-1 rounded bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">0 - Hostile</span>
-								<span class="px-2 py-1 rounded bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">1 - Weak</span>
-								<span class="px-2 py-1 rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">2 - Mixed</span>
-								<span class="px-2 py-1 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">3 - Strong</span>
-								<span class="px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">4 - Best-in-Class</span>
+								<span class="px-2 py-1 rounded bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+									0 - Hostile
+								</span>
+								<span class="px-2 py-1 rounded bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+									1 - Weak
+								</span>
+								<span class="px-2 py-1 rounded bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+									2 - Mixed
+								</span>
+								<span class="px-2 py-1 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+									3 - Strong
+								</span>
+								<span class="px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+									4 - Best-in-Class
+								</span>
 							</div>
 						</div>
 					</div>

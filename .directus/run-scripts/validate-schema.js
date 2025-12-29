@@ -6,6 +6,7 @@ function validateSchemaNames(schema, fieldsArray) {
 		if (item.name && !fieldNames.includes(item.name)) {
 			invalidNames.push(item.name);
 		}
+
 		if (item.children && Array.isArray(item.children)) {
 			item.children.forEach((child) => {
 				if (child.name && !fieldNames.includes(child.name)) {

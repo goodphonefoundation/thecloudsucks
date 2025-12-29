@@ -125,7 +125,6 @@ const columns = [
 	},
 ];
 
-
 // Watch the search query and update the URL
 watch([debouncedSearch, status, page], ([search, status, page]) => {
 	router.push({
@@ -158,8 +157,7 @@ function clearFilters() {
 					title: 'Billing',
 				},
 			]"
-		>
-		</PortalPageHeader>
+		></PortalPageHeader>
 		<UCard class="mt-6">
 			<template #header>
 				<!-- Filters -->

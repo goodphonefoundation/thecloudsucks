@@ -8,5 +8,4 @@ export default defineNuxtConfig({
 		'/auth/**': { ssr: false },
 		'/portal/**': { ssr: false, index: false },
 	},
-
 });

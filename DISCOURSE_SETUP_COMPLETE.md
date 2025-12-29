@@ -12,6 +12,7 @@ The Discourse posts carousel is now live on your home page!
 ## 🚀 Quick Start
 
 1. **Start your dev server:**
+
    ```powershell
    pnpm dev
    ```
@@ -20,9 +21,9 @@ The Discourse posts carousel is now live on your home page!
    - Home page: http://localhost:3000/
    - Demo page: http://localhost:3000/community
 
-3. **Initial Data Load:**
-   The flow will run automatically, but you can test it manually:
-   - Go to [Directus Flow Settings](https://directus.thecloud.sucks/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c)
+3. **Initial Data Load:** The flow will run automatically, but you can test it manually:
+   - Go to
+     [Directus Flow Settings](https://directus.thecloud.sucks/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c)
    - The flow is scheduled and will populate data automatically
 
 ## 📍 Where It Appears
@@ -47,6 +48,7 @@ See `DISCOURSE_INTEGRATION.md` for complete details, troubleshooting, and custom
 ## 🛠️ Files Created/Modified
 
 **Created:**
+
 - `.env` - Added Discourse API credentials
 - `components/blocks/DiscoursePosts.vue` - Carousel component
 - `pages/community.vue` - Demo page
@@ -54,6 +56,7 @@ See `DISCOURSE_INTEGRATION.md` for complete details, troubleshooting, and custom
 - Directus Field - `globals.discourse_posts`
 
 **Modified:**
+
 - `components/PageBuilder.vue` - Added Discourse posts to home page
 
 ---

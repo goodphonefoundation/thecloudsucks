@@ -149,9 +149,7 @@ const resetFilters = () => {
 								@click="selectedCategory = null"
 								:class="[
 									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-									selectedCategory === null
-										? 'bg-primary text-white'
-										: 'hover:bg-gray-100 dark:hover:bg-gray-800',
+									selectedCategory === null ? 'bg-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-800',
 								]"
 							>
 								All Services
@@ -176,10 +174,7 @@ const resetFilters = () => {
 					<div class="border rounded-lg p-4 dark:border-gray-700">
 						<div class="flex items-center justify-between mb-3">
 							<h3 class="font-semibold">Advanced Filters</h3>
-							<span
-								v-if="activeFiltersCount > 0"
-								class="text-xs bg-primary text-white px-2 py-1 rounded-full"
-							>
+							<span v-if="activeFiltersCount > 0" class="text-xs bg-primary text-white px-2 py-1 rounded-full">
 								{{ activeFiltersCount }}
 							</span>
 						</div>
@@ -243,7 +238,12 @@ const resetFilters = () => {
 					<div class="relative">
 						<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 							<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
 							</svg>
 						</div>
 						<input
@@ -393,7 +393,9 @@ const resetFilters = () => {
 								</div>
 								<div v-if="service.primary_business_model">
 									<span class="text-gray-500 dark:text-gray-400">Business Model:</span>
-									<span class="ml-2 font-medium capitalize">{{ service.primary_business_model.replace('_', ' ') }}</span>
+									<span class="ml-2 font-medium capitalize">
+										{{ service.primary_business_model.replace('_', ' ') }}
+									</span>
 								</div>
 								<div v-if="service.data_portability">
 									<span class="text-gray-500 dark:text-gray-400">Data Portability:</span>
