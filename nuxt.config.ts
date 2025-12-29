@@ -110,5 +110,11 @@ export default defineNuxtConfig({
 		transpile: ['v-perfect-signature'],
 	},
 
+	vite: {
+		server: {
+			allowedHosts: ['host.docker.internal', 'localhost', 'directus.thecloud.sucks', 'directus-dev.thecloud.sucks'],
+		},
+	},
+
 	compatibilityDate: '2024-07-28',
 });
