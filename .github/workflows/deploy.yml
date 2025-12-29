@@ -1,0 +1,46 @@
+name: Build and Deploy
+
+on:
+    push:
+        branches: [ dev, main ]
+
+jobs:
+    build-deploy:
+        runs-on: ubuntu-latest
+
+        environment:
+            name: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Deploy via Webhook
+                env:
+                    WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}
+                    DIRECTUS_URL: ${{ vars.DIRECTUS_URL }}
+                    PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+                    SERVER_TOKEN: ${{ secrets.SERVER_TOKEN }}
+                run: |
+                    HTTP_CODE=$(curl -X POST \
+                      -H "Content-Type: application/json" \
+                      -w "%{http_code}" \
+                      -s -o /dev/null \
+                      -d "{
+                        \"repository\": \"${{ github.repository }}\",
+                        \"branch\": \"${{ github.ref_name }}\",
+                        \"commit\": \"${{ github.sha }}\",
+                        \"actor\": \"${{ github.actor }}\",
+                        \"directus\": \"${DIRECTUS_URL}\",
+                        \"public\": \"${PUBLIC_URL}\",
+                        \"token\": \"${SERVER_TOKEN}\",
+                        \"environment\": \"${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}\"
+                      }" \
+                      "${WEBHOOK_URL}")
+
+                    if [ $HTTP_CODE -ge 200 ] && [ $HTTP_CODE -lt 300 ]; then
+                      echo "✅ Deployment webhook triggered successfully (HTTP $HTTP_CODE)"
+                    else
+                      echo "❌ Deployment webhook failed (HTTP $HTTP_CODE)"
+                      exit 1
+                    fi
