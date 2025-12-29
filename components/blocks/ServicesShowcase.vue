@@ -16,6 +16,15 @@ const advancedFilters = ref({
 	self_hostable: false,
 	federated: false,
 });
+const platformFilters = ref({
+	android: false,
+	ios: false,
+	windows: false,
+	mac: false,
+	linux: false,
+	web: false,
+});
+const isPlatformsExpanded = ref(true);
 
 // Fetch categories
 const { data: categories } = await useAsyncData('service-categories-v2', () => {
@@ -54,6 +63,7 @@ const { data: servicesData } = await useAsyncData('services-showcase-v6', () => 
 				'default_tracking',
 				'self_hostable',
 				'federated',
+				'platforms_supported',
 				// Temporarily removed until permissions are fixed:
 				// 'license_type',
 				// 'governance_model',
@@ -116,12 +126,32 @@ const filteredServices = computed(() => {
 		filtered = filtered.filter((service: any) => service.federated === true);
 	}
 
+	// Platform filters
+	const selectedPlatforms = Object.entries(platformFilters.value)
+		.filter(([_, isSelected]) => isSelected)
+		.map(([platform]) => platform);
+	
+	if (selectedPlatforms.length > 0) {
+		filtered = filtered.filter((service: any) => {
+			if (!service.platforms_supported || service.platforms_supported.length === 0) return false;
+			// Service must support at least one of the selected platforms
+			return selectedPlatforms.some(platform => 
+				service.platforms_supported.includes(platform)
+			);
+		});
+	}
+
 	return filtered;
 });
 
 // Count active filters
 const activeFiltersCount = computed(() => {
 	return Object.values(advancedFilters.value).filter(Boolean).length;
+});
+
+// Count active platform filters
+const activePlatformFiltersCount = computed(() => {
+	return Object.values(platformFilters.value).filter(Boolean).length;
 });
 
 // Reset all filters
@@ -134,6 +164,14 @@ const resetFilters = () => {
 		no_tracking: false,
 		self_hostable: false,
 		federated: false,
+	};
+	platformFilters.value = {
+		android: false,
+		ios: false,
+		windows: false,
+		mac: false,
+		linux: false,
+		web: false,
 	};
 };
 </script>
@@ -232,14 +270,93 @@ const resetFilters = () => {
 								<span class="text-sm">Federated</span>
 							</label>
 						</div>
-						<button
-							v-if="activeFiltersCount > 0 || selectedCategory !== null || searchQuery"
-							@click="resetFilters"
-							class="mt-4 w-full text-sm text-primary hover:underline"
-						>
-							Reset all filters
-						</button>
 					</div>
+
+					<!-- Platform Filters -->
+					<div class="border rounded-lg p-4 dark:border-gray-700">
+						<button
+							@click="isPlatformsExpanded = !isPlatformsExpanded"
+							class="flex items-center justify-between w-full mb-3 cursor-pointer"
+						>
+							<h3 class="font-semibold">Platforms</h3>
+							<div class="flex items-center gap-2">
+								<span
+									v-if="activePlatformFiltersCount > 0"
+									class="text-xs bg-primary text-white px-2 py-1 rounded-full"
+								>
+									{{ activePlatformFiltersCount }}
+								</span>
+								<svg
+									class="w-5 h-5 transition-transform"
+									:class="{ 'rotate-180': isPlatformsExpanded }"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+								</svg>
+							</div>
+						</button>
+						<div v-show="isPlatformsExpanded" class="space-y-3">
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="platformFilters.android"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">Android</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="platformFilters.ios"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">iOS</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="platformFilters.windows"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">Windows</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="platformFilters.mac"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">macOS</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="platformFilters.linux"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">Linux</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="platformFilters.web"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">Web</span>
+							</label>
+						</div>
+					</div>
+
+					<!-- Reset Button -->
+					<button
+						v-if="activeFiltersCount > 0 || activePlatformFiltersCount > 0 || selectedCategory !== null || searchQuery"
+						@click="resetFilters"
+						class="w-full text-sm text-primary hover:underline"
+					>
+						Reset all filters
+					</button>
 				</div>
 			</aside>
 
@@ -337,22 +454,56 @@ const resetFilters = () => {
 						}"
 						:delay="100 + 50 * idx"
 						class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700"
-						:class="{ 'flex gap-6': viewMode === 'list' }"
+						:class="{ 'flex gap-6 items-start': viewMode === 'list' }"
 					>
-						<!-- Service Header -->
-						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-						<div v-if="service.brand_logo_light || service.brand_symbol_light" class="flex-shrink-0">
+						<!-- Logo (only in list view as separate column) -->
+						<NuxtLink
+							v-if="viewMode === 'list' && (service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark)"
+							:to="`/services/${service.slug}`"
+							class="flex-shrink-0 flex items-center justify-center w-20 h-20 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+						>
+							<!-- Light theme: use dark symbol or fallback to dark brand logo -->
 							<img 
-								:src="`/api/proxy/assets/${service.brand_logo_light || service.brand_symbol_light}`" 
+								:src="`/api/proxy/assets/${service.brand_symbol_dark || service.brand_symbol_light || service.brand_logo_dark || service.brand_logo_light}`" 
 								:alt="service.name" 
-								class="w-12 h-12 rounded-lg object-contain" 
+								class="w-full h-full object-contain dark:hidden" 
 							/>
-						</div>
-							<div class="flex-1 min-w-0">
-								<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
-									<h3 class="text-xl font-semibold">{{ service.name }}</h3>
-								</NuxtLink>
-								<div class="flex flex-wrap gap-2 mt-2">
+							<!-- Dark theme: use light symbol or fallback to light brand logo -->
+							<img 
+								:src="`/api/proxy/assets/${service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark}`" 
+								:alt="service.name" 
+								class="w-full h-full object-contain hidden dark:block" 
+							/>
+						</NuxtLink>
+						
+						<!-- Service Header (grid view or list view name+badges section) -->
+						<div>
+							<!-- Logo Container (grid view only) -->
+							<NuxtLink
+								v-if="viewMode === 'grid' && (service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark)"
+								:to="`/services/${service.slug}`"
+								class="flex items-center justify-center w-20 h-20 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors mb-4"
+							>
+								<!-- Light theme: use dark symbol or fallback to dark brand logo -->
+								<img 
+									:src="`/api/proxy/assets/${service.brand_symbol_dark || service.brand_symbol_light || service.brand_logo_dark || service.brand_logo_light}`" 
+									:alt="service.name" 
+									class="w-full h-full object-contain dark:hidden" 
+								/>
+								<!-- Dark theme: use light symbol or fallback to light brand logo -->
+								<img 
+									:src="`/api/proxy/assets/${service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark}`" 
+									:alt="service.name" 
+									class="w-full h-full object-contain hidden dark:block" 
+								/>
+							</NuxtLink>
+							
+							<!-- Service Info -->
+							<div :class="{ 'flex-1 min-w-0': viewMode === 'list' }">
+							<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
+								<h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ service.name }}</h3>
+							</NuxtLink>
+								<div v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes' || service.end_to_end_encryption === 'yes' || service.default_tracking === 'none' || service.self_hostable || service.federated" class="flex flex-wrap gap-2" :class="{ 'mb-3': viewMode === 'list' }">
 									<span
 										v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes'"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
@@ -384,11 +535,14 @@ const resetFilters = () => {
 										Federated
 									</span>
 								</div>
+								
+								<!-- Service Description (in list view, shown here) -->
+								<p v-if="viewMode === 'list'" class="text-gray-600 dark:text-gray-400">{{ service.short_description }}</p>
 							</div>
 						</div>
 
-						<!-- Service Details (shown in list view) -->
-						<div class="flex-1" :class="{ 'mt-4': viewMode === 'grid' }">
+						<!-- Service Details (shown in grid view) -->
+						<div v-if="viewMode === 'grid'" class="flex-1 mt-4">
 							<!-- Service Description -->
 							<p class="text-gray-600 dark:text-gray-400">{{ service.short_description }}</p>
 

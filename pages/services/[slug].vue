@@ -8,17 +8,27 @@ const slug = route.params.slug as string;
 const { data: service } = await useAsyncData(`service-${slug}`, () => {
 	return useDirectus(
 		readItems('services', {
-			fields: [
-				'*',
-				'categories.service_categories_id.id',
-				'categories.service_categories_id.name',
-				'categories.service_categories_id.slug',
-				'score_privacy',
-				'score_autonomy',
-				'score_transparency',
-				'score_governance',
-				'score_overall',
-			],
+		fields: [
+			'*',
+			'categories.service_categories_id.id',
+			'categories.service_categories_id.name',
+			'categories.service_categories_id.slug',
+			'vendor.id',
+			'vendor.name',
+			'vendor.country',
+			'vendor.ownership_type',
+			'vendor.website_url',
+			'vendor.vendor_information',
+			'score_privacy',
+			'score_autonomy',
+			'score_transparency',
+			'score_governance',
+			'score_overall',
+			'brand_logo_light',
+			'brand_logo_dark',
+			'brand_symbol_light',
+			'brand_symbol_dark',
+		],
 			filter: {
 				slug: { _eq: slug },
 				status: { _eq: 'published' },
@@ -73,7 +83,9 @@ const { data: alternatives } = await useAsyncData(`service-alternatives-${slug}`
 				'slug',
 				'short_description',
 				'brand_logo_light',
+				'brand_logo_dark',
 				'brand_symbol_light',
+				'brand_symbol_dark',
 				'score_overall',
 				'end_to_end_encryption',
 				'default_tracking',
@@ -188,6 +200,10 @@ const formatDate = (date: string | null | undefined) => {
 
 // Tab state
 const activeTab = ref('overview');
+
+// Markdown rendering
+const { toHtml } = useMarkdown();
+const vendorInfoHtml = computed(() => toHtml(service.value?.vendor?.vendor_information));
 </script>
 
 <template>
@@ -196,21 +212,33 @@ const activeTab = ref('overview');
 		<div class="mb-8">
 			<NuxtLink
 				to="/services"
-				class="inline-flex items-center text-sm text-primary hover:underline mb-4"
+				class="inline-flex items-center text-sm text-primary hover:underline mb-6"
 			>
 				← Back to Services
 			</NuxtLink>
 			
-			<div class="flex items-start gap-6">
-				<div v-if="service.icon" class="flex-shrink-0">
-					<NuxtImg :src="service.icon" :alt="service.name" class="w-24 h-24 rounded-xl" />
-				</div>
-				<div class="flex-1">
-					<h1 class="text-4xl font-bold mb-2">{{ service.name }}</h1>
-					<p class="text-xl text-gray-600 dark:text-gray-400 mb-4">
-						{{ service.short_description }}
-					</p>
-					
+			<!-- Logo Container (full width, rectangular) -->
+			<div v-if="service.brand_logo_light || service.brand_logo_dark" class="mb-6 flex items-center justify-center w-full h-32 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-6">
+				<!-- Light theme: use dark brand logo -->
+				<img 
+					:src="`/api/proxy/assets/${service.brand_logo_dark || service.brand_logo_light}`" 
+					:alt="service.name" 
+					class="h-full max-w-md object-contain dark:hidden" 
+				/>
+				<!-- Dark theme: use light brand logo -->
+				<img 
+					:src="`/api/proxy/assets/${service.brand_logo_light || service.brand_logo_dark}`" 
+					:alt="service.name" 
+					class="h-full max-w-md object-contain hidden dark:block" 
+				/>
+			</div>
+			
+			<div>
+				<h1 class="text-4xl font-bold mb-3 text-gray-900 dark:text-white">{{ service.name }}</h1>
+				<p class="text-xl text-gray-600 dark:text-gray-400 mb-4">
+					{{ service.short_description }}
+				</p>
+				
 				<!-- Main Badges -->
 				<div class="flex flex-wrap gap-2">
 					<span
@@ -257,7 +285,6 @@ const activeTab = ref('overview');
 						</span>
 					</div>
 				</div>
-			</div>
 		</div>
 
 		<!-- Action Buttons -->
@@ -383,19 +410,19 @@ const activeTab = ref('overview');
 			<div class="md:col-span-2 space-y-6">
 				<!-- Long Description -->
 				<div v-if="service.long_description" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">About</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">About</h2>
 					<div v-html="service.long_description"></div>
 				</div>
 
 				<!-- Categories -->
 				<div v-if="service.categories && service.categories.length > 0">
-					<h2 class="text-2xl font-bold mb-4">Categories</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Categories</h2>
 					<div class="flex flex-wrap gap-2">
 						<NuxtLink
 							v-for="cat in service.categories"
 							:key="cat.id"
 							:to="`/services?category=${cat.service_categories_id.slug}`"
-							class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
+							class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-100 transition-colors"
 						>
 							{{ cat.service_categories_id.name }}
 						</NuxtLink>
@@ -424,38 +451,38 @@ const activeTab = ref('overview');
 
 				<!-- Assessment Content Sections -->
 				<div v-if="service.assessment_what_it_does" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">What It Does</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">What It Does</h2>
 					<div v-html="service.assessment_what_it_does"></div>
 				</div>
 
 				<div v-if="service.assessment_why_people_use_it" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">Why People Use It</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Why People Use It</h2>
 					<div v-html="service.assessment_why_people_use_it"></div>
 				</div>
 
 				<div v-if="service.assessment_tradeoffs" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">Tradeoffs</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Tradeoffs</h2>
 					<div v-html="service.assessment_tradeoffs"></div>
 				</div>
 
 				<div v-if="service.assessment_data_and_control" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">Data & Control</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Data & Control</h2>
 					<div v-html="service.assessment_data_and_control"></div>
 				</div>
 
 				<div v-if="service.assessment_governance_and_business" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">Governance & Business</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Governance & Business</h2>
 					<div v-html="service.assessment_governance_and_business"></div>
 				</div>
 
 				<div v-if="service.assessment_goodphone_assessment" class="prose dark:prose-invert max-w-none">
-					<h2 class="text-2xl font-bold mb-4">GoodPhone's Assessment</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">GoodPhone's Assessment</h2>
 					<div v-html="service.assessment_goodphone_assessment"></div>
 				</div>
 
 				<!-- Assessment Scores -->
 				<div v-if="service.score_overall !== null || service.score_privacy !== null">
-					<h2 class="text-2xl font-bold mb-4">Assessment Scores</h2>
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Assessment Scores</h2>
 					<div class="border rounded-lg p-6 dark:border-gray-700 space-y-4">
 						<!-- Overall Score -->
 						<div v-if="service.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
@@ -574,7 +601,7 @@ const activeTab = ref('overview');
 			<div class="space-y-6">
 				<!-- Privacy & Security -->
 				<div class="border rounded-lg p-6 dark:border-gray-700">
-					<h3 class="text-lg font-semibold mb-4">Privacy & Security</h3>
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Privacy & Security</h3>
 					<dl class="space-y-3 text-sm">
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">End-to-End Encryption</dt>
@@ -605,7 +632,7 @@ const activeTab = ref('overview');
 
 				<!-- Technical Info -->
 				<div class="border rounded-lg p-6 dark:border-gray-700">
-					<h3 class="text-lg font-semibold mb-4">Technical Information</h3>
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Technical Information</h3>
 					<dl class="space-y-3 text-sm">
 						<div v-if="service.license_type">
 							<dt class="text-gray-500 dark:text-gray-400">License</dt>
@@ -638,14 +665,44 @@ const activeTab = ref('overview');
 					</dl>
 				</div>
 
+				<!-- Vendor Info -->
+				<div v-if="service.vendor" class="border rounded-lg p-6 dark:border-gray-700">
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Vendor</h3>
+					<dl class="space-y-3 text-sm">
+						<div v-if="service.vendor.name">
+							<dt class="text-gray-500 dark:text-gray-400">Name</dt>
+							<dd class="font-medium">{{ service.vendor.name }}</dd>
+						</div>
+						<div v-if="service.vendor.country">
+							<dt class="text-gray-500 dark:text-gray-400">Country</dt>
+							<dd class="font-medium">{{ service.vendor.country }}</dd>
+						</div>
+						<div v-if="service.vendor.ownership_type">
+							<dt class="text-gray-500 dark:text-gray-400">Ownership Type</dt>
+							<dd class="font-medium capitalize">{{ formatField(service.vendor.ownership_type) }}</dd>
+						</div>
+						<div v-if="service.vendor.website_url">
+							<dt class="text-gray-500 dark:text-gray-400 mb-2">Website</dt>
+							<dd>
+								<a :href="service.vendor.website_url" target="_blank" rel="noopener noreferrer" class="text-sm text-primary hover:underline inline-flex items-center gap-1">
+									{{ service.vendor.website_url }}
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+									</svg>
+								</a>
+							</dd>
+						</div>
+					</dl>
+					<div v-if="vendorInfoHtml" class="mt-4 pt-4 border-t dark:border-gray-700">
+						<h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">About the Vendor</h4>
+						<div class="prose prose-sm dark:prose-invert max-w-none text-gray-600 dark:text-gray-400" v-html="vendorInfoHtml"></div>
+					</div>
+				</div>
+
 				<!-- Organization Info -->
 				<div class="border rounded-lg p-6 dark:border-gray-700">
-					<h3 class="text-lg font-semibold mb-4">Organization</h3>
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Organization</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="service.vendor">
-							<dt class="text-gray-500 dark:text-gray-400">Vendor</dt>
-							<dd class="font-medium">{{ service.vendor }}</dd>
-						</div>
 						<div v-if="service.ownership">
 							<dt class="text-gray-500 dark:text-gray-400">Ownership</dt>
 							<dd class="font-medium">{{ service.ownership }}</dd>
@@ -667,7 +724,7 @@ const activeTab = ref('overview');
 
 				<!-- Platform & Availability -->
 				<div v-if="service.platforms_supported || service.apps_download_url || service.simultaneous_devices" class="border rounded-lg p-6 dark:border-gray-700">
-					<h3 class="text-lg font-semibold mb-4">Platform & Availability</h3>
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Platform & Availability</h3>
 					<dl class="space-y-3 text-sm">
 						<div v-if="service.platforms_supported && service.platforms_supported.length">
 							<dt class="text-gray-500 dark:text-gray-400 mb-2">Platforms</dt>
@@ -701,7 +758,7 @@ const activeTab = ref('overview');
 
 				<!-- Features & Protocols -->
 				<div v-if="service.features || service.protocols" class="border rounded-lg p-6 dark:border-gray-700">
-					<h3 class="text-lg font-semibold mb-4">Features & Protocols</h3>
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Features & Protocols</h3>
 					<dl class="space-y-3 text-sm">
 						<div v-if="service.protocols && service.protocols.length">
 							<dt class="text-gray-500 dark:text-gray-400 mb-2">Protocols</dt>
@@ -782,11 +839,18 @@ const activeTab = ref('overview');
 					class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700 hover:border-primary dark:hover:border-primary"
 				>
 					<div class="flex items-start gap-4 mb-4">
-						<div v-if="alt.brand_logo_light || alt.brand_symbol_light" class="flex-shrink-0">
+					<div v-if="alt.brand_symbol_light || alt.brand_symbol_dark || alt.brand_logo_light || alt.brand_logo_dark" class="flex-shrink-0 flex items-center justify-center w-16 h-16 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-lg p-2">
+							<!-- Light theme: use dark symbol or fallback to dark brand logo -->
 							<img 
-								:src="`/api/proxy/assets/${alt.brand_logo_light || alt.brand_symbol_light}`" 
+								:src="`/api/proxy/assets/${alt.brand_symbol_dark || alt.brand_symbol_light || alt.brand_logo_dark || alt.brand_logo_light}`" 
 								:alt="alt.name" 
-								class="w-16 h-16 rounded-lg object-contain" 
+								class="w-full h-full object-contain dark:hidden" 
+							/>
+							<!-- Dark theme: use light symbol or fallback to light brand logo -->
+							<img 
+								:src="`/api/proxy/assets/${alt.brand_symbol_light || alt.brand_symbol_dark || alt.brand_logo_light || alt.brand_logo_dark}`" 
+								:alt="alt.name" 
+								class="w-full h-full object-contain hidden dark:block" 
 							/>
 						</div>
 						<div class="flex-1 min-w-0">
