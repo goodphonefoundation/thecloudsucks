@@ -186,18 +186,18 @@ const resetFilters = () => {
 			<!-- Left Sidebar: Filters -->
 			<aside class="lg:w-64 flex-shrink-0">
 				<div class="sticky top-4 space-y-6">
-					<!-- Category Filter -->
-					<div class="border rounded-lg p-4 dark:border-gray-700">
-						<h3 class="font-semibold mb-3">Categories</h3>
+				<!-- Category Filter -->
+				<div class="border rounded-lg p-4 dark:border-gray-700">
+					<h3 class="font-semibold mb-3 text-gray-900 dark:text-white">Categories</h3>
 						<div class="space-y-2">
 							<button
 								@click="selectedCategory = null"
-								:class="[
-									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-									selectedCategory === null
-										? 'bg-primary text-white'
-										: 'hover:bg-gray-100 dark:hover:bg-gray-800',
-								]"
+						:class="[
+							'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
+							selectedCategory === null
+								? 'bg-primary text-white'
+								: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300',
+						]"
 							>
 								All Services
 							</button>
@@ -205,22 +205,22 @@ const resetFilters = () => {
 								v-for="category in categories"
 								:key="category.id"
 								@click="selectedCategory = category.id"
-								:class="[
-									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-									selectedCategory === category.id
-										? 'bg-primary text-white'
-										: 'hover:bg-gray-100 dark:hover:bg-gray-800',
-								]"
+							:class="[
+								'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
+								selectedCategory === category.id
+									? 'bg-primary text-white'
+									: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300',
+							]"
 							>
 								{{ category.name }}
 							</button>
 						</div>
 					</div>
 
-					<!-- Advanced Filters -->
-					<div class="border rounded-lg p-4 dark:border-gray-700">
-						<div class="flex items-center justify-between mb-3">
-							<h3 class="font-semibold">Advanced Filters</h3>
+				<!-- Advanced Filters -->
+				<div class="border rounded-lg p-4 dark:border-gray-700">
+					<div class="flex items-center justify-between mb-3">
+						<h3 class="font-semibold text-gray-900 dark:text-white">Advanced Filters</h3>
 							<span
 								v-if="activeFiltersCount > 0"
 								class="text-xs bg-primary text-white px-2 py-1 rounded-full"
@@ -235,50 +235,50 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">Open Source</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="advancedFilters.e2e_encryption"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">E2E Encryption</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="advancedFilters.no_tracking"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">No Tracking</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="advancedFilters.self_hostable"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Self-Hostable</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="advancedFilters.federated"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Federated</span>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Open Source</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="advancedFilters.e2e_encryption"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">E2E Encryption</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="advancedFilters.no_tracking"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">No Tracking</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="advancedFilters.self_hostable"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Self-Hostable</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="advancedFilters.federated"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Federated</span>
 							</label>
 						</div>
 					</div>
 
 					<!-- Platform Filters -->
 					<div class="border rounded-lg p-4 dark:border-gray-700">
-						<button
-							@click="isPlatformsExpanded = !isPlatformsExpanded"
-							class="flex items-center justify-between w-full mb-3 cursor-pointer"
-						>
-							<h3 class="font-semibold">Platforms</h3>
+					<button
+						@click="isPlatformsExpanded = !isPlatformsExpanded"
+						class="flex items-center justify-between w-full mb-3 cursor-pointer"
+					>
+						<h3 class="font-semibold text-gray-900 dark:text-white">Platforms</h3>
 							<div class="flex items-center gap-2">
 								<span
 									v-if="activePlatformFiltersCount > 0"
@@ -304,47 +304,47 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">Android</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="platformFilters.ios"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">iOS</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="platformFilters.windows"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Windows</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="platformFilters.mac"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">macOS</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="platformFilters.linux"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Linux</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="platformFilters.web"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Web</span>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Android</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="platformFilters.ios"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">iOS</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="platformFilters.windows"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Windows</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="platformFilters.mac"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">macOS</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="platformFilters.linux"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Linux</span>
+						</label>
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								v-model="platformFilters.web"
+								type="checkbox"
+								class="rounded border-gray-300 text-primary focus:ring-primary"
+							/>
+							<span class="text-sm text-gray-700 dark:text-gray-300">Web</span>
 							</label>
 						</div>
 					</div>
