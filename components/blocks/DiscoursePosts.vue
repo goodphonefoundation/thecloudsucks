@@ -29,7 +29,19 @@ const { data: postsData } = await useAsyncData(
 	() => {
 		return useDirectus(
 			readItems('discourse_posts', {
-				fields: ['id', 'discourse_id', 'title', 'slug', 'excerpt', 'url', 'created_at', 'views', 'reply_count', 'like_count', 'image_url'],
+				fields: [
+					'id',
+					'discourse_id',
+					'title',
+					'slug',
+					'excerpt',
+					'url',
+					'created_at',
+					'views',
+					'reply_count',
+					'like_count',
+					'image_url',
+				],
 				filter: {
 					status: {
 						_eq: 'published',

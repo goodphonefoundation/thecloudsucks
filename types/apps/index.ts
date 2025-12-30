@@ -71,7 +71,16 @@ export interface Source {
 	publication_date?: string | null;
 	author?: string | null;
 	publisher?: string | null;
-	source_type?: 'article' | 'paper' | 'blog' | 'documentation' | 'whitepaper' | 'video' | 'social' | 'official' | 'other';
+	source_type?:
+		| 'article'
+		| 'paper'
+		| 'blog'
+		| 'documentation'
+		| 'whitepaper'
+		| 'video'
+		| 'social'
+		| 'official'
+		| 'other';
 	summary?: string | null;
 	access_date?: string | null;
 }

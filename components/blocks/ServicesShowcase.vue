@@ -16,15 +16,6 @@ const advancedFilters = ref({
 	self_hostable: false,
 	federated: false,
 });
-const platformFilters = ref({
-	android: false,
-	ios: false,
-	windows: false,
-	mac: false,
-	linux: false,
-	web: false,
-});
-const isPlatformsExpanded = ref(true);
 
 // Fetch categories
 const { data: categories } = await useAsyncData('service-categories-v2', () => {
@@ -40,7 +31,7 @@ const { data: categories } = await useAsyncData('service-categories-v2', () => {
 });
 
 // Fetch all services with categories
-const { data: servicesData } = await useAsyncData('services-showcase-v6', () => {
+const { data: servicesData } = await useAsyncData('services-showcase-v5', () => {
 	return useDirectus(
 		readItems('services', {
 			fields: [
@@ -53,22 +44,16 @@ const { data: servicesData } = await useAsyncData('services-showcase-v6', () => 
 				'repo_url',
 				'docs_url',
 				'privacy_policy_url',
-				'brand_logo_light',
-				'brand_logo_dark',
-				'brand_symbol_light',
-				'brand_symbol_dark',
-				'open_source_clients',
-				'open_source_server',
+				'icon',
+				'is_open_source',
 				'end_to_end_encryption',
 				'default_tracking',
 				'self_hostable',
 				'federated',
-				'platforms_supported',
-				// Temporarily removed until permissions are fixed:
-				// 'license_type',
-				// 'governance_model',
-				// 'primary_business_model',
-				// 'data_portability',
+				'license_type',
+				'governance_model',
+				'primary_business_model',
+				'data_portability',
 				'categories.service_categories_id.id',
 				'categories.service_categories_id.name',
 			],
@@ -109,9 +94,7 @@ const filteredServices = computed(() => {
 
 	// Advanced filters
 	if (advancedFilters.value.open_source) {
-		filtered = filtered.filter((service: any) => 
-			service.open_source_clients === 'yes' || service.open_source_server === 'yes'
-		);
+		filtered = filtered.filter((service: any) => service.is_open_source === true);
 	}
 	if (advancedFilters.value.e2e_encryption) {
 		filtered = filtered.filter((service: any) => service.end_to_end_encryption === 'yes');
@@ -126,32 +109,12 @@ const filteredServices = computed(() => {
 		filtered = filtered.filter((service: any) => service.federated === true);
 	}
 
-	// Platform filters
-	const selectedPlatforms = Object.entries(platformFilters.value)
-		.filter(([_, isSelected]) => isSelected)
-		.map(([platform]) => platform);
-	
-	if (selectedPlatforms.length > 0) {
-		filtered = filtered.filter((service: any) => {
-			if (!service.platforms_supported || service.platforms_supported.length === 0) return false;
-			// Service must support at least one of the selected platforms
-			return selectedPlatforms.some(platform => 
-				service.platforms_supported.includes(platform)
-			);
-		});
-	}
-
 	return filtered;
 });
 
 // Count active filters
 const activeFiltersCount = computed(() => {
 	return Object.values(advancedFilters.value).filter(Boolean).length;
-});
-
-// Count active platform filters
-const activePlatformFiltersCount = computed(() => {
-	return Object.values(platformFilters.value).filter(Boolean).length;
 });
 
 // Reset all filters
@@ -164,14 +127,6 @@ const resetFilters = () => {
 		no_tracking: false,
 		self_hostable: false,
 		federated: false,
-	};
-	platformFilters.value = {
-		android: false,
-		ios: false,
-		windows: false,
-		mac: false,
-		linux: false,
-		web: false,
 	};
 };
 </script>
@@ -186,18 +141,16 @@ const resetFilters = () => {
 			<!-- Left Sidebar: Filters -->
 			<aside class="lg:w-64 flex-shrink-0">
 				<div class="sticky top-4 space-y-6">
-				<!-- Category Filter -->
-				<div class="border rounded-lg p-4 dark:border-gray-700">
-					<h3 class="font-semibold mb-3 text-gray-900 dark:text-white">Categories</h3>
+					<!-- Category Filter -->
+					<div class="border rounded-lg p-4 dark:border-gray-700">
+						<h3 class="font-semibold mb-3">Categories</h3>
 						<div class="space-y-2">
 							<button
 								@click="selectedCategory = null"
-						:class="[
-							'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-							selectedCategory === null
-								? 'bg-primary text-white'
-								: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300',
-						]"
+								:class="[
+									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
+									selectedCategory === null ? 'bg-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-800',
+								]"
 							>
 								All Services
 							</button>
@@ -205,26 +158,23 @@ const resetFilters = () => {
 								v-for="category in categories"
 								:key="category.id"
 								@click="selectedCategory = category.id"
-							:class="[
-								'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-								selectedCategory === category.id
-									? 'bg-primary text-white'
-									: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300',
-							]"
+								:class="[
+									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
+									selectedCategory === category.id
+										? 'bg-primary text-white'
+										: 'hover:bg-gray-100 dark:hover:bg-gray-800',
+								]"
 							>
 								{{ category.name }}
 							</button>
 						</div>
 					</div>
 
-				<!-- Advanced Filters -->
-				<div class="border rounded-lg p-4 dark:border-gray-700">
-					<div class="flex items-center justify-between mb-3">
-						<h3 class="font-semibold text-gray-900 dark:text-white">Advanced Filters</h3>
-							<span
-								v-if="activeFiltersCount > 0"
-								class="text-xs bg-primary text-white px-2 py-1 rounded-full"
-							>
+					<!-- Advanced Filters -->
+					<div class="border rounded-lg p-4 dark:border-gray-700">
+						<div class="flex items-center justify-between mb-3">
+							<h3 class="font-semibold">Advanced Filters</h3>
+							<span v-if="activeFiltersCount > 0" class="text-xs bg-primary text-white px-2 py-1 rounded-full">
 								{{ activeFiltersCount }}
 							</span>
 						</div>
@@ -235,128 +185,49 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Open Source</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="advancedFilters.e2e_encryption"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">E2E Encryption</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="advancedFilters.no_tracking"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">No Tracking</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="advancedFilters.self_hostable"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Self-Hostable</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="advancedFilters.federated"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Federated</span>
+								<span class="text-sm">Open Source</span>
 							</label>
-						</div>
-					</div>
-
-					<!-- Platform Filters -->
-					<div class="border rounded-lg p-4 dark:border-gray-700">
-					<button
-						@click="isPlatformsExpanded = !isPlatformsExpanded"
-						class="flex items-center justify-between w-full mb-3 cursor-pointer"
-					>
-						<h3 class="font-semibold text-gray-900 dark:text-white">Platforms</h3>
-							<div class="flex items-center gap-2">
-								<span
-									v-if="activePlatformFiltersCount > 0"
-									class="text-xs bg-primary text-white px-2 py-1 rounded-full"
-								>
-									{{ activePlatformFiltersCount }}
-								</span>
-								<svg
-									class="w-5 h-5 transition-transform"
-									:class="{ 'rotate-180': isPlatformsExpanded }"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-								</svg>
-							</div>
-						</button>
-						<div v-show="isPlatformsExpanded" class="space-y-3">
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
-									v-model="platformFilters.android"
+									v-model="advancedFilters.e2e_encryption"
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Android</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="platformFilters.ios"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">iOS</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="platformFilters.windows"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Windows</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="platformFilters.mac"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">macOS</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="platformFilters.linux"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Linux</span>
-						</label>
-						<label class="flex items-center gap-2 cursor-pointer">
-							<input
-								v-model="platformFilters.web"
-								type="checkbox"
-								class="rounded border-gray-300 text-primary focus:ring-primary"
-							/>
-							<span class="text-sm text-gray-700 dark:text-gray-300">Web</span>
+								<span class="text-sm">E2E Encryption</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="advancedFilters.no_tracking"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">No Tracking</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="advancedFilters.self_hostable"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">Self-Hostable</span>
+							</label>
+							<label class="flex items-center gap-2 cursor-pointer">
+								<input
+									v-model="advancedFilters.federated"
+									type="checkbox"
+									class="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<span class="text-sm">Federated</span>
 							</label>
 						</div>
+						<button
+							v-if="activeFiltersCount > 0 || selectedCategory !== null || searchQuery"
+							@click="resetFilters"
+							class="mt-4 w-full text-sm text-primary hover:underline"
+						>
+							Reset all filters
+						</button>
 					</div>
-
-					<!-- Reset Button -->
-					<button
-						v-if="activeFiltersCount > 0 || activePlatformFiltersCount > 0 || selectedCategory !== null || searchQuery"
-						@click="resetFilters"
-						class="w-full text-sm text-primary hover:underline"
-					>
-						Reset all filters
-					</button>
 				</div>
 			</aside>
 
@@ -367,7 +238,12 @@ const resetFilters = () => {
 					<div class="relative">
 						<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 							<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
 							</svg>
 						</div>
 						<input
@@ -454,58 +330,20 @@ const resetFilters = () => {
 						}"
 						:delay="100 + 50 * idx"
 						class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700"
-						:class="{ 'flex gap-6 items-start': viewMode === 'list' }"
+						:class="{ 'flex gap-6': viewMode === 'list' }"
 					>
-						<!-- Logo (only in list view as separate column) -->
-						<NuxtLink
-							v-if="viewMode === 'list' && (service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark)"
-							:to="`/services/${service.slug}`"
-							class="flex-shrink-0 flex items-center justify-center w-20 h-20 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-						>
-							<!-- Light theme: use dark symbol or fallback to dark brand logo -->
-							<img 
-								:src="`/api/proxy/assets/${service.brand_symbol_dark || service.brand_symbol_light || service.brand_logo_dark || service.brand_logo_light}`" 
-								:alt="service.name" 
-								class="w-full h-full object-contain dark:hidden" 
-							/>
-							<!-- Dark theme: use light symbol or fallback to light brand logo -->
-							<img 
-								:src="`/api/proxy/assets/${service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark}`" 
-								:alt="service.name" 
-								class="w-full h-full object-contain hidden dark:block" 
-							/>
-						</NuxtLink>
-						
-						<!-- Service Header (grid view or list view name+badges section) -->
-						<div>
-							<!-- Logo Container (grid view only) -->
-							<NuxtLink
-								v-if="viewMode === 'grid' && (service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark)"
-								:to="`/services/${service.slug}`"
-								class="flex items-center justify-center w-20 h-20 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors mb-4"
-							>
-								<!-- Light theme: use dark symbol or fallback to dark brand logo -->
-								<img 
-									:src="`/api/proxy/assets/${service.brand_symbol_dark || service.brand_symbol_light || service.brand_logo_dark || service.brand_logo_light}`" 
-									:alt="service.name" 
-									class="w-full h-full object-contain dark:hidden" 
-								/>
-								<!-- Dark theme: use light symbol or fallback to light brand logo -->
-								<img 
-									:src="`/api/proxy/assets/${service.brand_symbol_light || service.brand_symbol_dark || service.brand_logo_light || service.brand_logo_dark}`" 
-									:alt="service.name" 
-									class="w-full h-full object-contain hidden dark:block" 
-								/>
-							</NuxtLink>
-							
-							<!-- Service Info -->
-							<div :class="{ 'flex-1 min-w-0': viewMode === 'list' }">
-							<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
-								<h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ service.name }}</h3>
-							</NuxtLink>
-								<div v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes' || service.end_to_end_encryption === 'yes' || service.default_tracking === 'none' || service.self_hostable || service.federated" class="flex flex-wrap gap-2" :class="{ 'mb-3': viewMode === 'list' }">
+						<!-- Service Header -->
+						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
+							<div v-if="service.icon" class="flex-shrink-0">
+								<NuxtImg :src="service.icon" :alt="service.name" class="w-12 h-12 rounded-lg" />
+							</div>
+							<div class="flex-1 min-w-0">
+								<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
+									<h3 class="text-xl font-semibold">{{ service.name }}</h3>
+								</NuxtLink>
+								<div class="flex flex-wrap gap-2 mt-2">
 									<span
-										v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes'"
+										v-if="service.is_open_source"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
 									>
 										Open Source
@@ -535,19 +373,15 @@ const resetFilters = () => {
 										Federated
 									</span>
 								</div>
-								
-								<!-- Service Description (in list view, shown here) -->
-								<p v-if="viewMode === 'list'" class="text-gray-600 dark:text-gray-400">{{ service.short_description }}</p>
 							</div>
 						</div>
 
-						<!-- Service Details (shown in grid view) -->
-						<div v-if="viewMode === 'grid'" class="flex-1 mt-4">
+						<!-- Service Details (shown in list view) -->
+						<div class="flex-1" :class="{ 'mt-4': viewMode === 'grid' }">
 							<!-- Service Description -->
 							<p class="text-gray-600 dark:text-gray-400">{{ service.short_description }}</p>
 
-						<!-- Additional fields in list view -->
-							<!-- Temporarily disabled until permissions are fixed
+							<!-- Additional fields in list view -->
 							<div v-if="viewMode === 'list'" class="mt-4 grid grid-cols-2 gap-4 text-sm">
 								<div v-if="service.license_type">
 									<span class="text-gray-500 dark:text-gray-400">License:</span>
@@ -559,14 +393,15 @@ const resetFilters = () => {
 								</div>
 								<div v-if="service.primary_business_model">
 									<span class="text-gray-500 dark:text-gray-400">Business Model:</span>
-									<span class="ml-2 font-medium capitalize">{{ service.primary_business_model.replace('_', ' ') }}</span>
+									<span class="ml-2 font-medium capitalize">
+										{{ service.primary_business_model.replace('_', ' ') }}
+									</span>
 								</div>
 								<div v-if="service.data_portability">
 									<span class="text-gray-500 dark:text-gray-400">Data Portability:</span>
 									<span class="ml-2 font-medium capitalize">{{ service.data_portability }}</span>
 								</div>
 							</div>
-							-->
 
 							<!-- Service Links -->
 							<div class="mt-6 flex flex-wrap gap-3">

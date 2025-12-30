@@ -38,19 +38,19 @@ const { data: page } = await useAsyncData(
 							'collection',
 							'hide_block',
 							{
-							item: {
-								block_hero: [
-									'id',
-									'title',
-									'slug',
-									'headline',
-									'content',
-									'image',
-									'image_position',
-									{ button_group: ['*', { buttons: ['*', { page: ['permalink'], post: ['slug'] }] }] },
-								],
-								block_faqs: ['id', 'title', 'slug', 'faqs', 'headline', 'alignment'],
-								block_richtext: ['id', 'title', 'slug', 'headline', 'content', 'alignment'],
+								item: {
+									block_hero: [
+										'id',
+										'title',
+										'slug',
+										'headline',
+										'content',
+										'image',
+										'image_position',
+										{ button_group: ['*', { buttons: ['*', { page: ['permalink'], post: ['slug'] }] }] },
+									],
+									block_faqs: ['id', 'title', 'slug', 'faqs', 'headline', 'alignment'],
+									block_richtext: ['id', 'title', 'slug', 'headline', 'content', 'alignment'],
 									block_testimonials: [
 										'id',
 										'title',
@@ -72,12 +72,12 @@ const { data: page } = await useAsyncData(
 										},
 									],
 									block_quote: ['id', 'title', 'subtitle', 'content'],
-						block_cta: [
-							'id',
-							'title',
-							'slug',
-							'headline',
-							'content',
+									block_cta: [
+										'id',
+										'title',
+										'slug',
+										'headline',
+										'content',
 										{
 											button_group: [
 												'*',
@@ -136,11 +136,11 @@ const { data: page } = await useAsyncData(
 											],
 										},
 									],
-						block_columns: [
-							'id',
-							'title',
-							'slug',
-							'headline',
+									block_columns: [
+										'id',
+										'title',
+										'slug',
+										'headline',
 										{
 											rows: [
 												'title',
@@ -164,49 +164,33 @@ const { data: page } = await useAsyncData(
 									block_html: ['*'],
 									block_video: ['*'],
 									block_cardgroup: ['*'],
-						block_services_showcase: [
-							'id',
-							'headline',
-							'content',
-							'display_style',
-						],
-						block_latest_services: [
-							'id',
-							'headline',
-							'content',
-							'limit',
-						],
-						block_hardware_showcase: [
-							'id',
-							'headline',
-							'content',
-						],
-						block_youtube_carousel: [
-							'id',
-							'title',
-							'slug',
-							'headline',
-							'max_videos',
-							{
-								videos: [
-									'id',
-									'sort',
-									{
-										youtube_videos_id: [
-											'id',
-											'video_id',
-											'title',
-											'description',
-											'thumbnail_url',
-											'duration',
-											'view_count',
-											'status',
-										],
-									},
-								],
-							},
-						],
-						},
+									block_services_showcase: ['id', 'headline', 'content', 'display_style'],
+									block_youtube_carousel: [
+										'id',
+										'title',
+										'slug',
+										'headline',
+										'max_videos',
+										{
+											videos: [
+												'id',
+												'sort',
+												{
+													youtube_videos_id: [
+														'id',
+														'video_id',
+														'title',
+														'description',
+														'thumbnail_url',
+														'duration',
+														'view_count',
+														'status',
+													],
+												},
+											],
+										},
+									],
+								},
 							},
 						],
 					},

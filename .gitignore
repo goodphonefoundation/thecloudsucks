@@ -13,3 +13,6 @@ dist
 .directus/data
 .directus/uploads
 directus
+.idea
+node-compile-cache
+.pnpm-store

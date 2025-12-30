@@ -15,5 +15,6 @@ module.exports = function (data) {
 	if (!domain) {
 		throw new Error('Unable to properly determine the domain for this website');
 	}
+
 	return domain;
 };

@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend
+    command: tail -f /dev/null #run container for troubleshooting
+    # command: /bin/bash -c "pnpm i && pnpm dev" #run dev server
+    # command: /bin/bash -c "pnpm i && pnpm build && node .output/server/index.mjs" #run production
+    #    depends_on:
+    #      directus:
+    #        condition: service_healthy
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: 'development'
+      DIRECTUS_URL: 'https://directus.thecloud.sucks'
+      DIRECTUS_SERVER_TOKEN: 'VwRnoJwPaMWj4bzX87uGD0c8Yq4LaYGp'
+      NUXT_PUBLIC_SITE_URL: 'http://host.docker.internal:3000'
+    extra_hosts:
+      - host.docker.internal:${HOST_IP}
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    networks:
+      - directus_network
+
+volumes:
+  postgres:
+  redis:
+  extensions:
+
+networks:
+  directus_network:
+    driver: bridge
