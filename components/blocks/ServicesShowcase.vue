@@ -44,16 +44,17 @@ const { data: servicesData } = await useAsyncData('services-showcase-v5', () => 
 				'repo_url',
 				'docs_url',
 				'privacy_policy_url',
-				'icon',
-				'is_open_source',
+				'brand_logo_light',
+				'brand_logo_dark',
+				'brand_symbol_light',
+				'brand_symbol_dark',
+				'open_source_clients',
+				'open_source_server',
 				'end_to_end_encryption',
 				'default_tracking',
 				'self_hostable',
 				'federated',
-				'license_type',
-				'governance_model',
-				'primary_business_model',
-				'data_portability',
+				'platforms_supported',
 				'categories.service_categories_id.id',
 				'categories.service_categories_id.name',
 			],
@@ -94,7 +95,9 @@ const filteredServices = computed(() => {
 
 	// Advanced filters
 	if (advancedFilters.value.open_source) {
-		filtered = filtered.filter((service: any) => service.is_open_source === true);
+		filtered = filtered.filter((service: any) => 
+			service.open_source_clients === 'yes' || service.open_source_server === 'yes'
+		);
 	}
 	if (advancedFilters.value.e2e_encryption) {
 		filtered = filtered.filter((service: any) => service.end_to_end_encryption === 'yes');
@@ -334,8 +337,12 @@ const resetFilters = () => {
 					>
 						<!-- Service Header -->
 						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-							<div v-if="service.icon" class="flex-shrink-0">
-								<NuxtImg :src="service.icon" :alt="service.name" class="w-12 h-12 rounded-lg" />
+							<div v-if="service.brand_logo_light || service.brand_symbol_light" class="flex-shrink-0">
+								<NuxtImg 
+									:src="service.brand_logo_light || service.brand_symbol_light" 
+									:alt="service.name" 
+									class="w-12 h-12 rounded-lg" 
+								/>
 							</div>
 							<div class="flex-1 min-w-0">
 								<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
@@ -343,7 +350,7 @@ const resetFilters = () => {
 								</NuxtLink>
 								<div class="flex flex-wrap gap-2 mt-2">
 									<span
-										v-if="service.is_open_source"
+										v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes'"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
 									>
 										Open Source
