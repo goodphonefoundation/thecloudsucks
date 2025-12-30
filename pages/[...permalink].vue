@@ -170,6 +170,17 @@ const { data: page } = await useAsyncData(
 							'content',
 							'display_style',
 						],
+						block_latest_services: [
+							'id',
+							'headline',
+							'content',
+							'limit',
+						],
+						block_hardware_showcase: [
+							'id',
+							'headline',
+							'content',
+						],
 						block_youtube_carousel: [
 							'id',
 							'title',

@@ -13,6 +13,7 @@ import type {
 	BlockTeam,
 	BlockTestimonial,
 	BlockVideo,
+	BlockLatestServices,
 } from './blocks';
 import type {
 	Globals,
@@ -92,6 +93,7 @@ export interface Schema {
 	block_team: BlockTeam[];
 	block_testimonial: BlockTestimonial[];
 	block_video: BlockVideo[];
+	block_latest_services: BlockLatestServices[];
 
 	// OS
 	contacts: Contact[];

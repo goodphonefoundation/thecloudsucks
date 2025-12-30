@@ -3,6 +3,9 @@ import type { Page, OsProposal, PageBlock, BlockType } from '~/types';
 
 const componentMap: Record<BlockType, any> = {
 	block_services_showcase: resolveComponent('BlocksServicesShowcase'),
+	block_hardware_showcase: resolveComponent('BlocksHardwareShowcase'),
+	block_os_showcase: resolveComponent('BlocksOsShowcase'),
+	block_latest_services: resolveComponent('BlocksLatestServices'),
 	block_hero: resolveComponent('BlocksHero'),
 	block_faqs: resolveComponent('BlocksFaqs'),
 	block_richtext: resolveComponent('BlocksRichText'),

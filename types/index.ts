@@ -5,4 +5,6 @@ export type * from './meta';
 export type * from './system';
 export type * from './help';
 export type * from './os';
+export type * from './hardware';
 export type * from './schema';
+export type * from './operating-systems';

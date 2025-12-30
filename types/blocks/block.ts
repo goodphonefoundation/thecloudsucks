@@ -14,9 +14,15 @@ import type { BlockTestimonial } from './block-testimonial';
 import type { BlockVideo } from './block-video';
 import type { BlockDivider } from './block-divider';
 import type { BlockServicesShowcase } from './block-services-showcase';
+import type { BlockHardwareShowcase } from './block-hardware-showcase';
+import type { BlockOsShowcase } from './block-os-showcase';
+import type { BlockLatestServices } from './block-latest-services';
 
 export type BlockType =
 	| 'block_services_showcase'
+	| 'block_hardware_showcase'
+	| 'block_os_showcase'
+	| 'block_latest_services'
 	| 'block_columns'
 	| 'block_cta'
 	| 'block_faqs'
@@ -35,6 +41,9 @@ export type BlockType =
 
 export type Block =
 	| BlockServicesShowcase
+	| BlockHardwareShowcase
+	| BlockOsShowcase
+	| BlockLatestServices
 	| BlockColumn
 	| BlockCta
 	| BlockFaq
