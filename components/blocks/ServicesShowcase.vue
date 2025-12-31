@@ -340,9 +340,16 @@ const resetFilters = () => {
 							<div class="flex items-start gap-4">
 								<div v-if="service.brand_symbol_light || service.brand_symbol_dark" class="flex-shrink-0">
 									<NuxtImg 
-										:src="service.brand_symbol_light || service.brand_symbol_dark" 
+										v-if="service.brand_symbol_light"
+										:src="service.brand_symbol_light" 
 										:alt="service.name" 
-										class="w-12 h-12 rounded-lg" 
+										class="w-12 h-12 rounded-lg dark:hidden" 
+									/>
+									<NuxtImg 
+										v-if="service.brand_symbol_dark"
+										:src="service.brand_symbol_dark" 
+										:alt="service.name" 
+										class="w-12 h-12 rounded-lg hidden dark:block" 
 									/>
 								</div>
 								<div class="flex-1 min-w-0">
