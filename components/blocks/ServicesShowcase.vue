@@ -347,7 +347,7 @@ const resetFilters = () => {
 								</div>
 								<div class="flex-1 min-w-0">
 									<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
-										<h3 class="text-xl font-semibold">{{ service.name }}</h3>
+										<h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ service.name }}</h3>
 									</NuxtLink>
 									<div class="flex flex-wrap gap-2 mt-2">
 									<span
