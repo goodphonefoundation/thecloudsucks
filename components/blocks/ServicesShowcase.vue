@@ -152,7 +152,7 @@ const resetFilters = () => {
 								@click="selectedCategory = null"
 								:class="[
 									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-									selectedCategory === null ? 'bg-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-800',
+									selectedCategory === null ? 'bg-primary text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800',
 								]"
 							>
 								All Services
@@ -165,7 +165,7 @@ const resetFilters = () => {
 									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
 									selectedCategory === category.id
 										? 'bg-primary text-white'
-										: 'hover:bg-gray-100 dark:hover:bg-gray-800',
+										: 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800',
 								]"
 							>
 								{{ category.name }}
