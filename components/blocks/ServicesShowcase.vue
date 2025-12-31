@@ -146,7 +146,7 @@ const resetFilters = () => {
 				<div class="sticky top-4 space-y-6">
 					<!-- Category Filter -->
 					<div class="border rounded-lg p-4 dark:border-gray-700">
-						<h3 class="font-semibold mb-3">Categories</h3>
+						<h3 class="font-semibold mb-3 text-gray-900 dark:text-white">Categories</h3>
 						<div class="space-y-2">
 							<button
 								@click="selectedCategory = null"
@@ -176,7 +176,7 @@ const resetFilters = () => {
 					<!-- Advanced Filters -->
 					<div class="border rounded-lg p-4 dark:border-gray-700">
 						<div class="flex items-center justify-between mb-3">
-							<h3 class="font-semibold">Advanced Filters</h3>
+							<h3 class="font-semibold text-gray-900 dark:text-white">Advanced Filters</h3>
 							<span v-if="activeFiltersCount > 0" class="text-xs bg-primary text-white px-2 py-1 rounded-full">
 								{{ activeFiltersCount }}
 							</span>
@@ -188,7 +188,7 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">Open Source</span>
+								<span class="text-sm text-gray-900 dark:text-white">Open Source</span>
 							</label>
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
@@ -196,7 +196,7 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">E2E Encryption</span>
+								<span class="text-sm text-gray-900 dark:text-white">E2E Encryption</span>
 							</label>
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
@@ -204,7 +204,7 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">No Tracking</span>
+								<span class="text-sm text-gray-900 dark:text-white">No Tracking</span>
 							</label>
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
@@ -212,7 +212,7 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">Self-Hostable</span>
+								<span class="text-sm text-gray-900 dark:text-white">Self-Hostable</span>
 							</label>
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
@@ -220,7 +220,7 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">Federated</span>
+								<span class="text-sm text-gray-900 dark:text-white">Federated</span>
 							</label>
 						</div>
 						<button
