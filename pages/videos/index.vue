@@ -120,9 +120,9 @@ useServerSeoMeta({
 					<TypographyTitle class="mt-8 text-gray-700 dark:text-gray-400">Categories</TypographyTitle>
 					<Categories class="" />
 				</div>
-				<div class="space-y-4 lg:col-span-3">
+				<div v-if="page?.featured_post" class="space-y-4 lg:col-span-3">
 					<TypographyTitle>Featured Video</TypographyTitle>
-					<PostCard :post="page?.featured_post" direction="horizontal" />
+					<PostCard :post="page.featured_post" direction="horizontal" />
 				</div>
 			</div>
 			<div class="space-y-4">

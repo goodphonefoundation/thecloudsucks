@@ -331,132 +331,132 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				</div>
 
 				<!-- Assessment Scores -->
-				<div v-if="app.score_overall !== null || app.score_privacy !== null">
+				<div v-if="service.score_overall !== null || service.score_privacy !== null">
 					<h2 class="text-2xl font-bold mb-4">Assessment Scores</h2>
 					<div class="border rounded-lg p-6 dark:border-gray-700 space-y-4">
 						<!-- Overall Score -->
-						<div v-if="app.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
+						<div v-if="service.score_overall !== null" class="pb-4 border-b dark:border-gray-700">
 							<div class="flex items-center justify-between mb-2">
 								<span class="text-lg font-semibold">Overall Rating</span>
 								<span
 									:class="[
 										'px-3 py-1 text-sm font-bold rounded-full',
-										getScoreInfo(app.score_overall).color === 'blue' &&
+										getScoreInfo(service.score_overall).color === 'blue' &&
 											'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-										getScoreInfo(app.score_overall).color === 'green' &&
+										getScoreInfo(service.score_overall).color === 'green' &&
 											'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-										getScoreInfo(app.score_overall).color === 'yellow' &&
+										getScoreInfo(service.score_overall).color === 'yellow' &&
 											'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-										getScoreInfo(app.score_overall).color === 'orange' &&
+										getScoreInfo(service.score_overall).color === 'orange' &&
 											'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-										getScoreInfo(app.score_overall).color === 'red' &&
+										getScoreInfo(service.score_overall).color === 'red' &&
 											'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
 									]"
 								>
-									{{ getScoreInfo(app.score_overall).label }}
+									{{ getScoreInfo(service.score_overall).label }}
 								</span>
 							</div>
 							<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
 								<div
 									:class="[
 										'h-3 rounded-full transition-all',
-										getScoreInfo(app.score_overall).color === 'blue' && 'bg-blue-600',
-										getScoreInfo(app.score_overall).color === 'green' && 'bg-green-600',
-										getScoreInfo(app.score_overall).color === 'yellow' && 'bg-yellow-600',
-										getScoreInfo(app.score_overall).color === 'orange' && 'bg-orange-600',
-										getScoreInfo(app.score_overall).color === 'red' && 'bg-red-600',
+										getScoreInfo(service.score_overall).color === 'blue' && 'bg-blue-600',
+										getScoreInfo(service.score_overall).color === 'green' && 'bg-green-600',
+										getScoreInfo(service.score_overall).color === 'yellow' && 'bg-yellow-600',
+										getScoreInfo(service.score_overall).color === 'orange' && 'bg-orange-600',
+										getScoreInfo(service.score_overall).color === 'red' && 'bg-red-600',
 									]"
-									:style="{ width: getScoreInfo(app.score_overall).percentage + '%' }"
+									:style="{ width: getScoreInfo(service.score_overall).percentage + '%' }"
 								></div>
 							</div>
 						</div>
 
 						<!-- Individual Scores -->
 						<div class="space-y-3">
-							<div v-if="app.score_privacy !== null">
+							<div v-if="service.score_privacy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Privacy</span>
 									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(app.score_privacy).label }}
+										{{ getScoreInfo(service.score_privacy).label }}
 									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div
 										:class="[
 											'h-2 rounded-full transition-all',
-											getScoreInfo(app.score_privacy).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(app.score_privacy).color === 'green' && 'bg-green-600',
-											getScoreInfo(app.score_privacy).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(app.score_privacy).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(app.score_privacy).color === 'red' && 'bg-red-600',
+											getScoreInfo(service.score_privacy).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(service.score_privacy).color === 'green' && 'bg-green-600',
+											getScoreInfo(service.score_privacy).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(service.score_privacy).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(service.score_privacy).color === 'red' && 'bg-red-600',
 										]"
-										:style="{ width: getScoreInfo(app.score_privacy).percentage + '%' }"
+										:style="{ width: getScoreInfo(service.score_privacy).percentage + '%' }"
 									></div>
 								</div>
 							</div>
 
-							<div v-if="app.score_autonomy !== null">
+							<div v-if="service.score_autonomy !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">User Autonomy</span>
 									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(app.score_autonomy).label }}
+										{{ getScoreInfo(service.score_autonomy).label }}
 									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div
 										:class="[
 											'h-2 rounded-full transition-all',
-											getScoreInfo(app.score_autonomy).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(app.score_autonomy).color === 'green' && 'bg-green-600',
-											getScoreInfo(app.score_autonomy).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(app.score_autonomy).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(app.score_autonomy).color === 'red' && 'bg-red-600',
+											getScoreInfo(service.score_autonomy).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(service.score_autonomy).color === 'green' && 'bg-green-600',
+											getScoreInfo(service.score_autonomy).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(service.score_autonomy).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(service.score_autonomy).color === 'red' && 'bg-red-600',
 										]"
-										:style="{ width: getScoreInfo(app.score_autonomy).percentage + '%' }"
+										:style="{ width: getScoreInfo(service.score_autonomy).percentage + '%' }"
 									></div>
 								</div>
 							</div>
 
-							<div v-if="app.score_transparency !== null">
+							<div v-if="service.score_transparency !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Transparency</span>
 									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(app.score_transparency).label }}
+										{{ getScoreInfo(service.score_transparency).label }}
 									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div
 										:class="[
 											'h-2 rounded-full transition-all',
-											getScoreInfo(app.score_transparency).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(app.score_transparency).color === 'green' && 'bg-green-600',
-											getScoreInfo(app.score_transparency).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(app.score_transparency).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(app.score_transparency).color === 'red' && 'bg-red-600',
+											getScoreInfo(service.score_transparency).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(service.score_transparency).color === 'green' && 'bg-green-600',
+											getScoreInfo(service.score_transparency).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(service.score_transparency).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(service.score_transparency).color === 'red' && 'bg-red-600',
 										]"
-										:style="{ width: getScoreInfo(app.score_transparency).percentage + '%' }"
+										:style="{ width: getScoreInfo(service.score_transparency).percentage + '%' }"
 									></div>
 								</div>
 							</div>
 
-							<div v-if="app.score_governance !== null">
+							<div v-if="service.score_governance !== null">
 								<div class="flex items-center justify-between mb-1">
 									<span class="text-sm font-medium">Governance</span>
 									<span class="text-xs text-gray-600 dark:text-gray-400">
-										{{ getScoreInfo(app.score_governance).label }}
+										{{ getScoreInfo(service.score_governance).label }}
 									</span>
 								</div>
 								<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 									<div
 										:class="[
 											'h-2 rounded-full transition-all',
-											getScoreInfo(app.score_governance).color === 'blue' && 'bg-blue-600',
-											getScoreInfo(app.score_governance).color === 'green' && 'bg-green-600',
-											getScoreInfo(app.score_governance).color === 'yellow' && 'bg-yellow-600',
-											getScoreInfo(app.score_governance).color === 'orange' && 'bg-orange-600',
-											getScoreInfo(app.score_governance).color === 'red' && 'bg-red-600',
+											getScoreInfo(service.score_governance).color === 'blue' && 'bg-blue-600',
+											getScoreInfo(service.score_governance).color === 'green' && 'bg-green-600',
+											getScoreInfo(service.score_governance).color === 'yellow' && 'bg-yellow-600',
+											getScoreInfo(service.score_governance).color === 'orange' && 'bg-orange-600',
+											getScoreInfo(service.score_governance).color === 'red' && 'bg-red-600',
 										]"
-										:style="{ width: getScoreInfo(app.score_governance).percentage + '%' }"
+										:style="{ width: getScoreInfo(service.score_governance).percentage + '%' }"
 									></div>
 								</div>
 							</div>
@@ -495,15 +495,15 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 					<dl class="space-y-3 text-sm">
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">End-to-End Encryption</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.end_to_end_encryption) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.end_to_end_encryption) }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Default Tracking</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.default_tracking) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.default_tracking) }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Data Portability</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.data_portability) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.data_portability) }}</dd>
 						</div>
 					</dl>
 				</div>
@@ -512,21 +512,21 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				<div class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4">Technical Information</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="app.license_type">
+						<div v-if="service.license_type">
 							<dt class="text-gray-500 dark:text-gray-400">License</dt>
-							<dd class="font-medium">{{ app.license_type }}</dd>
+							<dd class="font-medium">{{ service.license_type }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Open Source</dt>
-							<dd class="font-medium">{{ formatField(app.is_open_source) }}</dd>
+							<dd class="font-medium">{{ formatField(service.is_open_source) }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Self-Hostable</dt>
-							<dd class="font-medium">{{ formatField(app.self_hostable) }}</dd>
+							<dd class="font-medium">{{ formatField(service.self_hostable) }}</dd>
 						</div>
 						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Federated</dt>
-							<dd class="font-medium">{{ formatField(app.federated) }}</dd>
+							<dd class="font-medium">{{ formatField(service.federated) }}</dd>
 						</div>
 					</dl>
 				</div>
@@ -535,17 +535,17 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 				<div class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4">Organization</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="app.vendor">
+						<div v-if="service.vendor">
 							<dt class="text-gray-500 dark:text-gray-400">Vendor</dt>
-							<dd class="font-medium">{{ app.vendor }}</dd>
+							<dd class="font-medium">{{ service.vendor }}</dd>
 						</div>
-						<div v-if="app.governance_model">
+						<div v-if="service.governance_model">
 							<dt class="text-gray-500 dark:text-gray-400">Governance Model</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.governance_model) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.governance_model) }}</dd>
 						</div>
-						<div v-if="app.primary_business_model">
+						<div v-if="service.primary_business_model">
 							<dt class="text-gray-500 dark:text-gray-400">Business Model</dt>
-							<dd class="font-medium capitalize">{{ formatField(app.primary_business_model) }}</dd>
+							<dd class="font-medium capitalize">{{ formatField(service.primary_business_model) }}</dd>
 						</div>
 					</dl>
 				</div>

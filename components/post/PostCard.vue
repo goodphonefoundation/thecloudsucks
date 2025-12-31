@@ -20,6 +20,34 @@ const iconMap: Record<PostType, string> = {
 const postCategory = computed(() => {
 	return (unref(props.post.category) as Category) ?? null;
 });
+
+// Extract YouTube video ID from URL
+const getYouTubeId = (url: string | null | undefined): string | null => {
+	if (!url) return null;
+	const patterns = [
+		/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/,
+		/youtube\.com\/embed\/([^&\s]+)/,
+	];
+	for (const pattern of patterns) {
+		const match = url.match(pattern);
+		if (match) return match[1];
+	}
+	return null;
+};
+
+// Get thumbnail for video posts
+const videoThumbnail = computed(() => {
+	if (props.post.type !== 'video') return null;
+	const videoId = getYouTubeId(props.post.video_url);
+	return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+});
+
+// Determine which image to show
+const displayImage = computed(() => {
+	if (props.post.image) return safeRelationId(props.post.image) as string;
+	if (videoThumbnail.value) return videoThumbnail.value;
+	return null;
+});
 </script>
 <template>
 	<figure
@@ -42,10 +70,10 @@ const postCategory = computed(() => {
 			:href="`/posts/${post.slug}`"
 		>
 			<NuxtImg
-				v-if="post.image"
+				v-if="displayImage"
 				class="relative flex-shrink-0 object-cover w-full h-full transition duration-300 saturate-0 group-hover:opacity-75"
-				:src="safeRelationId(post.image) as string"
-				:alt="safeRelation(post.image)?.alt ?? ''"
+				:src="displayImage"
+				:alt="post.title ?? 'Post image'"
 			/>
 			<div
 				class="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-br from-transparent via-transparent to-primary group-hover:opacity-100"
