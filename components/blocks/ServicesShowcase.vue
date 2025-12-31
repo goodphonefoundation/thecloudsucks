@@ -336,19 +336,20 @@ const resetFilters = () => {
 						:class="{ 'flex gap-6': viewMode === 'list' }"
 					>
 						<!-- Service Header -->
-						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-							<div v-if="service.brand_logo_light || service.brand_symbol_light" class="flex-shrink-0">
-								<NuxtImg 
-									:src="service.brand_logo_light || service.brand_symbol_light" 
-									:alt="service.name" 
-									class="w-12 h-12 rounded-lg" 
-								/>
-							</div>
-							<div class="flex-1 min-w-0">
-								<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
-									<h3 class="text-xl font-semibold">{{ service.name }}</h3>
-								</NuxtLink>
-								<div class="flex flex-wrap gap-2 mt-2">
+						<div :class="{ 'flex-shrink-0': viewMode === 'list' }">
+							<div class="flex items-start gap-4">
+								<div v-if="service.brand_logo_light || service.brand_logo_dark || service.brand_symbol_light || service.brand_symbol_dark" class="flex-shrink-0">
+									<NuxtImg 
+										:src="service.brand_logo_light || service.brand_logo_dark || service.brand_symbol_light || service.brand_symbol_dark" 
+										:alt="service.name" 
+										class="w-12 h-12 rounded-lg" 
+									/>
+								</div>
+								<div class="flex-1 min-w-0">
+									<NuxtLink :to="`/services/${service.slug}`" class="hover:text-primary transition-colors">
+										<h3 class="text-xl font-semibold">{{ service.name }}</h3>
+									</NuxtLink>
+									<div class="flex flex-wrap gap-2 mt-2">
 									<span
 										v-if="service.open_source_clients === 'yes' || service.open_source_server === 'yes'"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
@@ -379,6 +380,7 @@ const resetFilters = () => {
 									>
 										Federated
 									</span>
+								</div>
 								</div>
 							</div>
 						</div>
