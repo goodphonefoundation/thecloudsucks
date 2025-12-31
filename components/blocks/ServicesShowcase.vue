@@ -338,9 +338,9 @@ const resetFilters = () => {
 						<!-- Service Header -->
 						<div :class="{ 'flex-shrink-0': viewMode === 'list' }">
 							<div class="flex items-start gap-4">
-								<div v-if="service.brand_logo_light || service.brand_logo_dark || service.brand_symbol_light || service.brand_symbol_dark" class="flex-shrink-0">
+								<div v-if="service.brand_symbol_light || service.brand_symbol_dark" class="flex-shrink-0">
 									<NuxtImg 
-										:src="service.brand_logo_light || service.brand_logo_dark || service.brand_symbol_light || service.brand_symbol_dark" 
+										:src="service.brand_symbol_light || service.brand_symbol_dark" 
 										:alt="service.name" 
 										class="w-12 h-12 rounded-lg" 
 									/>
