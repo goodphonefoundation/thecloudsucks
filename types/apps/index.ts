@@ -10,7 +10,11 @@ export interface App {
 	docs_url?: string | null;
 	privacy_policy_url?: string | null;
 	terms_url?: string | null;
-	icon?: string | null;
+	// Branding assets (standardized across all categories)
+	brand_logo_light?: string | object | null; // M2O to directus_files
+	brand_logo_dark?: string | object | null; // M2O to directus_files
+	brand_symbol_light?: string | object | null; // M2O to directus_files
+	brand_symbol_dark?: string | object | null; // M2O to directus_files
 	app_status?: 'active' | 'deprecated' | 'watch' | 'unknown';
 	is_open_source?: boolean;
 	license_type?: string | null;

@@ -43,6 +43,9 @@ const { data: hardwareData } = await useAsyncData('hardware-showcase-v1', () => 
 				'hardware_type',
 				'manufacturer',
 				'website_url',
+				'repo_url',
+				'docs_url',
+				'privacy_policy_url',
 				'short_description',
 				'long_description',
 				'brand_logo_light',
@@ -544,6 +547,39 @@ const getTierInfo = (tier: string) => {
 									icon="i-mdi-open-in-new"
 								>
 									Website
+								</UButton>
+								<UButton
+									v-if="item.repo_url"
+									:to="item.repo_url"
+									target="_blank"
+									color="gray"
+									variant="outline"
+									size="sm"
+									icon="i-mdi-github"
+								>
+									Source
+								</UButton>
+								<UButton
+									v-if="item.docs_url"
+									:to="item.docs_url"
+									target="_blank"
+									color="gray"
+									variant="outline"
+									size="sm"
+									icon="i-mdi-book-open"
+								>
+									Docs
+								</UButton>
+								<UButton
+									v-if="item.privacy_policy_url"
+									:to="item.privacy_policy_url"
+									target="_blank"
+									color="gray"
+									variant="outline"
+									size="sm"
+									icon="i-mdi-shield-check"
+								>
+									Privacy
 								</UButton>
 								<UButton
 									:to="`/hardware/${item.slug}`"

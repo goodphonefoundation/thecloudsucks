@@ -85,12 +85,14 @@ export interface OperatingSystem {
 	// GoodPhone Assessment
 	tier: 'A_Sovereign' | 'B_Aligned' | 'C_Transitional' | 'D_Extractive';
 	tier_rationale?: string | null;
+	// Note: Scores standardized to match Services/Apps/Hardware
+	// Migration: control_ownership → autonomy, resilience → privacy, human_impact → governance
 	scores?: {
-		autonomy?: number;
-		transparency?: number;
-		control_ownership?: number;
-		resilience?: number;
-		human_impact?: number;
+		privacy?: number; // 0-4 scale
+		autonomy?: number; // 0-4 scale
+		transparency?: number; // 0-4 scale
+		governance?: number; // 0-4 scale
+		overall?: number; // 0-4 scale
 	} | null;
 	usage_notes?: string | null;
 	alternative_recommendations?: string | null;

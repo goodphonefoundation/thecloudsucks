@@ -7,6 +7,9 @@ export interface HardwareItem {
 	hardware_type?: 'router' | 'phone' | 'tablet' | 'laptop' | 'desktop' | 'nas' | 'other' | null;
 	manufacturer?: string | null;
 	website_url?: string | null;
+	repo_url?: string | null;
+	docs_url?: string | null;
+	privacy_policy_url?: string | null;
 	short_description: string;
 	long_description?: string | null;
 	brand_logo_light?: string | object | null; // M2O to directus_files

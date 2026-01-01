@@ -44,7 +44,10 @@ const { data: appsData } = await useAsyncData('apps-showcase-v4', () => {
 				'repo_url',
 				'docs_url',
 				'privacy_policy_url',
-				'icon',
+				'brand_logo_light',
+				'brand_logo_dark',
+				'brand_symbol_light',
+				'brand_symbol_dark',
 				'is_open_source',
 				'end_to_end_encryption',
 				'default_tracking',
@@ -334,8 +337,19 @@ const resetFilters = () => {
 					>
 						<!-- App Header -->
 						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-							<div v-if="app.icon" class="flex-shrink-0">
-								<NuxtImg :src="app.icon" :alt="app.name" class="w-12 h-12 rounded-lg" />
+							<div v-if="app.brand_symbol_light || app.brand_symbol_dark || app.brand_logo_light || app.brand_logo_dark" class="flex-shrink-0">
+								<!-- Light theme: use dark symbol/logo -->
+								<NuxtImg 
+									:src="app.brand_symbol_dark || app.brand_logo_dark || app.brand_symbol_light || app.brand_logo_light" 
+									:alt="app.name" 
+									class="w-12 h-12 rounded-lg object-contain dark:hidden" 
+								/>
+								<!-- Dark theme: use light symbol/logo -->
+								<NuxtImg 
+									:src="app.brand_symbol_light || app.brand_logo_light || app.brand_symbol_dark || app.brand_logo_dark" 
+									:alt="app.name" 
+									class="w-12 h-12 rounded-lg object-contain hidden dark:block" 
+								/>
 							</div>
 							<div class="flex-1 min-w-0">
 								<NuxtLink :to="`/apps/${app.slug}`" class="hover:text-primary transition-colors">
