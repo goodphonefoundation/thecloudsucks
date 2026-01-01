@@ -1,22 +1,31 @@
-import { readItems, updateItem } from '@directus/sdk';
+// No imports needed - using global directusServer utility
 
 export default defineEventHandler(async (event) => {
 	try {
-		const body = await readBody(event);
+	const body = await readBody(event);
+		
+		console.log('[Discourse Webhook] Received:', JSON.stringify(body, null, 2));
 		
 		// Extract topic and post information from Discourse webhook
-		const { topic_id, post } = body;
+		const topic_id = body.topic?.id || body.topic_id;
+		const post = body.post;
 		
 		if (!topic_id || !post) {
+			console.error('[Discourse Webhook] Invalid payload structure');
 			throw createError({
 				statusCode: 400,
 				message: 'Missing required webhook data',
 			});
 		}
+		
+		// Ignore the first post (topic creation)
+		if (post.post_number === 1) {
+			console.log('[Discourse Webhook] Ignoring topic creation post');
+			return { success: true, message: 'Topic creation ignored' };
+		}
 
-		// Find the article associated with this Discourse topic
-		const directus = useDirectus();
-		const articles = await directus.request(
+	// Find the article associated with this Discourse topic
+		const articles = await directusServer.request(
 			readItems('posts', {
 				filter: {
 					discourse_topic_id: { _eq: topic_id },
@@ -50,7 +59,7 @@ export default defineEventHandler(async (event) => {
 
 		if (latestPost) {
 			// Update the article with the latest comment
-			await directus.request(
+			await directusServer.request(
 				updateItem('posts', article.id, {
 					discourse_latest_comment: {
 						id: latestPost.id,

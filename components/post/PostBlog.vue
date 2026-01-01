@@ -83,6 +83,14 @@ defineProps<PostBlogProps>();
 		<!-- Article -->
 		<main class="w-full max-w-4xl mx-auto mt-12">
 			<TypographyProse ref="article" :content="page?.content" />
+			
+			<!-- Discourse Comments -->
+			<PostDiscourseComments
+				:topic-id="page?.discourse_topic_id"
+				:topic-url="page?.discourse_topic_url"
+				:latest-comment="page?.discourse_latest_comment"
+				:post-title="page?.title"
+			/>
 		</main>
 	</BlockContainer>
 </template>

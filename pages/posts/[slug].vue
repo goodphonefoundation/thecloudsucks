@@ -30,6 +30,9 @@ const { data: page } = await useAsyncData(
 					'cost',
 					'built_with',
 					'video_url',
+					'discourse_topic_id',
+					'discourse_topic_url',
+					'discourse_latest_comment',
 					{
 						gallery: [{ directus_files_id: ['id', 'title', 'description'] }],
 						author: ['name', 'job_title', 'image'],

@@ -18,6 +18,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const discourseUrl = 'https://community.thecloud.sucks';
+const hasDiscourse = computed(() => !!props.topicId);
 
 // Format avatar URL
 const getAvatarUrl = (template: string) => {
@@ -46,7 +47,7 @@ const getRelativeTime = (dateString: string) => {
 		<h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Discussion</h2>
 
 		<!-- No Discourse topic yet -->
-		<div v-if="!topicId" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
+		<div v-if="!hasDiscourse" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 text-center">
 			<p class="text-gray-600 dark:text-gray-400 mb-4">
 				Discussions for this article haven't been created yet.
 			</p>
