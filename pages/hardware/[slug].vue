@@ -17,7 +17,7 @@ const { data: hardware } = await useAsyncData(`hardware-${slug}`, () => {
 			],
 			filter: {
 				slug: { _eq: slug },
-				status: { _eq: 'active' },
+				status: { _eq: 'published' },
 			},
 			limit: 1,
 		}),

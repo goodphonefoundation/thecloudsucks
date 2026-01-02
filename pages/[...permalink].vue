@@ -165,6 +165,7 @@ const { data: page } = await useAsyncData(
 									block_video: ['*'],
 									block_cardgroup: ['*'],
 									block_services_showcase: ['id', 'headline', 'content', 'display_style'],
+									block_mobile_apps_showcase: ['id', 'headline', 'content', 'display_style', 'primary_category'],
 									block_youtube_carousel: [
 										'id',
 										'title',

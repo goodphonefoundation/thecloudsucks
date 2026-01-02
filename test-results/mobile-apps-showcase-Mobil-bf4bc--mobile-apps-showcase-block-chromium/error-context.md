@@ -1,0 +1,887 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Agency OS" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e16]: Agency OS
+        - navigation "Global" [ref=e17]:
+          - link "Apps" [ref=e18] [cursor=pointer]:
+            - /url: /apps
+          - link "Services" [ref=e19] [cursor=pointer]:
+            - /url: /services
+          - link "Hardware" [ref=e20] [cursor=pointer]:
+            - /url: /hardware
+          - link "OS" [ref=e21] [cursor=pointer]:
+            - /url: /os
+          - link "Self-Hosting" [ref=e22] [cursor=pointer]:
+            - /url: /self-hosting
+          - link "Articles" [ref=e23] [cursor=pointer]:
+            - /url: /posts
+          - link "Videos" [ref=e24] [cursor=pointer]:
+            - /url: /videos
+          - link "Guide" [ref=e25] [cursor=pointer]:
+            - /url: /help
+          - button "About" [ref=e27] [cursor=pointer]: About
+        - button "Theme" [ref=e30] [cursor=pointer]
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Privacy-Respecting Apps" [level=2] [ref=e36]
+        - generic [ref=e37]: Discover applications that put you in control of your digital life.
+        - generic [ref=e38]:
+          - complementary [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - heading "Categories" [level=3] [ref=e42]
+                - generic [ref=e43]:
+                  - button "All Services" [ref=e44] [cursor=pointer]
+                  - button "Messaging" [ref=e45] [cursor=pointer]
+                  - button "VPN" [ref=e46] [cursor=pointer]
+              - generic [ref=e47]:
+                - heading "Advanced Filters" [level=3] [ref=e49]
+                - generic [ref=e50]:
+                  - generic [ref=e51] [cursor=pointer]:
+                    - checkbox "Open Source" [ref=e52]
+                    - generic [ref=e53]: Open Source
+                  - generic [ref=e54] [cursor=pointer]:
+                    - checkbox "E2E Encryption" [ref=e55]
+                    - generic [ref=e56]: E2E Encryption
+                  - generic [ref=e57] [cursor=pointer]:
+                    - checkbox "No Tracking" [ref=e58]
+                    - generic [ref=e59]: No Tracking
+                  - generic [ref=e60] [cursor=pointer]:
+                    - checkbox "Self-Hostable" [ref=e61]
+                    - generic [ref=e62]: Self-Hostable
+                  - generic [ref=e63] [cursor=pointer]:
+                    - checkbox "Federated" [ref=e64]
+                    - generic [ref=e65]: Federated
+          - generic [ref=e66]:
+            - generic [ref=e68]:
+              - generic:
+                - img
+              - textbox "Search services by name or description..." [ref=e69]
+            - generic [ref=e70]:
+              - paragraph [ref=e71]: 29 services found
+              - generic [ref=e72]:
+                - button "Grid view" [ref=e73] [cursor=pointer]:
+                  - img [ref=e74]
+                - button "List view" [ref=e76] [cursor=pointer]:
+                  - img [ref=e77]
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e82]:
+                  - img "AirVPN" [ref=e84]
+                  - generic [ref=e85]:
+                    - link "AirVPN" [ref=e86] [cursor=pointer]:
+                      - /url: /services/airvpn
+                      - heading "AirVPN" [level=3] [ref=e87]
+                    - generic [ref=e88]:
+                      - generic [ref=e89]: E2E Encrypted
+                      - generic [ref=e90]: No Tracking
+                - generic [ref=e91]:
+                  - paragraph [ref=e92]: Italy-based VPN service operated by activists and hacktivists, focused on privacy, net neutrality, and strong encryption.
+                  - generic [ref=e93]:
+                    - link "Website" [ref=e94] [cursor=pointer]:
+                      - /url: https://airvpn.org
+                      - text: Website
+                    - link "Docs" [ref=e96] [cursor=pointer]:
+                      - /url: https://airvpn.org/faqs/
+                      - text: Docs
+                    - link "Privacy" [ref=e98] [cursor=pointer]:
+                      - /url: https://airvpn.org/privacy/
+                      - text: Privacy
+              - generic [ref=e100]:
+                - link "Betternet" [ref=e104] [cursor=pointer]:
+                  - /url: /services/betternet
+                  - heading "Betternet" [level=3] [ref=e105]
+                - generic [ref=e106]:
+                  - paragraph [ref=e107]: Free VPN service offering basic protection for casual browsing, with limitations on strong privacy features.
+                  - generic [ref=e108]:
+                    - link "Website" [ref=e109] [cursor=pointer]:
+                      - /url: https://www.betternet.co
+                      - text: Website
+                    - link "Docs" [ref=e111] [cursor=pointer]:
+                      - /url: https://support.betternet.co/
+                      - text: Docs
+                    - link "Privacy" [ref=e113] [cursor=pointer]:
+                      - /url: https://www.betternet.co/privacy
+                      - text: Privacy
+              - generic [ref=e115]:
+                - generic [ref=e117]:
+                  - img "Bitdefender VPN" [ref=e119]
+                  - generic [ref=e120]:
+                    - link "Bitdefender VPN" [ref=e121] [cursor=pointer]:
+                      - /url: /services/bitdefender-vpn
+                      - heading "Bitdefender VPN" [level=3] [ref=e122]
+                    - generic [ref=e124]: E2E Encrypted
+                - generic [ref=e125]:
+                  - paragraph [ref=e126]: VPN service integrated with Bitdefender antivirus suite, offering security-focused protection and easy setup.
+                  - generic [ref=e127]:
+                    - link "Website" [ref=e128] [cursor=pointer]:
+                      - /url: https://www.bitdefender.com/solutions/vpn.html
+                      - text: Website
+                    - link "Docs" [ref=e130] [cursor=pointer]:
+                      - /url: https://www.bitdefender.com/support/
+                      - text: Docs
+                    - link "Privacy" [ref=e132] [cursor=pointer]:
+                      - /url: https://www.bitdefender.com/site/view/legal-privacy-policy.html
+                      - text: Privacy
+              - generic [ref=e134]:
+                - generic [ref=e137]:
+                  - link "Briar" [ref=e138] [cursor=pointer]:
+                    - /url: /services/briar
+                    - heading "Briar" [level=3] [ref=e139]
+                  - generic [ref=e140]:
+                    - generic [ref=e141]: E2E Encrypted
+                    - generic [ref=e142]: No Tracking
+                    - generic [ref=e143]: Self-Hostable
+                    - generic [ref=e144]: Federated
+                - generic [ref=e145]:
+                  - paragraph [ref=e146]: Peer-to-peer encrypted messaging app designed for activists and journalists, works via Bluetooth, Wi-Fi, or Tor without central servers.
+                  - generic [ref=e147]:
+                    - link "Website" [ref=e148] [cursor=pointer]:
+                      - /url: https://briarproject.org
+                      - text: Website
+                    - link "Source" [ref=e150] [cursor=pointer]:
+                      - /url: https://code.briarproject.org/briar/briar
+                      - text: Source
+                    - link "Docs" [ref=e152] [cursor=pointer]:
+                      - /url: https://briarproject.org/manual/
+                      - text: Docs
+                    - link "Privacy" [ref=e154] [cursor=pointer]:
+                      - /url: https://briarproject.org/privacy-policy/
+                      - text: Privacy
+              - generic [ref=e156]:
+                - generic [ref=e158]:
+                  - img "CyberGhost" [ref=e160]
+                  - generic [ref=e161]:
+                    - link "CyberGhost" [ref=e162] [cursor=pointer]:
+                      - /url: /services/cyberghost
+                      - heading "CyberGhost" [level=3] [ref=e163]
+                    - generic [ref=e165]: E2E Encrypted
+                - generic [ref=e166]:
+                  - paragraph [ref=e167]: Romania-based VPN with NoSpy servers, streaming optimization, and strong no-logs policy.
+                  - generic [ref=e168]:
+                    - link "Website" [ref=e169] [cursor=pointer]:
+                      - /url: https://cyberghostvpn.com
+                      - text: Website
+                    - link "Docs" [ref=e171] [cursor=pointer]:
+                      - /url: https://support.cyberghostvpn.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e173] [cursor=pointer]:
+                      - /url: https://www.cyberghostvpn.com/en_US/privacypolicy
+                      - text: Privacy
+              - generic [ref=e175]:
+                - generic [ref=e177]:
+                  - img "Element" [ref=e179]
+                  - generic [ref=e180]:
+                    - link "Element" [ref=e181] [cursor=pointer]:
+                      - /url: /services/element
+                      - heading "Element" [level=3] [ref=e182]
+                    - generic [ref=e183]:
+                      - generic [ref=e184]: E2E Encrypted
+                      - generic [ref=e185]: No Tracking
+                      - generic [ref=e186]: Self-Hostable
+                      - generic [ref=e187]: Federated
+                - generic [ref=e188]:
+                  - paragraph [ref=e189]: Decentralized messaging app built on the Matrix protocol, offering end-to-end encryption, self-hosting, and federation support.
+                  - generic [ref=e190]:
+                    - link "Website" [ref=e191] [cursor=pointer]:
+                      - /url: https://element.io
+                      - text: Website
+                    - link "Source" [ref=e193] [cursor=pointer]:
+                      - /url: https://github.com/element-hq
+                      - text: Source
+                    - link "Docs" [ref=e195] [cursor=pointer]:
+                      - /url: https://element.io/help
+                      - text: Docs
+                    - link "Privacy" [ref=e197] [cursor=pointer]:
+                      - /url: https://element.io/privacy
+                      - text: Privacy
+              - generic [ref=e199]:
+                - generic [ref=e201]:
+                  - img "ExpressVPN" [ref=e203]
+                  - generic [ref=e204]:
+                    - link "ExpressVPN" [ref=e205] [cursor=pointer]:
+                      - /url: /services/expressvpn
+                      - heading "ExpressVPN" [level=3] [ref=e206]
+                    - generic [ref=e208]: E2E Encrypted
+                - generic [ref=e209]:
+                  - paragraph [ref=e210]: Fast and reliable VPN ideal for streaming with top-notch security features and intuitive interface.
+                  - generic [ref=e211]:
+                    - link "Website" [ref=e212] [cursor=pointer]:
+                      - /url: https://expressvpn.com
+                      - text: Website
+                    - link "Docs" [ref=e214] [cursor=pointer]:
+                      - /url: https://www.expressvpn.com/support/
+                      - text: Docs
+                    - link "Privacy" [ref=e216] [cursor=pointer]:
+                      - /url: https://www.expressvpn.com/privacy-policy
+                      - text: Privacy
+              - generic [ref=e218]:
+                - generic [ref=e220]:
+                  - img "Hide.me" [ref=e222]
+                  - generic [ref=e223]:
+                    - link "Hide.me" [ref=e224] [cursor=pointer]:
+                      - /url: /services/hide-me
+                      - heading "Hide.me" [level=3] [ref=e225]
+                    - generic [ref=e226]:
+                      - generic [ref=e227]: E2E Encrypted
+                      - generic [ref=e228]: No Tracking
+                - generic [ref=e229]:
+                  - paragraph [ref=e230]: Malaysia-based VPN service with strong privacy features, free tier with limited data, and no-logs policy.
+                  - generic [ref=e231]:
+                    - link "Website" [ref=e232] [cursor=pointer]:
+                      - /url: https://hide.me
+                      - text: Website
+                    - link "Docs" [ref=e234] [cursor=pointer]:
+                      - /url: https://hide.me/en/support
+                      - text: Docs
+                    - link "Privacy" [ref=e236] [cursor=pointer]:
+                      - /url: https://hide.me/en/privacy-policy
+                      - text: Privacy
+              - generic [ref=e238]:
+                - generic [ref=e240]:
+                  - img "Hotspot Shield" [ref=e242]
+                  - generic [ref=e243]:
+                    - link "Hotspot Shield" [ref=e244] [cursor=pointer]:
+                      - /url: /services/hotspot-shield
+                      - heading "Hotspot Shield" [level=3] [ref=e245]
+                    - generic [ref=e247]: E2E Encrypted
+                - generic [ref=e248]:
+                  - paragraph [ref=e249]: Popular VPN service with free and paid tiers, offering fast speeds and easy-to-use apps across multiple platforms.
+                  - generic [ref=e250]:
+                    - link "Website" [ref=e251] [cursor=pointer]:
+                      - /url: https://www.hotspotshield.com
+                      - text: Website
+                    - link "Docs" [ref=e253] [cursor=pointer]:
+                      - /url: https://support.hotspotshield.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e255] [cursor=pointer]:
+                      - /url: https://www.hotspotshield.com/privacy/
+                      - text: Privacy
+              - generic [ref=e257]:
+                - generic [ref=e259]:
+                  - img "IPVanish" [ref=e261]
+                  - generic [ref=e262]:
+                    - link "IPVanish" [ref=e263] [cursor=pointer]:
+                      - /url: /services/ipvanish
+                      - heading "IPVanish" [level=3] [ref=e264]
+                    - generic [ref=e266]: E2E Encrypted
+                - generic [ref=e267]:
+                  - paragraph [ref=e268]: Unlimited simultaneous connections with 2,200+ servers supporting P2P traffic and fast speeds.
+                  - generic [ref=e269]:
+                    - link "Website" [ref=e270] [cursor=pointer]:
+                      - /url: https://ipvanish.com
+                      - text: Website
+                    - link "Docs" [ref=e272] [cursor=pointer]:
+                      - /url: https://support.ipvanish.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e274] [cursor=pointer]:
+                      - /url: https://www.ipvanish.com/privacy-policy/
+                      - text: Privacy
+              - generic [ref=e276]:
+                - generic [ref=e279]:
+                  - link "IVPN" [ref=e280] [cursor=pointer]:
+                    - /url: /services/ivpn
+                    - heading "IVPN" [level=3] [ref=e281]
+                  - generic [ref=e282]:
+                    - generic [ref=e283]: E2E Encrypted
+                    - generic [ref=e284]: No Tracking
+                - generic [ref=e285]:
+                  - paragraph [ref=e286]: Privacy-focused VPN service with strong no-logs policy, open-source apps, and transparent business practices. Based in Gibraltar.
+                  - generic [ref=e287]:
+                    - link "Website" [ref=e288] [cursor=pointer]:
+                      - /url: https://www.ivpn.net
+                      - text: Website
+                    - link "Source" [ref=e290] [cursor=pointer]:
+                      - /url: https://github.com/ivpn
+                      - text: Source
+                    - link "Docs" [ref=e292] [cursor=pointer]:
+                      - /url: https://www.ivpn.net/knowledgebase/
+                      - text: Docs
+                    - link "Privacy" [ref=e294] [cursor=pointer]:
+                      - /url: https://www.ivpn.net/privacy/
+                      - text: Privacy
+              - generic [ref=e296]:
+                - generic [ref=e298]:
+                  - img "MEGA VPN" [ref=e300]
+                  - generic [ref=e301]:
+                    - link "MEGA VPN" [ref=e302] [cursor=pointer]:
+                      - /url: /services/mega-vpn
+                      - heading "MEGA VPN" [level=3] [ref=e303]
+                    - generic [ref=e305]: E2E Encrypted
+                - generic [ref=e306]:
+                  - paragraph [ref=e307]: VPN service from MEGA cloud storage provider, offering privacy-focused protection integrated with MEGA ecosystem.
+                  - generic [ref=e308]:
+                    - link "Website" [ref=e309] [cursor=pointer]:
+                      - /url: https://mega.io/vpn
+                      - text: Website
+                    - link "Docs" [ref=e311] [cursor=pointer]:
+                      - /url: https://help.mega.io/vpn
+                      - text: Docs
+                    - link "Privacy" [ref=e313] [cursor=pointer]:
+                      - /url: https://mega.io/privacy
+                      - text: Privacy
+              - generic [ref=e315]:
+                - generic [ref=e317]:
+                  - img "Mullvad VPN" [ref=e319]
+                  - generic [ref=e320]:
+                    - link "Mullvad VPN" [ref=e321] [cursor=pointer]:
+                      - /url: /services/mullvad-vpn
+                      - heading "Mullvad VPN" [level=3] [ref=e322]
+                    - generic [ref=e323]:
+                      - generic [ref=e324]: E2E Encrypted
+                      - generic [ref=e325]: No Tracking
+                - generic [ref=e326]:
+                  - paragraph [ref=e327]: Privacy-focused open-source VPN from Sweden with no personal data collection and anonymous payment options.
+                  - generic [ref=e328]:
+                    - link "Website" [ref=e329] [cursor=pointer]:
+                      - /url: https://mullvad.net
+                      - text: Website
+                    - link "Source" [ref=e331] [cursor=pointer]:
+                      - /url: https://github.com/mullvad/mullvadvpn-app
+                      - text: Source
+                    - link "Docs" [ref=e333] [cursor=pointer]:
+                      - /url: https://mullvad.net/en/help
+                      - text: Docs
+                    - link "Privacy" [ref=e335] [cursor=pointer]:
+                      - /url: https://mullvad.net/en/help/privacy-policy
+                      - text: Privacy
+              - generic [ref=e337]:
+                - generic [ref=e339]:
+                  - img "NordVPN" [ref=e341]
+                  - generic [ref=e342]:
+                    - link "NordVPN" [ref=e343] [cursor=pointer]:
+                      - /url: /services/nordvpn
+                      - heading "NordVPN" [level=3] [ref=e344]
+                    - generic [ref=e346]: E2E Encrypted
+                - generic [ref=e347]:
+                  - paragraph [ref=e348]: Popular VPN with double VPN encryption, CyberSec malware protection, and 8,700+ RAM-only servers worldwide.
+                  - generic [ref=e349]:
+                    - link "Website" [ref=e350] [cursor=pointer]:
+                      - /url: https://nordvpn.com
+                      - text: Website
+                    - link "Docs" [ref=e352] [cursor=pointer]:
+                      - /url: https://support.nordvpn.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e354] [cursor=pointer]:
+                      - /url: https://nordvpn.com/privacy-policy/
+                      - text: Privacy
+              - generic [ref=e356]:
+                - generic [ref=e358]:
+                  - img "Perfect Privacy" [ref=e360]
+                  - generic [ref=e361]:
+                    - link "Perfect Privacy" [ref=e362] [cursor=pointer]:
+                      - /url: /services/perfect-privacy
+                      - heading "Perfect Privacy" [level=3] [ref=e363]
+                    - generic [ref=e364]:
+                      - generic [ref=e365]: E2E Encrypted
+                      - generic [ref=e366]: No Tracking
+                - generic [ref=e367]:
+                  - paragraph [ref=e368]: Switzerland-based VPN service offering strong privacy features, multi-hop connections, and anonymous payment options.
+                  - generic [ref=e369]:
+                    - link "Website" [ref=e370] [cursor=pointer]:
+                      - /url: https://www.perfect-privacy.com
+                      - text: Website
+                    - link "Docs" [ref=e372] [cursor=pointer]:
+                      - /url: https://www.perfect-privacy.com/en/support
+                      - text: Docs
+                    - link "Privacy" [ref=e374] [cursor=pointer]:
+                      - /url: https://www.perfect-privacy.com/en/privacy
+                      - text: Privacy
+              - generic [ref=e376]:
+                - generic [ref=e378]:
+                  - img "Private Internet Access" [ref=e380]
+                  - generic [ref=e381]:
+                    - link "Private Internet Access" [ref=e382] [cursor=pointer]:
+                      - /url: /services/private-internet-access
+                      - heading "Private Internet Access" [level=3] [ref=e383]
+                    - generic [ref=e385]: E2E Encrypted
+                - generic [ref=e386]:
+                  - paragraph [ref=e387]: Affordable VPN with strong encryption, no-logs policy, and extensive server network for privacy-focused users.
+                  - generic [ref=e388]:
+                    - link "Website" [ref=e389] [cursor=pointer]:
+                      - /url: https://privateinternetaccess.com
+                      - text: Website
+                    - link "Source" [ref=e391] [cursor=pointer]:
+                      - /url: https://github.com/pia-foss
+                      - text: Source
+                    - link "Docs" [ref=e393] [cursor=pointer]:
+                      - /url: https://helpdesk.privateinternetaccess.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e395] [cursor=pointer]:
+                      - /url: https://www.privateinternetaccess.com/pages/privacy-policy/
+                      - text: Privacy
+              - generic [ref=e397]:
+                - generic [ref=e399]:
+                  - img "ProtonVPN" [ref=e401]
+                  - generic [ref=e402]:
+                    - link "ProtonVPN" [ref=e403] [cursor=pointer]:
+                      - /url: /services/proton-vpn
+                      - heading "ProtonVPN" [level=3] [ref=e404]
+                    - generic [ref=e405]:
+                      - generic [ref=e406]: E2E Encrypted
+                      - generic [ref=e407]: No Tracking
+                - generic [ref=e408]:
+                  - paragraph [ref=e409]: Swiss-based VPN with strong privacy laws, free tier available, and Secure Core servers for enhanced protection.
+                  - generic [ref=e410]:
+                    - link "Website" [ref=e411] [cursor=pointer]:
+                      - /url: https://protonvpn.com
+                      - text: Website
+                    - link "Source" [ref=e413] [cursor=pointer]:
+                      - /url: https://github.com/ProtonVPN
+                      - text: Source
+                    - link "Docs" [ref=e415] [cursor=pointer]:
+                      - /url: https://protonvpn.com/support
+                      - text: Docs
+                    - link "Privacy" [ref=e417] [cursor=pointer]:
+                      - /url: https://protonvpn.com/privacy-policy
+                      - text: Privacy
+              - generic [ref=e419]:
+                - generic [ref=e421]:
+                  - img "PureVPN" [ref=e423]
+                  - generic [ref=e424]:
+                    - link "PureVPN" [ref=e425] [cursor=pointer]:
+                      - /url: /services/purevpn
+                      - heading "PureVPN" [level=3] [ref=e426]
+                    - generic [ref=e428]: E2E Encrypted
+                - generic [ref=e429]:
+                  - paragraph [ref=e430]: VPN service with large server network, offering security features and streaming support across multiple platforms.
+                  - generic [ref=e431]:
+                    - link "Website" [ref=e432] [cursor=pointer]:
+                      - /url: https://www.purevpn.com
+                      - text: Website
+                    - link "Docs" [ref=e434] [cursor=pointer]:
+                      - /url: https://support.purevpn.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e436] [cursor=pointer]:
+                      - /url: https://www.purevpn.com/privacy-policy.php
+                      - text: Privacy
+              - generic [ref=e438]:
+                - generic [ref=e440]:
+                  - img "Session" [ref=e442]
+                  - generic [ref=e443]:
+                    - link "Session" [ref=e444] [cursor=pointer]:
+                      - /url: /services/session
+                      - heading "Session" [level=3] [ref=e445]
+                    - generic [ref=e446]:
+                      - generic [ref=e447]: E2E Encrypted
+                      - generic [ref=e448]: No Tracking
+                - generic [ref=e449]:
+                  - paragraph [ref=e450]: Decentralized messenger with onion routing, no phone number required, and blockchain-based network.
+                  - generic [ref=e451]:
+                    - link "Website" [ref=e452] [cursor=pointer]:
+                      - /url: https://getsession.org
+                      - text: Website
+                    - link "Source" [ref=e454] [cursor=pointer]:
+                      - /url: https://github.com/oxen-io/session-android
+                      - text: Source
+                    - link "Docs" [ref=e456] [cursor=pointer]:
+                      - /url: https://docs.getsession.org
+                      - text: Docs
+                    - link "Privacy" [ref=e458] [cursor=pointer]:
+                      - /url: https://getsession.org/privacy-policy
+                      - text: Privacy
+              - generic [ref=e460]:
+                - generic [ref=e462]:
+                  - img "Signal" [ref=e464]
+                  - generic [ref=e465]:
+                    - link "Signal" [ref=e466] [cursor=pointer]:
+                      - /url: /services/signal
+                      - heading "Signal" [level=3] [ref=e467]
+                    - generic [ref=e468]:
+                      - generic [ref=e469]: Open Source
+                      - generic [ref=e470]: E2E Encrypted
+                      - generic [ref=e471]: No Tracking
+                - generic [ref=e472]:
+                  - paragraph [ref=e473]: End-to-end encrypted messenger with strong privacy focus, no metadata collection, and nonprofit backing. trst
+                  - generic [ref=e474]:
+                    - link "Website" [ref=e475] [cursor=pointer]:
+                      - /url: https://signal.org
+                      - text: Website
+                    - link "Source" [ref=e477] [cursor=pointer]:
+                      - /url: https://github.com/signalapp
+                      - text: Source
+                    - link "Docs" [ref=e479] [cursor=pointer]:
+                      - /url: https://support.signal.org
+                      - text: Docs
+                    - link "Privacy" [ref=e481] [cursor=pointer]:
+                      - /url: https://signal.org/legal/
+                      - text: Privacy
+              - generic [ref=e483]:
+                - generic [ref=e486]:
+                  - link "SimpleX Chat" [ref=e487] [cursor=pointer]:
+                    - /url: /services/simplex-chat
+                    - heading "SimpleX Chat" [level=3] [ref=e488]
+                  - generic [ref=e489]:
+                    - generic [ref=e490]: E2E Encrypted
+                    - generic [ref=e491]: No Tracking
+                    - generic [ref=e492]: Self-Hostable
+                    - generic [ref=e493]: Federated
+                - generic [ref=e494]:
+                  - paragraph [ref=e495]: Revolutionary messaging app with no user identifiers whatsoever—maximum metadata privacy through decentralized architecture.
+                  - link "Website" [ref=e497] [cursor=pointer]:
+                    - /url: https://simplex.chat
+                    - text: Website
+              - generic [ref=e499]:
+                - generic [ref=e501]:
+                  - img "Surfshark" [ref=e503]
+                  - generic [ref=e504]:
+                    - link "Surfshark" [ref=e505] [cursor=pointer]:
+                      - /url: /services/surfshark
+                      - heading "Surfshark" [level=3] [ref=e506]
+                    - generic [ref=e508]: E2E Encrypted
+                - generic [ref=e509]:
+                  - paragraph [ref=e510]: Budget-friendly VPN with unlimited simultaneous connections, servers in 100 countries, and WireGuard protocol support.
+                  - generic [ref=e511]:
+                    - link "Website" [ref=e512] [cursor=pointer]:
+                      - /url: https://surfshark.com
+                      - text: Website
+                    - link "Docs" [ref=e514] [cursor=pointer]:
+                      - /url: https://support.surfshark.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e516] [cursor=pointer]:
+                      - /url: https://surfshark.com/privacy-policy
+                      - text: Privacy
+              - generic [ref=e518]:
+                - generic [ref=e520]:
+                  - img "Telegram" [ref=e522]
+                  - link "Telegram" [ref=e524] [cursor=pointer]:
+                    - /url: /services/telegram
+                    - heading "Telegram" [level=3] [ref=e525]
+                - generic [ref=e526]:
+                  - paragraph [ref=e527]: Cloud-based messenger with large groups, channels, and bots. End-to-end encryption only in Secret Chats.
+                  - generic [ref=e528]:
+                    - link "Website" [ref=e529] [cursor=pointer]:
+                      - /url: https://telegram.org
+                      - text: Website
+                    - link "Source" [ref=e531] [cursor=pointer]:
+                      - /url: https://github.com/DrKLO/Telegram
+                      - text: Source
+                    - link "Docs" [ref=e533] [cursor=pointer]:
+                      - /url: https://telegram.org/faq
+                      - text: Docs
+                    - link "Privacy" [ref=e535] [cursor=pointer]:
+                      - /url: https://telegram.org/privacy
+                      - text: Privacy
+              - generic [ref=e537]:
+                - generic [ref=e539]:
+                  - img "Threema" [ref=e541]
+                  - generic [ref=e542]:
+                    - link "Threema" [ref=e543] [cursor=pointer]:
+                      - /url: /services/threema
+                      - heading "Threema" [level=3] [ref=e544]
+                    - generic [ref=e545]:
+                      - generic [ref=e546]: E2E Encrypted
+                      - generic [ref=e547]: No Tracking
+                - generic [ref=e548]:
+                  - paragraph [ref=e549]: Privacy-focused Swiss messaging app with strong encryption, anonymous registration, and no phone number required. Open-source and GDPR-compliant.
+                  - generic [ref=e550]:
+                    - link "Website" [ref=e551] [cursor=pointer]:
+                      - /url: https://threema.ch
+                      - text: Website
+                    - link "Docs" [ref=e553] [cursor=pointer]:
+                      - /url: https://threema.ch/en/support
+                      - text: Docs
+                    - link "Privacy" [ref=e555] [cursor=pointer]:
+                      - /url: https://threema.ch/en/privacy
+                      - text: Privacy
+              - generic [ref=e557]:
+                - generic [ref=e559]:
+                  - img "Trust.Zone" [ref=e561]
+                  - generic [ref=e562]:
+                    - link "Trust.Zone" [ref=e563] [cursor=pointer]:
+                      - /url: /services/trust-zone
+                      - heading "Trust.Zone" [level=3] [ref=e564]
+                    - generic [ref=e566]: E2E Encrypted
+                - generic [ref=e567]:
+                  - paragraph [ref=e568]: Budget-friendly VPN service with basic features, no-logs policy, and support for multiple platforms.
+                  - generic [ref=e569]:
+                    - link "Website" [ref=e570] [cursor=pointer]:
+                      - /url: https://trust.zone
+                      - text: Website
+                    - link "Docs" [ref=e572] [cursor=pointer]:
+                      - /url: https://trust.zone/support
+                      - text: Docs
+                    - link "Privacy" [ref=e574] [cursor=pointer]:
+                      - /url: https://trust.zone/privacypolicy
+                      - text: Privacy
+              - generic [ref=e576]:
+                - generic [ref=e578]:
+                  - img "TunnelBear" [ref=e580]
+                  - generic [ref=e581]:
+                    - link "TunnelBear" [ref=e582] [cursor=pointer]:
+                      - /url: /services/tunnelbear
+                      - heading "TunnelBear" [level=3] [ref=e583]
+                    - generic [ref=e585]: E2E Encrypted
+                - generic [ref=e586]:
+                  - paragraph [ref=e587]: User-friendly VPN with free plan offering 2GB monthly data and access to servers in 47 countries.
+                  - generic [ref=e588]:
+                    - link "Website" [ref=e589] [cursor=pointer]:
+                      - /url: https://tunnelbear.com
+                      - text: Website
+                    - link "Docs" [ref=e591] [cursor=pointer]:
+                      - /url: https://help.tunnelbear.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e593] [cursor=pointer]:
+                      - /url: https://www.tunnelbear.com/privacy-policy
+                      - text: Privacy
+              - generic [ref=e595]:
+                - generic [ref=e597]:
+                  - img "WhatsApp" [ref=e599]
+                  - generic [ref=e600]:
+                    - link "WhatsApp" [ref=e601] [cursor=pointer]:
+                      - /url: /services/whatsapp
+                      - heading "WhatsApp" [level=3] [ref=e602]
+                    - generic [ref=e604]: E2E Encrypted
+                - generic [ref=e605]:
+                  - paragraph [ref=e606]: Popular messaging app with over 3 billion users, offering end-to-end encryption via Signal Protocol but owned by Meta.
+                  - generic [ref=e607]:
+                    - link "Website" [ref=e608] [cursor=pointer]:
+                      - /url: https://www.whatsapp.com
+                      - text: Website
+                    - link "Docs" [ref=e610] [cursor=pointer]:
+                      - /url: https://faq.whatsapp.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e612] [cursor=pointer]:
+                      - /url: https://www.whatsapp.com/legal/privacy-policy
+                      - text: Privacy
+              - generic [ref=e614]:
+                - generic [ref=e616]:
+                  - img "Windscribe" [ref=e618]
+                  - generic [ref=e619]:
+                    - link "Windscribe" [ref=e620] [cursor=pointer]:
+                      - /url: /services/windscribe
+                      - heading "Windscribe" [level=3] [ref=e621]
+                    - generic [ref=e622]:
+                      - generic [ref=e623]: E2E Encrypted
+                      - generic [ref=e624]: No Tracking
+                - generic [ref=e625]:
+                  - paragraph [ref=e626]: VPN with ad blocking, malware protection, split-tunneling, and servers in 62 countries with free tier available.
+                  - generic [ref=e627]:
+                    - link "Website" [ref=e628] [cursor=pointer]:
+                      - /url: https://windscribe.com
+                      - text: Website
+                    - link "Source" [ref=e630] [cursor=pointer]:
+                      - /url: https://github.com/Windscribe
+                      - text: Source
+                    - link "Privacy" [ref=e632] [cursor=pointer]:
+                      - /url: https://windscribe.com/privacy
+                      - text: Privacy
+              - generic [ref=e634]:
+                - generic [ref=e636]:
+                  - img "Wire" [ref=e638]
+                  - generic [ref=e639]:
+                    - link "Wire" [ref=e640] [cursor=pointer]:
+                      - /url: /services/wire
+                      - heading "Wire" [level=3] [ref=e641]
+                    - generic [ref=e642]:
+                      - generic [ref=e643]: E2E Encrypted
+                      - generic [ref=e644]: No Tracking
+                - generic [ref=e645]:
+                  - paragraph [ref=e646]: End-to-end encrypted messaging and collaboration platform with enterprise features, open-source apps, and GDPR compliance.
+                  - generic [ref=e647]:
+                    - link "Website" [ref=e648] [cursor=pointer]:
+                      - /url: https://wire.com
+                      - text: Website
+                    - link "Source" [ref=e650] [cursor=pointer]:
+                      - /url: https://github.com/wireapp
+                      - text: Source
+                    - link "Docs" [ref=e652] [cursor=pointer]:
+                      - /url: https://support.wire.com/
+                      - text: Docs
+                    - link "Privacy" [ref=e654] [cursor=pointer]:
+                      - /url: https://wire.com/en/legal/privacy/
+                      - text: Privacy
+      - generic [ref=e657]:
+        - generic [ref=e658]:
+          - generic [ref=e660]:
+            - heading "Session" [level=3] [ref=e661]
+            - paragraph [ref=e662]: Session Technology Foundation
+            - generic [ref=e663]:
+              - generic [ref=e664]: Open Source
+              - generic [ref=e665]: E2E Encrypted
+              - generic [ref=e666]: No Phone Required
+              - generic [ref=e667]: Tier A
+          - paragraph [ref=e668]: Decentralized messenger with onion routing and no phone number
+          - generic [ref=e669]:
+            - generic [ref=e670]: Android
+            - generic [ref=e671]: iOS
+          - generic [ref=e672]:
+            - link "Website" [ref=e673] [cursor=pointer]:
+              - /url: https://getsession.org
+              - text: Website
+            - link "Play Store" [ref=e675] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=network.loki.messenger
+              - text: Play Store
+            - link "App Store" [ref=e677] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/session-private-messenger/id1470168868
+              - text: App Store
+            - link "Source" [ref=e679] [cursor=pointer]:
+              - /url: https://github.com/oxen-io/session-android
+              - text: Source
+        - generic [ref=e681]:
+          - generic [ref=e683]:
+            - heading "Signal" [level=3] [ref=e684]
+            - paragraph [ref=e685]: Signal Foundation
+            - generic [ref=e686]:
+              - generic [ref=e687]: Open Source
+              - generic [ref=e688]: E2E Encrypted
+              - generic [ref=e689]: Tier A
+          - paragraph [ref=e690]: Private messenger with end-to-end encryption
+          - generic [ref=e691]:
+            - generic [ref=e692]: Android
+            - generic [ref=e693]: iOS
+          - generic [ref=e694]:
+            - link "Website" [ref=e695] [cursor=pointer]:
+              - /url: https://signal.org
+              - text: Website
+            - link "Play Store" [ref=e697] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms
+              - text: Play Store
+            - link "App Store" [ref=e699] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/signal-private-messenger/id874139669
+              - text: App Store
+            - link "Source" [ref=e701] [cursor=pointer]:
+              - /url: https://github.com/signalapp
+              - text: Source
+        - generic [ref=e703]:
+          - generic [ref=e705]:
+            - heading "Telegram" [level=3] [ref=e706]
+            - paragraph [ref=e707]: Telegram FZ-LLC
+            - generic [ref=e709]: Open Source
+          - paragraph [ref=e710]: Cloud-based messenger with large groups, channels, and bots
+          - generic [ref=e711]:
+            - generic [ref=e712]: Android
+            - generic [ref=e713]: iOS
+          - generic [ref=e714]:
+            - link "Website" [ref=e715] [cursor=pointer]:
+              - /url: https://telegram.org
+              - text: Website
+            - link "Play Store" [ref=e717] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=org.telegram.messenger
+              - text: Play Store
+            - link "App Store" [ref=e719] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/telegram-messenger/id686449807
+              - text: App Store
+            - link "Source" [ref=e721] [cursor=pointer]:
+              - /url: https://github.com/DrKLO/Telegram
+              - text: Source
+        - generic [ref=e723]:
+          - generic [ref=e725]:
+            - heading "Threema" [level=3] [ref=e726]
+            - paragraph [ref=e727]: Threema GmbH
+            - generic [ref=e728]:
+              - generic [ref=e729]: Open Source
+              - generic [ref=e730]: E2E Encrypted
+              - generic [ref=e731]: No Phone Required
+              - generic [ref=e732]: Tier A
+          - paragraph [ref=e733]: Swiss private messenger requiring no phone number with anonymous IDs
+          - generic [ref=e734]:
+            - generic [ref=e735]: Android
+            - generic [ref=e736]: iOS
+          - generic [ref=e737]:
+            - link "Website" [ref=e738] [cursor=pointer]:
+              - /url: https://threema.ch
+              - text: Website
+            - link "Play Store" [ref=e740] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=ch.threema.app
+              - text: Play Store
+            - link "App Store" [ref=e742] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/threema/id578665578
+              - text: App Store
+            - link "Source" [ref=e744] [cursor=pointer]:
+              - /url: https://github.com/threema-ch
+              - text: Source
+    - contentinfo [ref=e747]:
+      - generic [ref=e748]:
+        - generic [ref=e749]:
+          - generic [ref=e750]:
+            - link [ref=e751] [cursor=pointer]:
+              - /url: /
+              - img [ref=e752]
+            - paragraph [ref=e760]: The hackable agency operating system
+          - button "Theme" [ref=e762] [cursor=pointer]
+        - navigation [ref=e764]:
+          - generic [ref=e765]:
+            - heading "Menu" [level=2] [ref=e766]
+            - list [ref=e767]:
+              - listitem [ref=e768]: Privacy Policy
+              - listitem [ref=e769]:
+                - link "Contact Us" [ref=e770] [cursor=pointer]:
+                  - /url: /contact-us
+              - listitem [ref=e771]:
+                - link "Manifesto" [ref=e772] [cursor=pointer]:
+                  - /url: /manifesto
+              - listitem [ref=e773]:
+                - link "Our Team" [ref=e774] [cursor=pointer]:
+                  - /url: /team
+              - listitem [ref=e775]:
+                - link "Articles" [ref=e776] [cursor=pointer]:
+                  - /url: /posts
+              - listitem [ref=e777]:
+                - link "Services" [ref=e778] [cursor=pointer]:
+                  - /url: /
+          - generic [ref=e779]:
+            - paragraph [ref=e781]:
+              - text: Subscribe to our
+              - emphasis [ref=e782]: newsletter
+            - generic [ref=e785]:
+              - generic [ref=e786]:
+                - generic [ref=e789]: What is your email address?
+                - textbox "What is your email address?" [ref=e792]
+              - button "Submit" [ref=e794] [cursor=pointer]:
+                - generic [ref=e795]: Submit
+      - generic [ref=e796]:
+        - generic [ref=e797]:
+          - link "github" [ref=e798] [cursor=pointer]:
+            - /url: https://github.com/directus-community/agency-os
+            - generic [ref=e799]: github
+          - link "linkedin" [ref=e801] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/directus-io
+            - generic [ref=e802]: linkedin
+          - link "youtube" [ref=e804] [cursor=pointer]:
+            - /url: https://www.youtube.com/c/DirectusVideos
+            - generic [ref=e805]: youtube
+          - link "discord" [ref=e807] [cursor=pointer]:
+            - /url: https://directus.chat/
+            - generic [ref=e808]: discord
+          - link "twitter" [ref=e810] [cursor=pointer]:
+            - /url: https://twitter.com/directus
+            - generic [ref=e811]: twitter
+        - generic [ref=e813]:
+          - generic [ref=e814]:
+            - text: Copyright © 1988 - 2026
+            - link "Agency OS." [ref=e815] [cursor=pointer]:
+              - /url: /
+            - text: All rights reserved.
+          - generic [ref=e816]:
+            - text: Site powered by
+            - link "Directus" [ref=e818] [cursor=pointer]:
+              - /url: https://www.directus.io?ref=agencyos_footer
+            - text: and
+            - link "Nuxt" [ref=e819] [cursor=pointer]:
+              - /url: https://www.nuxt.com?ref=agencyos_footer
+            - text: .
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e820]:
+    - button "Toggle Nuxt DevTools" [ref=e821] [cursor=pointer]:
+      - img [ref=e822]
+    - generic "Page load time" [ref=e825]:
+      - generic [ref=e826]: "495"
+      - generic [ref=e827]: ms
+    - button "Toggle Component Inspector" [ref=e829] [cursor=pointer]:
+      - img [ref=e830]
+```

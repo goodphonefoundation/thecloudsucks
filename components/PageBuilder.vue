@@ -6,6 +6,8 @@ const componentMap: Record<BlockType, any> = {
 	block_hardware_showcase: resolveComponent('BlocksHardwareShowcase'),
 	block_os_showcase: resolveComponent('BlocksOsShowcase'),
 	block_latest_services: resolveComponent('BlocksLatestServices'),
+	block_mobile_apps_showcase: resolveComponent('BlocksMobileAppsShowcase'),
+	block_selfhosted_showcase: resolveComponent('BlocksSelfhostedShowcase'),
 	block_hero: resolveComponent('BlocksHero'),
 	block_faqs: resolveComponent('BlocksFaqs'),
 	block_richtext: resolveComponent('BlocksRichText'),

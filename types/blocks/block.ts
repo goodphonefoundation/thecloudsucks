@@ -17,12 +17,16 @@ import type { BlockServicesShowcase } from './block-services-showcase';
 import type { BlockHardwareShowcase } from './block-hardware-showcase';
 import type { BlockOsShowcase } from './block-os-showcase';
 import type { BlockLatestServices } from './block-latest-services';
+import type { BlockMobileAppsShowcase } from './block-mobile-apps-showcase';
+import type { BlockSelfhostedShowcase } from './block-selfhosted-showcase';
 
 export type BlockType =
 	| 'block_services_showcase'
 	| 'block_hardware_showcase'
 	| 'block_os_showcase'
 	| 'block_latest_services'
+	| 'block_mobile_apps_showcase'
+	| 'block_selfhosted_showcase'
 	| 'block_columns'
 	| 'block_cta'
 	| 'block_faqs'
@@ -44,6 +48,8 @@ export type Block =
 	| BlockHardwareShowcase
 	| BlockOsShowcase
 	| BlockLatestServices
+	| BlockMobileAppsShowcase
+	| BlockSelfhostedShowcase
 	| BlockColumn
 	| BlockCta
 	| BlockFaq

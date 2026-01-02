@@ -3,7 +3,20 @@ export interface PostBlogProps {
 	page: any;
 }
 
-defineProps<PostBlogProps>();
+const props = defineProps<PostBlogProps>();
+
+// Load all comments for this post from Directus (if a topic exists)
+const { data: comments } = await useAsyncData(
+	`post-comments-${props.page?.id}`,
+	() =>
+		useDirectus(
+			readItems('discourse_comments', {
+				filter: { post: { _eq: props.page?.id } },
+				sort: ['post_number'],
+				fields: ['id', 'username', 'avatar_template', 'created_at', 'cooked', 'post_number'],
+			}),
+		),
+);
 </script>
 <template>
 	<BlockContainer>
@@ -89,6 +102,7 @@ defineProps<PostBlogProps>();
 				:topic-id="page?.discourse_topic_id"
 				:topic-url="page?.discourse_topic_url"
 				:latest-comment="page?.discourse_latest_comment"
+				:comments="comments || []"
 				:post-title="page?.title"
 			/>
 		</main>

@@ -52,7 +52,7 @@ const tierOptions = [
 ];
 
 // Fetch all operating systems
-const { data: osData } = await useAsyncData('os-showcase-v1', () => {
+const { data: osData } = await useAsyncData('os-showcase-v4', () => {
 	return useDirectus(
 		readItems('operating_systems', {
 			fields: [
@@ -497,7 +497,7 @@ const getTierColor = (tier: string | null | undefined) => {
 						class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700"
 						:class="{ 'flex gap-6 items-start': viewMode === 'list' }"
 					>
-						<!-- Logo (list view) -->
+					<!-- Logo (list view) -->
 						<NuxtLink
 							v-if="viewMode === 'list' && (os.logo_light || os.logo_dark)"
 							:to="`/os/${os.slug}`"
@@ -516,7 +516,7 @@ const getTierColor = (tier: string | null | undefined) => {
 						</NuxtLink>
 						
 						<div class="flex-1">
-							<!-- Logo (grid view) -->
+						<!-- Logo (grid view) -->
 							<NuxtLink
 								v-if="viewMode === 'grid' && (os.logo_light || os.logo_dark)"
 								:to="`/os/${os.slug}`"

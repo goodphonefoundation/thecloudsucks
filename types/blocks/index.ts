@@ -17,4 +17,6 @@ export type * from './block-button';
 export type * from './block-divider';
 export type * from './block-os-showcase';
 export type * from './block-latest-services';
+export type * from './block-mobile-apps-showcase';
+export type * from './block-selfhosted-showcase';
 export type * from './block';

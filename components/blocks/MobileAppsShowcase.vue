@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { BlockAppsShowcase, App, AppCategory } from '~/types';
+import type { BlockMobileAppsShowcase } from '~/types';
 
 const props = defineProps<{
-	data: BlockAppsShowcase | null;
+	data: BlockMobileAppsShowcase | null;
 }>();
 
 // Reactive filters
@@ -12,15 +12,13 @@ const viewMode = ref<'grid' | 'list'>('grid');
 const advancedFilters = ref({
 	open_source: false,
 	e2e_encryption: false,
-	no_tracking: false,
-	self_hostable: false,
-	federated: false,
+	no_phone_required: false,
 });
 
 // Fetch categories
-const { data: categories } = await useAsyncData('app-categories', () => {
+const { data: categories } = await useAsyncData('mobile-app-categories-v2', () => {
 	return useDirectus(
-		readItems('app_categories', {
+		readItems('mobile_app_categories', {
 			fields: ['id', 'name', 'slug'],
 			filter: {
 				status: { _eq: 'published' },
@@ -30,38 +28,34 @@ const { data: categories } = await useAsyncData('app-categories', () => {
 	);
 });
 
-// Fetch all apps with categories
-const { data: appsData } = await useAsyncData('apps-showcase-v4', () => {
+// Fetch all mobile apps with categories
+const { data: appsData } = await useAsyncData('mobile-apps-showcase-v5', () => {
 	return useDirectus(
-		readItems('apps', {
+		readItems('mobile_apps', {
 			fields: [
 				'id',
 				'name',
 				'slug',
-				'short_description',
-				'long_description',
+				'developer_name',
 				'website_url',
+				'android_url',
+				'ios_url',
 				'repo_url',
-				'docs_url',
-				'privacy_policy_url',
-				'brand_logo_light',
-				'brand_logo_dark',
-				'brand_symbol_light',
-				'brand_symbol_dark',
+				'short_description',
+				'platforms_supported',
+				'requires_account',
+				'requires_phone_number',
 				'is_open_source',
+				'license',
 				'end_to_end_encryption',
-				'default_tracking',
-				'self_hostable',
-				'federated',
-				'license_type',
-				'governance_model',
-				'primary_business_model',
-				'data_portability',
-				'categories.app_categories_id.id',
-				'categories.app_categories_id.name',
+				'tier',
+				'app_icon_light',
+				'app_icon_dark',
+				'categories.mobile_app_categories_id.id',
+				'categories.mobile_app_categories_id.name',
 			],
 			filter: {
-				status: { _eq: 'published' },
+				status: { _eq: 'active' },
 			},
 			sort: ['name'],
 		}),
@@ -81,7 +75,7 @@ const filteredApps = computed(() => {
 			return (
 				app.name?.toLowerCase().includes(query) ||
 				app.short_description?.toLowerCase().includes(query) ||
-				app.long_description?.toLowerCase().includes(query)
+				app.developer_name?.toLowerCase().includes(query)
 			);
 		});
 	}
@@ -90,7 +84,7 @@ const filteredApps = computed(() => {
 	if (selectedCategory.value) {
 		filtered = filtered.filter((app: any) => {
 			return app.categories?.some((cat: any) => {
-				return cat.app_categories_id?.id === selectedCategory.value;
+				return cat.mobile_app_categories_id?.id === selectedCategory.value;
 			});
 		});
 	}
@@ -102,14 +96,8 @@ const filteredApps = computed(() => {
 	if (advancedFilters.value.e2e_encryption) {
 		filtered = filtered.filter((app: any) => app.end_to_end_encryption === 'yes');
 	}
-	if (advancedFilters.value.no_tracking) {
-		filtered = filtered.filter((app: any) => app.default_tracking === 'none');
-	}
-	if (advancedFilters.value.self_hostable) {
-		filtered = filtered.filter((app: any) => app.self_hostable === true);
-	}
-	if (advancedFilters.value.federated) {
-		filtered = filtered.filter((app: any) => app.federated === true);
+	if (advancedFilters.value.no_phone_required) {
+		filtered = filtered.filter((app: any) => app.requires_phone_number === false);
 	}
 
 	return filtered;
@@ -127,9 +115,7 @@ const resetFilters = () => {
 	advancedFilters.value = {
 		open_source: false,
 		e2e_encryption: false,
-		no_tracking: false,
-		self_hostable: false,
-		federated: false,
+		no_phone_required: false,
 	};
 };
 </script>
@@ -146,13 +132,13 @@ const resetFilters = () => {
 				<div class="sticky top-4 space-y-6">
 					<!-- Category Filter -->
 					<div class="border rounded-lg p-4 dark:border-gray-700">
-						<h3 class="font-semibold mb-3">Categories</h3>
+						<h3 class="font-semibold mb-3 text-gray-900 dark:text-white">Categories</h3>
 						<div class="space-y-2">
 							<button
 								@click="selectedCategory = null"
 								:class="[
 									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
-									selectedCategory === null ? 'bg-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-800',
+									selectedCategory === null ? 'bg-primary text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800',
 								]"
 							>
 								All Apps
@@ -165,7 +151,7 @@ const resetFilters = () => {
 									'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
 									selectedCategory === category.id
 										? 'bg-primary text-white'
-										: 'hover:bg-gray-100 dark:hover:bg-gray-800',
+										: 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800',
 								]"
 							>
 								{{ category.name }}
@@ -176,7 +162,7 @@ const resetFilters = () => {
 					<!-- Advanced Filters -->
 					<div class="border rounded-lg p-4 dark:border-gray-700">
 						<div class="flex items-center justify-between mb-3">
-							<h3 class="font-semibold">Advanced Filters</h3>
+							<h3 class="font-semibold text-gray-900 dark:text-white">Advanced Filters</h3>
 							<span v-if="activeFiltersCount > 0" class="text-xs bg-primary text-white px-2 py-1 rounded-full">
 								{{ activeFiltersCount }}
 							</span>
@@ -188,7 +174,7 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">Open Source</span>
+								<span class="text-sm text-gray-900 dark:text-white">Open Source</span>
 							</label>
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
@@ -196,31 +182,15 @@ const resetFilters = () => {
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">E2E Encryption</span>
+								<span class="text-sm text-gray-900 dark:text-white">E2E Encryption</span>
 							</label>
 							<label class="flex items-center gap-2 cursor-pointer">
 								<input
-									v-model="advancedFilters.no_tracking"
+									v-model="advancedFilters.no_phone_required"
 									type="checkbox"
 									class="rounded border-gray-300 text-primary focus:ring-primary"
 								/>
-								<span class="text-sm">No Tracking</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="advancedFilters.self_hostable"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Self-Hostable</span>
-							</label>
-							<label class="flex items-center gap-2 cursor-pointer">
-								<input
-									v-model="advancedFilters.federated"
-									type="checkbox"
-									class="rounded border-gray-300 text-primary focus:ring-primary"
-								/>
-								<span class="text-sm">Federated</span>
+								<span class="text-sm text-gray-900 dark:text-white">No Phone Required</span>
 							</label>
 						</div>
 						<button
@@ -319,149 +289,146 @@ const resetFilters = () => {
 						'grid-cols-1': viewMode === 'list',
 					}"
 				>
-					<div
-						v-for="(app, idx) in filteredApps"
-						:key="app.id"
-						v-motion
-						:initial="{
-							opacity: 0,
-							y: 50,
-						}"
-						:visibleOnce="{
-							opacity: 1,
-							y: 0,
-						}"
-						:delay="100 + 50 * idx"
-						class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700"
-						:class="{ 'flex gap-6': viewMode === 'list' }"
+			<div
+				v-for="(app, idx) in filteredApps"
+				:key="app.id"
+				v-motion
+				:initial="{
+					opacity: 0,
+					y: 50,
+				}"
+				:visibleOnce="{
+					opacity: 1,
+					y: 0,
+				}"
+				:delay="100 + 50 * idx"
+					class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700"
+					:class="{ 'flex gap-6': viewMode === 'list' }"
+				>
+				<!-- App Header -->
+				<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
+				<!-- App Icon -->
+					<div v-if="app.app_icon_light || app.app_icon_dark" class="flex-shrink-0">
+						<NuxtImg
+							:src="app.app_icon_light || app.app_icon_dark"
+							:alt="`${app.name} icon`"
+							class="w-12 h-12 rounded-lg"
+						/>
+					</div>
+
+					<div class="flex-1 min-w-0">
+						<h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ app.name }}</h3>
+						<p v-if="app.developer_name" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+							{{ app.developer_name }}
+						</p>
+
+						<!-- Badges -->
+						<div class="flex flex-wrap gap-2 mt-3">
+							<span
+								v-if="app.is_open_source"
+								class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+							>
+								Open Source
+							</span>
+							<span
+								v-if="app.end_to_end_encryption === 'yes'"
+								class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+							>
+								E2E Encrypted
+							</span>
+							<span
+								v-if="!app.requires_phone_number"
+								class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+							>
+								No Phone Required
+							</span>
+							<span
+								v-if="app.tier === 'A_Sovereign'"
+								class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
+							>
+								Tier A
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- App Details -->
+				<div class="flex-1" :class="{ 'mt-4': viewMode === 'grid' }">
+					<!-- App Description -->
+					<p class="text-gray-600 dark:text-gray-400">{{ app.short_description }}</p>
+
+					<!-- Platform Support -->
+					<div v-if="app.platforms_supported" class="flex gap-2 mt-4">
+					<span
+						v-if="app.platforms_supported.includes('android')"
+						class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded"
 					>
-						<!-- App Header -->
-						<div class="flex items-start gap-4" :class="{ 'flex-shrink-0': viewMode === 'list' }">
-							<div v-if="app.brand_symbol_light || app.brand_symbol_dark || app.brand_logo_light || app.brand_logo_dark" class="flex-shrink-0">
-								<!-- Light theme: use dark symbol/logo -->
-								<NuxtImg 
-									:src="app.brand_symbol_dark || app.brand_logo_dark || app.brand_symbol_light || app.brand_logo_light" 
-									:alt="app.name" 
-									class="w-12 h-12 rounded-lg object-contain dark:hidden" 
-								/>
-								<!-- Dark theme: use light symbol/logo -->
-								<NuxtImg 
-									:src="app.brand_symbol_light || app.brand_logo_light || app.brand_symbol_dark || app.brand_logo_dark" 
-									:alt="app.name" 
-									class="w-12 h-12 rounded-lg object-contain hidden dark:block" 
-								/>
-							</div>
-							<div class="flex-1 min-w-0">
-								<NuxtLink :to="`/apps/${app.slug}`" class="hover:text-primary transition-colors">
-									<h3 class="text-xl font-semibold">{{ app.name }}</h3>
-								</NuxtLink>
-								<div class="flex flex-wrap gap-2 mt-2">
-									<span
-										v-if="app.is_open_source"
-										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-									>
-										Open Source
-									</span>
-									<span
-										v-if="app.end_to_end_encryption === 'yes'"
-										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-									>
-										E2E Encrypted
-									</span>
-									<span
-										v-if="app.default_tracking === 'none'"
-										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
-									>
-										No Tracking
-									</span>
-									<span
-										v-if="app.self_hostable"
-										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
-									>
-										Self-Hostable
-									</span>
-									<span
-										v-if="app.federated"
-										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200"
-									>
-										Federated
-									</span>
-								</div>
-							</div>
-						</div>
+						Android
+					</span>
+					<span
+						v-if="app.platforms_supported.includes('ios')"
+						class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded"
+					>
+						iOS
+						</span>
+					</div>
 
-						<!-- App Details (shown in list view) -->
-						<div class="flex-1" :class="{ 'mt-4': viewMode === 'grid' }">
-							<!-- App Description -->
-							<p class="text-gray-600 dark:text-gray-400">{{ app.short_description }}</p>
-
-							<!-- Additional fields in list view -->
-							<div v-if="viewMode === 'list'" class="mt-4 grid grid-cols-2 gap-4 text-sm">
-								<div v-if="app.license_type">
-									<span class="text-gray-500 dark:text-gray-400">License:</span>
-									<span class="ml-2 font-medium">{{ app.license_type }}</span>
-								</div>
-								<div v-if="app.governance_model">
-									<span class="text-gray-500 dark:text-gray-400">Governance:</span>
-									<span class="ml-2 font-medium capitalize">{{ app.governance_model.replace('_', ' ') }}</span>
-								</div>
-								<div v-if="app.primary_business_model">
-									<span class="text-gray-500 dark:text-gray-400">Business Model:</span>
-									<span class="ml-2 font-medium capitalize">{{ app.primary_business_model.replace('_', ' ') }}</span>
-								</div>
-								<div v-if="app.data_portability">
-									<span class="text-gray-500 dark:text-gray-400">Data Portability:</span>
-									<span class="ml-2 font-medium capitalize">{{ app.data_portability }}</span>
-								</div>
-							</div>
-
-							<!-- App Links -->
-							<div class="mt-6 flex flex-wrap gap-3">
-								<UButton
-									v-if="app.website_url"
-									:to="app.website_url"
-									target="_blank"
-									color="primary"
-									size="sm"
-									icon="i-mdi-open-in-new"
-								>
-									Website
-								</UButton>
-								<UButton
-									v-if="app.repo_url"
-									:to="app.repo_url"
-									target="_blank"
-									color="gray"
-									variant="outline"
-									size="sm"
-									icon="i-mdi-github"
-								>
-									Source
-								</UButton>
-								<UButton
-									v-if="app.docs_url"
-									:to="app.docs_url"
-									target="_blank"
-									color="gray"
-									variant="outline"
-									size="sm"
-									icon="i-mdi-book-open"
-								>
-									Docs
-								</UButton>
-								<UButton
-									v-if="app.privacy_policy_url"
-									:to="app.privacy_policy_url"
-									target="_blank"
-									color="gray"
-									variant="outline"
-									size="sm"
-									icon="i-mdi-shield-check"
-								>
-									Privacy
-								</UButton>
-							</div>
-						</div>
+					<!-- App Links -->
+					<div class="mt-6 flex flex-wrap gap-3">
+					<UButton
+						v-if="app.slug"
+						:to="`/apps/${app.slug}`"
+						color="primary"
+						size="sm"
+					>
+						Details
+					</UButton>
+					<UButton
+						v-if="app.website_url"
+						:to="app.website_url"
+						target="_blank"
+						color="gray"
+						variant="outline"
+						size="sm"
+						icon="i-mdi-open-in-new"
+					>
+						Website
+					</UButton>
+					<UButton
+						v-if="app.android_url"
+						:to="app.android_url"
+						target="_blank"
+						color="gray"
+						variant="outline"
+						size="sm"
+						icon="i-mdi-google-play"
+					>
+						Play Store
+					</UButton>
+					<UButton
+						v-if="app.ios_url"
+						:to="app.ios_url"
+						target="_blank"
+						color="gray"
+						variant="outline"
+						size="sm"
+						icon="i-mdi-apple"
+					>
+						App Store
+					</UButton>
+					<UButton
+						v-if="app.repo_url"
+						:to="app.repo_url"
+						target="_blank"
+						color="gray"
+						variant="outline"
+						size="sm"
+						icon="i-mdi-github"
+					>
+							Source
+						</UButton>
+					</div>
+				</div>
 					</div>
 				</div>
 

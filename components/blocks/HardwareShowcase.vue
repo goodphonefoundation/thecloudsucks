@@ -33,40 +33,10 @@ const hardwareTypes = [
 ];
 
 // Fetch all hardware items
-const { data: hardwareData } = await useAsyncData('hardware-showcase-v1', () => {
+const { data: hardwareData, error: hardwareError } = await useAsyncData('hardware-showcase-v5', () => {
 	return useDirectus(
 		readItems('hardware_items', {
-			fields: [
-				'id',
-				'name',
-				'slug',
-				'hardware_type',
-				'manufacturer',
-				'website_url',
-				'repo_url',
-				'docs_url',
-				'privacy_policy_url',
-				'short_description',
-				'long_description',
-				'brand_logo_light',
-				'brand_logo_dark',
-				'brand_symbol_light',
-				'brand_symbol_dark',
-				'repairability',
-				'parts_availability',
-				'warranty_years',
-				'software_support_years',
-				'security_updates_policy',
-				'bootloader_unlockable',
-				'open_firmware_support',
-				'alternative_os_support',
-				'telemetry_default',
-				'cloud_dependency',
-				'tier',
-				'recommended_use',
-				'audience_level',
-				'scores',
-			],
+			fields: ['*'],
 			filter: {
 				status: { _eq: 'published' },
 			},

@@ -1,0 +1,149 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Agency OS" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e16]: Agency OS
+        - navigation "Global" [ref=e17]:
+          - link "Apps" [ref=e18] [cursor=pointer]:
+            - /url: /apps
+          - link "Services" [ref=e19] [cursor=pointer]:
+            - /url: /services
+          - link "Hardware" [ref=e20] [cursor=pointer]:
+            - /url: /hardware
+          - link "OS" [ref=e21] [cursor=pointer]:
+            - /url: /os
+          - link "Self-Hosting" [ref=e22] [cursor=pointer]:
+            - /url: /self-hosting
+          - link "Articles" [ref=e23] [cursor=pointer]:
+            - /url: /posts
+          - link "Videos" [ref=e24] [cursor=pointer]:
+            - /url: /videos
+          - link "Guide" [ref=e25] [cursor=pointer]:
+            - /url: /help
+          - button "About" [ref=e27] [cursor=pointer]: About
+        - button "Theme" [ref=e30] [cursor=pointer]
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Privacy-Respecting Apps" [level=2] [ref=e36]
+        - generic [ref=e37]: Discover applications that put you in control of your digital life.
+        - generic [ref=e38]:
+          - complementary [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - heading "Categories" [level=3] [ref=e42]
+                - button "All Services" [ref=e44] [cursor=pointer]
+              - generic [ref=e45]:
+                - heading "Advanced Filters" [level=3] [ref=e47]
+                - generic [ref=e48]:
+                  - generic [ref=e49] [cursor=pointer]:
+                    - checkbox "Open Source" [ref=e50]
+                    - generic [ref=e51]: Open Source
+                  - generic [ref=e52] [cursor=pointer]:
+                    - checkbox "E2E Encryption" [ref=e53]
+                    - generic [ref=e54]: E2E Encryption
+                  - generic [ref=e55] [cursor=pointer]:
+                    - checkbox "No Tracking" [ref=e56]
+                    - generic [ref=e57]: No Tracking
+                  - generic [ref=e58] [cursor=pointer]:
+                    - checkbox "Self-Hostable" [ref=e59]
+                    - generic [ref=e60]: Self-Hostable
+                  - generic [ref=e61] [cursor=pointer]:
+                    - checkbox "Federated" [ref=e62]
+                    - generic [ref=e63]: Federated
+          - generic [ref=e64]:
+            - generic [ref=e66]:
+              - generic:
+                - img
+              - textbox "Search services by name or description..." [ref=e67]
+            - generic [ref=e68]:
+              - paragraph [ref=e69]: 0 services found
+              - generic [ref=e70]:
+                - button "Grid view" [ref=e71] [cursor=pointer]:
+                  - img [ref=e72]
+                - button "List view" [ref=e74] [cursor=pointer]:
+                  - img [ref=e75]
+            - paragraph [ref=e78]: No services match the selected filters.
+      - paragraph [ref=e81]: No mobile apps found.
+    - contentinfo [ref=e83]:
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - link [ref=e87] [cursor=pointer]:
+              - /url: /
+              - img [ref=e88]
+            - paragraph [ref=e96]: The hackable agency operating system
+          - button "Theme" [ref=e98] [cursor=pointer]
+        - navigation [ref=e100]:
+          - generic [ref=e101]:
+            - heading "Menu" [level=2] [ref=e102]
+            - list [ref=e103]:
+              - listitem [ref=e104]: Privacy Policy
+              - listitem [ref=e105]:
+                - link "Contact Us" [ref=e106] [cursor=pointer]:
+                  - /url: /contact-us
+              - listitem [ref=e107]:
+                - link "Manifesto" [ref=e108] [cursor=pointer]:
+                  - /url: /manifesto
+              - listitem [ref=e109]:
+                - link "Our Team" [ref=e110] [cursor=pointer]:
+                  - /url: /team
+              - listitem [ref=e111]:
+                - link "Articles" [ref=e112] [cursor=pointer]:
+                  - /url: /posts
+              - listitem [ref=e113]:
+                - link "Services" [ref=e114] [cursor=pointer]:
+                  - /url: /
+      - generic [ref=e115]:
+        - generic [ref=e116]:
+          - link "github" [ref=e117] [cursor=pointer]:
+            - /url: https://github.com/directus-community/agency-os
+            - generic [ref=e118]: github
+          - link "linkedin" [ref=e120] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/directus-io
+            - generic [ref=e121]: linkedin
+          - link "youtube" [ref=e123] [cursor=pointer]:
+            - /url: https://www.youtube.com/c/DirectusVideos
+            - generic [ref=e124]: youtube
+          - link "discord" [ref=e126] [cursor=pointer]:
+            - /url: https://directus.chat/
+            - generic [ref=e127]: discord
+          - link "twitter" [ref=e129] [cursor=pointer]:
+            - /url: https://twitter.com/directus
+            - generic [ref=e130]: twitter
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - text: Copyright © 1988 - 2026
+            - link "Agency OS." [ref=e134] [cursor=pointer]:
+              - /url: /
+            - text: All rights reserved.
+          - generic [ref=e135]:
+            - text: Site powered by
+            - link "Directus" [ref=e137] [cursor=pointer]:
+              - /url: https://www.directus.io?ref=agencyos_footer
+            - text: and
+            - link "Nuxt" [ref=e138] [cursor=pointer]:
+              - /url: https://www.nuxt.com?ref=agencyos_footer
+            - text: .
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e139]:
+    - button "Toggle Nuxt DevTools" [ref=e140] [cursor=pointer]:
+      - img [ref=e141]
+    - generic "Page load time" [ref=e144]:
+      - generic [ref=e145]: "113"
+      - generic [ref=e146]: ms
+    - button "Toggle Component Inspector" [ref=e148] [cursor=pointer]:
+      - img [ref=e149]
+```

@@ -1,0 +1,166 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: "{ \"error\": \"true\", \"url\": \"/apps\", \"statusCode\": 404, \"statusMessage\": \"Page Not Found\", \"message\": \"Page Not Found\", \"stack\": \"Page Not Found\\nat createError (C:/git/cloud/node_modules/.pnpm/h3@1.15.4/node_modules/h3/dist/index.mjs:187:15)\\nat createError (C:/git/cloud/node_modules/.pnpm/nuxt@4.2.2_@parcel+watcher@2.5.1_@types+node@25.0.3_@vue+compiler-sfc@3.5.26_cac@6.7.14_db0@0_oi24pod5v5m6r2ygrcq22cph6e/node_modules/nuxt/dist/app/composables/error.js:42:58)\\nat setup (C:/git/cloud/pages/[...permalink].vue:249:51)\\nat process.processTicksAndRejections (node:internal/process/task_queues:103:5)\" }"
+  - status [ref=e4]
+  - iframe [ref=e5]:
+    - generic [ref=f1e2]:
+      - banner [ref=f1e3]:
+        - generic [ref=f1e5]:
+          - checkbox [ref=f1e6]
+          - generic "Light mode" [ref=f1e8] [cursor=pointer]:
+            - img [ref=f1e9]
+      - generic [ref=f1e13]:
+        - heading "Error" [level=4] [ref=f1e14]
+        - heading "An error has occurred" [level=1] [ref=f1e15]
+      - heading "Page Not Found Copy error message to clipboard" [level=2] [ref=f1e19]:
+        - img [ref=f1e21]
+        - generic [ref=f1e23]: Page Not Found
+        - button "Copy error message to clipboard" [ref=f1e24] [cursor=pointer]:
+          - img [ref=f1e25]
+      - generic [ref=f1e30]:
+        - heading "Stack Trace" [level=3] [ref=f1e33]
+        - generic [ref=f1e35]:
+          - generic [ref=f1e36]:
+            - generic [ref=f1e38]:
+              - checkbox "View All Frames" [ref=f1e39]
+              - generic [ref=f1e40]: View All Frames
+            - generic [ref=f1e42]:
+              - button "Pretty" [ref=f1e43]
+              - button "Raw" [ref=f1e44]
+          - list [ref=f1e47]:
+            - listitem [ref=f1e48]:
+              - generic [ref=f1e49]:
+                - button "C:/git/cloud/node_modules/.pnpm/h3@1.15.4/node_modules/h3/dist/index.mjs in createError at line 187:15" [ref=f1e50]:
+                  - link "C:/git/cloud/node_modules/.pnpm/h3@1.15.4/node_modules/h3/dist/index.mjs" [ref=f1e51] [cursor=pointer]:
+                    - /url: vscode://file/C:/git/cloud/node_modules/.pnpm/h3@1.15.4/node_modules/h3/dist/index.mjs:187
+                  - generic [ref=f1e52]:
+                    - text: in
+                    - code [ref=f1e53]: createError
+                  - generic [ref=f1e54]:
+                    - text: at line
+                    - code [ref=f1e55]: 187:15
+                - button [ref=f1e57]:
+                  - img [ref=f1e58]
+            - listitem [ref=f1e60]:
+              - generic [ref=f1e61]:
+                - button "C:/git/cloud/node_modules/.pnpm/nuxt@4.2.2_@parcel+watcher@2.5.1_@types+node@25.0.3_@vue+compiler-sfc@3.5.26_cac@6.7.14_db0@0_oi24pod5v5m6r2ygrcq22cph6e/node_modules/nuxt/dist/app/composables/error.js in createError at line 42:58" [ref=f1e62]:
+                  - link "C:/git/cloud/node_modules/.pnpm/nuxt@4.2.2_@parcel+watcher@2.5.1_@types+node@25.0.3_@vue+compiler-sfc@3.5.26_cac@6.7.14_db0@0_oi24pod5v5m6r2ygrcq22cph6e/node_modules/nuxt/dist/app/composables/error.js" [ref=f1e63] [cursor=pointer]:
+                    - /url: vscode://file/C:/git/cloud/node_modules/.pnpm/nuxt@4.2.2_@parcel+watcher@2.5.1_@types+node@25.0.3_@vue+compiler-sfc@3.5.26_cac@6.7.14_db0@0_oi24pod5v5m6r2ygrcq22cph6e/node_modules/nuxt/dist/app/composables/error.js:42
+                  - generic [ref=f1e64]:
+                    - text: in
+                    - code [ref=f1e65]: createError
+                  - generic [ref=f1e66]:
+                    - text: at line
+                    - code [ref=f1e67]: 42:58
+                - button [ref=f1e69]:
+                  - img [ref=f1e70]
+            - listitem [ref=f1e72]:
+              - generic [ref=f1e73]:
+                - button "C:/git/cloud/pages/[...permalink].vue in setup at line 249:51" [ref=f1e74]:
+                  - link "C:/git/cloud/pages/[...permalink].vue" [ref=f1e75] [cursor=pointer]:
+                    - /url: vscode://file/C:/git/cloud/pages/[...permalink].vue:249
+                  - generic [ref=f1e76]:
+                    - text: in
+                    - code [ref=f1e77]: setup
+                  - generic [ref=f1e78]:
+                    - text: at line
+                    - code [ref=f1e79]: 249:51
+                - generic [ref=f1e80]:
+                  - generic [ref=f1e81]: In App
+                  - button [ref=f1e82]:
+                    - img [ref=f1e83]
+              - code [ref=f1e87]:
+                - generic [ref=f1e101]: "link: [ { rel: 'canonical', href: () => unref(metadata)?.canonical, }, ], }); // SEO Meta useServerSeoMeta({ title: () => unref(metadata)?.title,"
+      - generic [ref=f1e103]:
+        - heading "Error Cause" [level=3] [ref=f1e106]
+        - code [ref=f1e111]:
+          - generic [ref=f1e112]:
+            - text: "Object {"
+            - button "▼" [ref=f1e113]:
+              - generic [ref=f1e114]: ▼
+            - text: "}"
+      - generic [ref=f1e116]:
+        - heading "Request" [level=3] [ref=f1e118]
+        - generic [ref=f1e119]:
+          - generic [ref=f1e120]:
+            - heading "url" [level=4] [ref=f1e121]
+            - text: http://localhost:3000/apps
+          - generic [ref=f1e122]:
+            - heading "method" [level=4] [ref=f1e123]
+            - text: GET
+          - generic [ref=f1e124]:
+            - heading "headers" [level=4] [ref=f1e125]
+            - table [ref=f1e126]:
+              - rowgroup [ref=f1e127]:
+                - row "host localhost:3000" [ref=f1e128]:
+                  - cell "host" [ref=f1e129]
+                  - cell "localhost:3000" [ref=f1e130]
+                - row "connection close" [ref=f1e131]:
+                  - cell "connection" [ref=f1e132]
+                  - cell "close" [ref=f1e133]
+                - row "sec-ch-ua \"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"" [ref=f1e134]:
+                  - cell "sec-ch-ua" [ref=f1e135]
+                  - cell "\"HeadlessChrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"" [ref=f1e136]
+                - row "sec-ch-ua-mobile ?0" [ref=f1e137]:
+                  - cell "sec-ch-ua-mobile" [ref=f1e138]
+                  - cell "?0" [ref=f1e139]
+                - row "sec-ch-ua-platform \"Windows\"" [ref=f1e140]:
+                  - cell "sec-ch-ua-platform" [ref=f1e141]
+                  - cell "\"Windows\"" [ref=f1e142]
+                - row "upgrade-insecure-requests 1" [ref=f1e143]:
+                  - cell "upgrade-insecure-requests" [ref=f1e144]
+                  - cell "1" [ref=f1e145]
+                - row "user-agent Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.7499.4 Safari/537.36" [ref=f1e146]:
+                  - cell "user-agent" [ref=f1e147]
+                  - cell "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.7499.4 Safari/537.36" [ref=f1e148]
+                - row "accept-language en-US" [ref=f1e149]:
+                  - cell "accept-language" [ref=f1e150]
+                  - cell "en-US" [ref=f1e151]
+                - row "accept text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7" [ref=f1e152]:
+                  - cell "accept" [ref=f1e153]
+                  - cell "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7" [ref=f1e154]
+                - row "sec-fetch-site none" [ref=f1e155]:
+                  - cell "sec-fetch-site" [ref=f1e156]
+                  - cell "none" [ref=f1e157]
+                - row "sec-fetch-mode navigate" [ref=f1e158]:
+                  - cell "sec-fetch-mode" [ref=f1e159]
+                  - cell "navigate" [ref=f1e160]
+                - row "sec-fetch-user ?1" [ref=f1e161]:
+                  - cell "sec-fetch-user" [ref=f1e162]
+                  - cell "?1" [ref=f1e163]
+                - row "sec-fetch-dest document" [ref=f1e164]:
+                  - cell "sec-fetch-dest" [ref=f1e165]
+                  - cell "document" [ref=f1e166]
+                - row "accept-encoding gzip, deflate, br, zstd" [ref=f1e167]:
+                  - cell "accept-encoding" [ref=f1e168]
+                  - cell "gzip, deflate, br, zstd" [ref=f1e169]
+                - row "x-forwarded-for ::1" [ref=f1e170]:
+                  - cell "x-forwarded-for" [ref=f1e171]
+                  - cell "::1" [ref=f1e172]
+                - row "x-forwarded-port 3000" [ref=f1e173]:
+                  - cell "x-forwarded-port" [ref=f1e174]
+                  - cell "3000" [ref=f1e175]
+                - row "x-forwarded-proto http" [ref=f1e176]:
+                  - cell "x-forwarded-proto" [ref=f1e177]
+                  - cell "http" [ref=f1e178]
+  - button "Toggle detailed error view" [ref=e6] [cursor=pointer]:
+    - generic [ref=e7]: Toggle detailed error view
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e8]:
+    - button "Toggle Nuxt DevTools" [ref=e9] [cursor=pointer]:
+      - img [ref=e10]
+    - generic "App load time" [ref=e13]:
+      - generic [ref=e14]: "2.5"
+      - generic [ref=e15]: s
+    - button "Toggle Component Inspector" [ref=e17] [cursor=pointer]:
+      - img [ref=e18]
+```

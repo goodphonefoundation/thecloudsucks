@@ -1,0 +1,261 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Agency OS" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e16]: Agency OS
+        - navigation "Global" [ref=e17]:
+          - link "Apps" [ref=e18] [cursor=pointer]:
+            - /url: /apps
+          - link "Services" [ref=e19] [cursor=pointer]:
+            - /url: /services
+          - link "Hardware" [ref=e20] [cursor=pointer]:
+            - /url: /hardware
+          - link "OS" [ref=e21] [cursor=pointer]:
+            - /url: /os
+          - link "Self-Hosting" [ref=e22] [cursor=pointer]:
+            - /url: /self-hosting
+          - link "Articles" [ref=e23] [cursor=pointer]:
+            - /url: /posts
+          - link "Videos" [ref=e24] [cursor=pointer]:
+            - /url: /videos
+          - link "Guide" [ref=e25] [cursor=pointer]:
+            - /url: /help
+          - button "About" [ref=e27] [cursor=pointer]: About
+        - button "Theme" [ref=e30] [cursor=pointer]
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - heading "Privacy-Respecting Apps" [level=2] [ref=e36]
+        - generic [ref=e37]: Discover applications that put you in control of your digital life.
+        - generic [ref=e38]:
+          - complementary [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - heading "Categories" [level=3] [ref=e42]
+                - generic [ref=e43]:
+                  - button "All Services" [ref=e44] [cursor=pointer]
+                  - button "Messaging" [ref=e45] [cursor=pointer]
+                  - button "VPN" [ref=e46] [cursor=pointer]
+              - generic [ref=e47]:
+                - heading "Advanced Filters" [level=3] [ref=e49]
+                - generic [ref=e50]:
+                  - generic [ref=e51] [cursor=pointer]:
+                    - checkbox "Open Source" [ref=e52]
+                    - generic [ref=e53]: Open Source
+                  - generic [ref=e54] [cursor=pointer]:
+                    - checkbox "E2E Encryption" [ref=e55]
+                    - generic [ref=e56]: E2E Encryption
+                  - generic [ref=e57] [cursor=pointer]:
+                    - checkbox "No Tracking" [ref=e58]
+                    - generic [ref=e59]: No Tracking
+                  - generic [ref=e60] [cursor=pointer]:
+                    - checkbox "Self-Hostable" [ref=e61]
+                    - generic [ref=e62]: Self-Hostable
+                  - generic [ref=e63] [cursor=pointer]:
+                    - checkbox "Federated" [ref=e64]
+                    - generic [ref=e65]: Federated
+          - generic [ref=e66]:
+            - generic [ref=e68]:
+              - generic:
+                - img
+              - textbox "Search services by name or description..." [ref=e69]
+            - generic [ref=e70]:
+              - paragraph [ref=e71]: 0 services found
+              - generic [ref=e72]:
+                - button "Grid view" [ref=e73] [cursor=pointer]:
+                  - img [ref=e74]
+                - button "List view" [ref=e76] [cursor=pointer]:
+                  - img [ref=e77]
+            - paragraph [ref=e80]: No services match the selected filters.
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - generic [ref=e85]:
+            - heading "Session" [level=3] [ref=e86]
+            - paragraph [ref=e87]: Session Technology Foundation
+            - generic [ref=e88]:
+              - generic [ref=e89]: Open Source
+              - generic [ref=e90]: E2E Encrypted
+              - generic [ref=e91]: No Phone Required
+              - generic [ref=e92]: Tier A
+          - paragraph [ref=e93]: Decentralized messenger with onion routing and no phone number
+          - generic [ref=e94]:
+            - generic [ref=e95]: Android
+            - generic [ref=e96]: iOS
+          - generic [ref=e97]:
+            - link "Website" [ref=e98] [cursor=pointer]:
+              - /url: https://getsession.org
+              - text: Website
+            - link "Play Store" [ref=e100] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=network.loki.messenger
+              - text: Play Store
+            - link "App Store" [ref=e102] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/session-private-messenger/id1470168868
+              - text: App Store
+            - link "Source" [ref=e104] [cursor=pointer]:
+              - /url: https://github.com/oxen-io/session-android
+              - text: Source
+        - generic [ref=e106]:
+          - generic [ref=e108]:
+            - heading "Signal" [level=3] [ref=e109]
+            - paragraph [ref=e110]: Signal Foundation
+            - generic [ref=e111]:
+              - generic [ref=e112]: Open Source
+              - generic [ref=e113]: E2E Encrypted
+              - generic [ref=e114]: Tier A
+          - paragraph [ref=e115]: Private messenger with end-to-end encryption
+          - generic [ref=e116]:
+            - generic [ref=e117]: Android
+            - generic [ref=e118]: iOS
+          - generic [ref=e119]:
+            - link "Website" [ref=e120] [cursor=pointer]:
+              - /url: https://signal.org
+              - text: Website
+            - link "Play Store" [ref=e122] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms
+              - text: Play Store
+            - link "App Store" [ref=e124] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/signal-private-messenger/id874139669
+              - text: App Store
+            - link "Source" [ref=e126] [cursor=pointer]:
+              - /url: https://github.com/signalapp
+              - text: Source
+        - generic [ref=e128]:
+          - generic [ref=e130]:
+            - heading "Telegram" [level=3] [ref=e131]
+            - paragraph [ref=e132]: Telegram FZ-LLC
+            - generic [ref=e134]: Open Source
+          - paragraph [ref=e135]: Cloud-based messenger with large groups, channels, and bots
+          - generic [ref=e136]:
+            - generic [ref=e137]: Android
+            - generic [ref=e138]: iOS
+          - generic [ref=e139]:
+            - link "Website" [ref=e140] [cursor=pointer]:
+              - /url: https://telegram.org
+              - text: Website
+            - link "Play Store" [ref=e142] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=org.telegram.messenger
+              - text: Play Store
+            - link "App Store" [ref=e144] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/telegram-messenger/id686449807
+              - text: App Store
+            - link "Source" [ref=e146] [cursor=pointer]:
+              - /url: https://github.com/DrKLO/Telegram
+              - text: Source
+        - generic [ref=e148]:
+          - generic [ref=e150]:
+            - heading "Threema" [level=3] [ref=e151]
+            - paragraph [ref=e152]: Threema GmbH
+            - generic [ref=e153]:
+              - generic [ref=e154]: Open Source
+              - generic [ref=e155]: E2E Encrypted
+              - generic [ref=e156]: No Phone Required
+              - generic [ref=e157]: Tier A
+          - paragraph [ref=e158]: Swiss private messenger requiring no phone number with anonymous IDs
+          - generic [ref=e159]:
+            - generic [ref=e160]: Android
+            - generic [ref=e161]: iOS
+          - generic [ref=e162]:
+            - link "Website" [ref=e163] [cursor=pointer]:
+              - /url: https://threema.ch
+              - text: Website
+            - link "Play Store" [ref=e165] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=ch.threema.app
+              - text: Play Store
+            - link "App Store" [ref=e167] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/threema/id578665578
+              - text: App Store
+            - link "Source" [ref=e169] [cursor=pointer]:
+              - /url: https://github.com/threema-ch
+              - text: Source
+    - contentinfo [ref=e172]:
+      - generic [ref=e173]:
+        - generic [ref=e174]:
+          - generic [ref=e175]:
+            - link [ref=e176] [cursor=pointer]:
+              - /url: /
+              - img [ref=e177]
+            - paragraph [ref=e185]: The hackable agency operating system
+          - button "Theme" [ref=e187] [cursor=pointer]
+        - navigation [ref=e189]:
+          - generic [ref=e190]:
+            - heading "Menu" [level=2] [ref=e191]
+            - list [ref=e192]:
+              - listitem [ref=e193]: Privacy Policy
+              - listitem [ref=e194]:
+                - link "Contact Us" [ref=e195] [cursor=pointer]:
+                  - /url: /contact-us
+              - listitem [ref=e196]:
+                - link "Manifesto" [ref=e197] [cursor=pointer]:
+                  - /url: /manifesto
+              - listitem [ref=e198]:
+                - link "Our Team" [ref=e199] [cursor=pointer]:
+                  - /url: /team
+              - listitem [ref=e200]:
+                - link "Articles" [ref=e201] [cursor=pointer]:
+                  - /url: /posts
+              - listitem [ref=e202]:
+                - link "Services" [ref=e203] [cursor=pointer]:
+                  - /url: /
+          - generic [ref=e204]:
+            - paragraph [ref=e206]:
+              - text: Subscribe to our
+              - emphasis [ref=e207]: newsletter
+            - generic [ref=e210]:
+              - generic [ref=e211]:
+                - generic [ref=e214]: What is your email address?
+                - textbox "What is your email address?" [ref=e217]
+              - button "Submit" [ref=e219] [cursor=pointer]:
+                - generic [ref=e220]: Submit
+      - generic [ref=e221]:
+        - generic [ref=e222]:
+          - link "github" [ref=e223] [cursor=pointer]:
+            - /url: https://github.com/directus-community/agency-os
+            - generic [ref=e224]: github
+          - link "linkedin" [ref=e226] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/directus-io
+            - generic [ref=e227]: linkedin
+          - link "youtube" [ref=e229] [cursor=pointer]:
+            - /url: https://www.youtube.com/c/DirectusVideos
+            - generic [ref=e230]: youtube
+          - link "discord" [ref=e232] [cursor=pointer]:
+            - /url: https://directus.chat/
+            - generic [ref=e233]: discord
+          - link "twitter" [ref=e235] [cursor=pointer]:
+            - /url: https://twitter.com/directus
+            - generic [ref=e236]: twitter
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - text: Copyright © 1988 - 2026
+            - link "Agency OS." [ref=e240] [cursor=pointer]:
+              - /url: /
+            - text: All rights reserved.
+          - generic [ref=e241]:
+            - text: Site powered by
+            - link "Directus" [ref=e243] [cursor=pointer]:
+              - /url: https://www.directus.io?ref=agencyos_footer
+            - text: and
+            - link "Nuxt" [ref=e244] [cursor=pointer]:
+              - /url: https://www.nuxt.com?ref=agencyos_footer
+            - text: .
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e245]:
+    - button "Toggle Nuxt DevTools" [ref=e246] [cursor=pointer]:
+      - img [ref=e247]
+    - generic "Page load time" [ref=e250]:
+      - generic [ref=e251]: "322"
+      - generic [ref=e252]: ms
+    - button "Toggle Component Inspector" [ref=e254] [cursor=pointer]:
+      - img [ref=e255]
+```

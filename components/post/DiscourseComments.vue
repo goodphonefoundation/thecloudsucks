@@ -12,6 +12,7 @@ interface Props {
 	topicId?: number;
 	topicUrl?: string;
 	latestComment?: DiscourseComment;
+	comments?: DiscourseComment[]; // full list when available
 	postTitle: string;
 }
 
@@ -19,6 +20,7 @@ const props = defineProps<Props>();
 
 const discourseUrl = 'https://community.thecloud.sucks';
 const hasDiscourse = computed(() => !!props.topicId);
+const hasComments = computed(() => Array.isArray(props.comments) && props.comments.length > 0);
 
 // Format avatar URL
 const getAvatarUrl = (template: string) => {
@@ -58,8 +60,28 @@ const getRelativeTime = (dateString: string) => {
 
 		<!-- Has Discourse topic -->
 		<div v-else>
-			<!-- Latest Comment -->
-			<div v-if="latestComment" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
+			<!-- Full comment list when available -->
+			<div v-if="hasComments" class="space-y-6 mb-6">
+				<div
+					v-for="c in comments"
+					:key="c.id"
+					class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6"
+				>
+					<div class="flex items-start gap-4">
+						<img :src="getAvatarUrl(c.avatar_template)" :alt="c.username" class="w-10 h-10 rounded-full" />
+						<div class="flex-1 min-w-0">
+							<div class="flex items-center gap-2 mb-2">
+								<span class="font-semibold text-gray-900 dark:text-white">{{ c.username }}</span>
+								<span class="text-sm text-gray-500 dark:text-gray-400">{{ getRelativeTime(c.created_at) }}</span>
+							</div>
+							<div class="prose prose-sm dark:prose-invert max-w-none" v-html="c.cooked"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Fallback: Latest Comment only -->
+			<div v-else-if="latestComment" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
 				<div class="flex items-start gap-4">
 					<img
 						:src="getAvatarUrl(latestComment.avatar_template)"
@@ -87,7 +109,7 @@ const getRelativeTime = (dateString: string) => {
 			<div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
 				<div class="text-center sm:text-left">
 					<p class="text-gray-700 dark:text-gray-300 font-medium">
-						{{ latestComment ? 'Join the conversation' : 'Start the discussion' }}
+						{{ (hasComments || latestComment) ? 'Join the conversation' : 'Start the discussion' }}
 					</p>
 					<p class="text-sm text-gray-500 dark:text-gray-400">
 						Share your thoughts on our community forum
@@ -101,7 +123,7 @@ const getRelativeTime = (dateString: string) => {
 					size="lg"
 					icon="i-mdi-forum"
 				>
-					{{ latestComment ? 'View Full Discussion' : 'Start Discussion' }}
+					{{ (hasComments || latestComment) ? 'View Full Discussion' : 'Start Discussion' }}
 				</UButton>
 			</div>
 		</div>
