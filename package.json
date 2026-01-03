@@ -11,7 +11,14 @@
 		"typecheck": "nuxt typecheck",
 		"lint": "eslint --cache .",
 		"format": "prettier --write \"**/*.{md,y?(a)ml,json,vue}\"",
-		"sync:typesense": "tsx scripts/sync-typesense.ts"
+		"sync:typesense:carriers": "tsx scripts/sync-typesense-carriers.ts",
+		"sync:typesense:services": "tsx scripts/sync-typesense-services.ts",
+		"sync:typesense:hardware": "tsx scripts/sync-typesense-hardware.ts",
+		"sync:typesense:posts": "tsx scripts/sync-typesense-posts.ts",
+		"sync:typesense:help": "tsx scripts/sync-typesense-help.ts",
+		"sync:typesense:selfhosted": "tsx scripts/sync-typesense-selfhosted.ts",
+		"sync:typesense:os": "tsx scripts/sync-typesense-os.ts",
+		"sync:typesense:all": "pnpm sync:typesense:carriers && pnpm sync:typesense:services && pnpm sync:typesense:hardware && pnpm sync:typesense:posts && pnpm sync:typesense:help && pnpm sync:typesense:selfhosted && pnpm sync:typesense:os"
 	},
 	"devDependencies": {
 		"@iconify-json/material-symbols": "^1.2.50",
@@ -31,6 +38,7 @@
 		"eslint-plugin-vue": "^10.6.2",
 		"prettier": "^3.7.4",
 		"tailwindcss": "^3.4.17",
+		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
 		"vue-eslint-parser": "^10.2.0",
 		"vue-tsc": "^2.2.8"

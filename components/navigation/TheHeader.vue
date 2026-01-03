@@ -1,5 +1,12 @@
 <script setup lang="ts">
 const { theme, globals } = useAppConfig();
+const searchModal = ref<any>(null);
+
+const openSearch = () => {
+	if (searchModal.value) {
+		searchModal.value.open();
+	}
+};
 
 const {
 	data: navigation,
@@ -57,9 +64,19 @@ const {
 				<NavigationMenuItem v-for="item in navigation?.items" :key="item.id" :item="item" />
 			</nav>
 			<div class="flex items-center justify-end flex-shrink-0 space-x-2">
+				<UButton
+					icon="i-heroicons-magnifying-glass"
+					variant="ghost"
+					color="white"
+					aria-label="Search"
+					title="Search (Cmd+K)"
+					class="hidden md:block"
+					@click="openSearch"
+				/>
 				<DarkModeToggle class="hidden text-gray-200 md:block hover:text-gray-400" bg="dark" />
 			</div>
 		</div>
 		<NavigationMobileMenu v-if="navigation" :navigation="navigation" />
+		<NavigationSiteSearch ref="searchModal" />
 	</header>
 </template>

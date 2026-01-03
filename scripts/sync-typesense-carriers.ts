@@ -44,7 +44,7 @@ const carriersSchema = {
 		{ name: 'country_of_operation', type: 'string', optional: true, facet: true },
 		{ name: 'categories', type: 'string[]', optional: true, facet: true },
 		{ name: 'privacy_score', type: 'int32', optional: true },
-		{ name: 'overall_score', type: 'int32', optional: true },
+		{ name: 'overall_score', type: 'int32' },
 		{ name: 'website_url', type: 'string', optional: true },
 		{ name: 'brand_symbol_light', type: 'string', optional: true },
 	],
