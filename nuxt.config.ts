@@ -42,8 +42,15 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
+		// Typesense configuration (server-side)
+		typesenseHost: process.env.TYPESENSE_HOST || 'localhost',
+		typesensePort: process.env.TYPESENSE_PORT || '8108',
+		typesenseProtocol: process.env.TYPESENSE_PROTOCOL || 'http',
+		typesenseApiKey: process.env.TYPESENSE_API_KEY || '',
 		public: {
 			siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+			// Typesense search-only key (client-side)
+			typesenseSearchKey: process.env.NUXT_PUBLIC_TYPESENSE_SEARCH_ONLY_API_KEY || '',
 		},
 	},
 

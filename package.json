@@ -10,7 +10,8 @@
 		"postinstall": "nuxt prepare",
 		"typecheck": "nuxt typecheck",
 		"lint": "eslint --cache .",
-		"format": "prettier --write \"**/*.{md,y?(a)ml,json,vue}\""
+		"format": "prettier --write \"**/*.{md,y?(a)ml,json,vue}\"",
+		"sync:typesense": "tsx scripts/sync-typesense.ts"
 	},
 	"devDependencies": {
 		"@iconify-json/material-symbols": "^1.2.50",
@@ -45,9 +46,11 @@
 		"@nuxtjs/google-fonts": "^3.2.0",
 		"@nuxtjs/seo": "^3.0.1",
 		"@vueuse/motion": "^3.0.3",
+		"axios": "^1.13.2",
 		"micromark": "^4.0.2",
 		"micromark-extension-gfm": "^3.0.0",
 		"nuxt": "^4.2.2",
+		"typesense": "^2.1.0",
 		"uuid": "^11.1.0",
 		"v-perfect-signature": "^1.4.0",
 		"vue-dompurify-html": "^5.2.0"

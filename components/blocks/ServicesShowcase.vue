@@ -17,6 +17,48 @@ const advancedFilters = ref({
 	federated: false,
 });
 
+// Comparison mode
+const compareMode = ref<boolean>(false);
+const selectedServices = ref<string[]>([]);
+const router = useRouter();
+
+// Toggle comparison mode
+const toggleCompareMode = () => {
+	compareMode.value = !compareMode.value;
+	if (!compareMode.value) {
+		selectedServices.value = [];
+	}
+};
+
+// Toggle service selection
+const toggleServiceSelection = (serviceId: string) => {
+	const index = selectedServices.value.indexOf(serviceId);
+	if (index > -1) {
+		selectedServices.value.splice(index, 1);
+	} else {
+		if (selectedServices.value.length >= 4) {
+			// Show toast or alert
+			alert('Maximum 4 services can be compared');
+			return;
+		}
+		selectedServices.value.push(serviceId);
+	}
+};
+
+// Navigate to comparison page
+const goToComparison = () => {
+	if (selectedServices.value.length < 2) {
+		alert('Select at least 2 services to compare');
+		return;
+	}
+	router.push(`/services/compare?ids=${selectedServices.value.join(',')}`);
+};
+
+// Clear selected services
+const clearSelection = () => {
+	selectedServices.value = [];
+};
+
 // Fetch categories
 const { data: categories } = await useAsyncData('service-categories-v4', () => {
 	return useDirectus(
@@ -273,6 +315,20 @@ const resetFilters = () => {
 						{{ filteredServices.length }} {{ filteredServices.length === 1 ? 'service' : 'services' }} found
 					</p>
 					<div class="flex gap-2">
+						<!-- Compare Mode Button -->
+						<button
+							@click="toggleCompareMode"
+							:class="[
+								'px-4 py-2 rounded-md transition-colors text-sm font-medium',
+								compareMode
+									? 'bg-primary text-white'
+									: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white',
+							]"
+							title="Compare services"
+						>
+							{{ compareMode ? 'Cancel Compare' : 'Compare' }}
+						</button>
+						
 						<button
 							@click="viewMode = 'grid'"
 							:class="[
@@ -332,9 +388,25 @@ const resetFilters = () => {
 							y: 0,
 						}"
 						:delay="100 + 50 * idx"
-						class="border rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-gray-700"
-						:class="{ 'flex gap-6': viewMode === 'list' }"
+						class="border rounded-lg p-6 hover:shadow-lg transition-all dark:border-gray-700 relative"
+						:class="{ 
+							'flex gap-6': viewMode === 'list',
+							'ring-2 ring-primary': compareMode && selectedServices.includes(service.id)
+						}"
 					>
+						<!-- Comparison Checkbox -->
+						<div
+							v-if="compareMode"
+							class="absolute top-4 right-4 z-10"
+						>
+							<input
+								type="checkbox"
+								:checked="selectedServices.includes(service.id)"
+								@change="toggleServiceSelection(service.id)"
+								class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+							/>
+						</div>
+
 						<!-- Service Header -->
 						<div :class="{ 'flex-shrink-0': viewMode === 'list' }">
 							<div class="flex items-start gap-4">
@@ -467,5 +539,48 @@ const resetFilters = () => {
 				</div>
 			</div>
 		</div>
+
+		<!-- Sticky Comparison Footer -->
+		<Transition
+			enter-active-class="transition ease-out duration-300"
+			enter-from-class="translate-y-full opacity-0"
+			enter-to-class="translate-y-0 opacity-100"
+			leave-active-class="transition ease-in duration-200"
+			leave-from-class="translate-y-0 opacity-100"
+			leave-to-class="translate-y-full opacity-0"
+		>
+			<div
+				v-if="compareMode && selectedServices.length > 0"
+				class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg z-50"
+			>
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+					<div class="flex items-center justify-between">
+						<div class="flex items-center gap-4">
+							<span class="text-sm font-medium text-gray-900 dark:text-white">
+								{{ selectedServices.length }} {{ selectedServices.length === 1 ? 'service' : 'services' }} selected
+							</span>
+							<span class="text-xs text-gray-500 dark:text-gray-400">
+								(max 4)
+							</span>
+						</div>
+						<div class="flex items-center gap-3">
+							<button
+								@click="clearSelection"
+								class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+							>
+								Clear
+							</button>
+							<button
+								@click="goToComparison"
+								:disabled="selectedServices.length < 2"
+								class="px-6 py-2 text-sm font-medium rounded-md bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+							>
+								Compare Services
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</Transition>
 	</BlockContainer>
 </template>

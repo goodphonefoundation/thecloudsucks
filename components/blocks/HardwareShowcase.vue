@@ -32,13 +32,22 @@ const hardwareTypes = [
 	{ id: 'tablet', name: 'Tablets' },
 ];
 
-// Fetch all hardware items
-const { data: hardwareData, error: hardwareError } = await useAsyncData('hardware-showcase-v5', () => {
+// Fetch all hardware models with brand info
+const { data: hardwareData, error: hardwareError } = await useAsyncData('hardware-showcase-v6', () => {
 	return useDirectus(
-		readItems('hardware_items', {
-			fields: ['*'],
+		readItems('hardware_models', {
+			fields: [
+				'*',
+				'brand.id',
+				'brand.name',
+				'brand.slug',
+				'brand.brand_logo_light',
+				'brand.brand_logo_dark',
+				'brand.brand_symbol_light',
+				'brand.brand_symbol_dark',
+			],
 			filter: {
-				status: { _eq: 'published' },
+				status: { _eq: 'active' },
 			},
 			sort: ['name'],
 		}),
@@ -57,9 +66,11 @@ const filteredHardware = computed(() => {
 		filtered = filtered.filter((item: any) => {
 			return (
 				item.name?.toLowerCase().includes(query) ||
-				item.manufacturer?.toLowerCase().includes(query) ||
+				item.brand?.name?.toLowerCase().includes(query) ||
 				item.short_description?.toLowerCase().includes(query) ||
-				item.long_description?.toLowerCase().includes(query)
+				item.long_description?.toLowerCase().includes(query) ||
+				item.chipset?.toLowerCase().includes(query) ||
+				item.os?.toLowerCase().includes(query)
 			);
 		});
 	}
@@ -71,7 +82,7 @@ const filteredHardware = computed(() => {
 
 	// Advanced filters
 	if (advancedFilters.value.bootloader_unlockable) {
-		filtered = filtered.filter((item: any) => item.bootloader_unlockable === 'true');
+		filtered = filtered.filter((item: any) => item.bootloader_unlockable === 'yes');
 	}
 	if (advancedFilters.value.open_firmware) {
 		filtered = filtered.filter((item: any) => 
@@ -90,7 +101,7 @@ const filteredHardware = computed(() => {
 	}
 	if (advancedFilters.value.high_repairability) {
 		filtered = filtered.filter((item: any) => 
-			item.repairability === 'excellent' || item.repairability === 'good'
+			item.repairability === 'high' || item.repairability === 'medium'
 		);
 	}
 
@@ -415,19 +426,19 @@ const getTierInfo = (tier: string) => {
 					>
 						<!-- Logo (only in list view as separate column) -->
 						<NuxtLink
-							v-if="viewMode === 'list' && (item.brand_symbol_light || item.brand_symbol_dark || item.brand_logo_light || item.brand_logo_dark)"
+							v-if="viewMode === 'list' && (item.brand?.brand_symbol_light || item.brand?.brand_symbol_dark || item.brand?.brand_logo_light || item.brand?.brand_logo_dark)"
 							:to="`/hardware/${item.slug}`"
 							class="flex-shrink-0 flex items-center justify-center w-20 h-20 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
 						>
 							<!-- Light theme: use dark logo -->
 							<img 
-								:src="`/api/proxy/assets/${item.brand_symbol_dark || item.brand_logo_dark || item.brand_symbol_light || item.brand_logo_light}`" 
+								:src="`/api/proxy/assets/${item.brand.brand_symbol_dark || item.brand.brand_logo_dark || item.brand.brand_symbol_light || item.brand.brand_logo_light}`" 
 								:alt="item.name" 
 								class="w-full h-full object-contain dark:hidden" 
 							/>
 							<!-- Dark theme: use light logo -->
 							<img 
-								:src="`/api/proxy/assets/${item.brand_symbol_light || item.brand_logo_light || item.brand_symbol_dark || item.brand_logo_dark}`" 
+								:src="`/api/proxy/assets/${item.brand.brand_symbol_light || item.brand.brand_logo_light || item.brand.brand_symbol_dark || item.brand.brand_logo_dark}`" 
 								:alt="item.name" 
 								class="w-full h-full object-contain hidden dark:block" 
 							/>
@@ -435,21 +446,21 @@ const getTierInfo = (tier: string) => {
 						
 						<!-- Hardware Header (grid view or list view name+badges section) -->
 						<div>
-							<!-- Logo Container (grid view only) -->
+						<!-- Logo Container (grid view only) -->
 							<NuxtLink
-								v-if="viewMode === 'grid' && (item.brand_symbol_light || item.brand_symbol_dark || item.brand_logo_light || item.brand_logo_dark)"
+								v-if="viewMode === 'grid' && (item.brand?.brand_symbol_light || item.brand?.brand_symbol_dark || item.brand?.brand_logo_light || item.brand?.brand_logo_dark)"
 								:to="`/hardware/${item.slug}`"
 								class="flex items-center justify-center w-20 h-20 bg-gray-100 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors mb-4"
 							>
 								<!-- Light theme: use dark logo -->
 								<img 
-									:src="`/api/proxy/assets/${item.brand_symbol_dark || item.brand_logo_dark || item.brand_symbol_light || item.brand_logo_light}`" 
+									:src="`/api/proxy/assets/${item.brand.brand_symbol_dark || item.brand.brand_logo_dark || item.brand.brand_symbol_light || item.brand.brand_logo_light}`" 
 									:alt="item.name" 
 									class="w-full h-full object-contain dark:hidden" 
 								/>
 								<!-- Dark theme: use light logo -->
 								<img 
-									:src="`/api/proxy/assets/${item.brand_symbol_light || item.brand_logo_light || item.brand_symbol_dark || item.brand_logo_dark}`" 
+									:src="`/api/proxy/assets/${item.brand.brand_symbol_light || item.brand.brand_logo_light || item.brand.brand_symbol_dark || item.brand.brand_logo_dark}`" 
 									:alt="item.name" 
 									class="w-full h-full object-contain hidden dark:block" 
 								/>
@@ -460,7 +471,7 @@ const getTierInfo = (tier: string) => {
 							<NuxtLink :to="`/hardware/${item.slug}`" class="hover:text-primary transition-colors">
 								<h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ item.name }}</h3>
 							</NuxtLink>
-							<p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ item.manufacturer }}</p>
+							<p v-if="item.brand?.name" class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ item.brand.name }}</p>
 								<div class="flex flex-wrap gap-2" :class="{ 'mb-3': viewMode === 'list' }">
 									<!-- Tier Badge -->
 									<span
@@ -471,7 +482,7 @@ const getTierInfo = (tier: string) => {
 									</span>
 									<!-- Feature Badges -->
 									<span
-										v-if="item.bootloader_unlockable === 'true'"
+										v-if="item.bootloader_unlockable === 'yes'"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
 									>
 										Unlockable
@@ -489,7 +500,7 @@ const getTierInfo = (tier: string) => {
 										No Telemetry
 									</span>
 									<span
-										v-if="item.repairability === 'excellent'"
+										v-if="item.repairability === 'high'"
 										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
 									>
 										Highly Repairable
