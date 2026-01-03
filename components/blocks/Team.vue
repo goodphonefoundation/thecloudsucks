@@ -27,15 +27,12 @@ const { data: team }: { data: Ref<Team[]> } = await useAsyncData(
 );
 
 function splitArray(array: any[], numParts: number = 2) {
-	let result = [] as any[];
+	let result = Array.from({ length: numParts }, () => []) as any[];
+
+	if (!array || !Array.isArray(array)) return result;
 
 	for (let i = 0; i < array.length; i++) {
 		let index = i % numParts;
-
-		if (!result[index]) {
-			result[index] = [];
-		}
-
 		result[index].push(array[i]);
 	}
 
