@@ -6,23 +6,46 @@ const slug = route.params.slug as string;
 
 // Fetch service details
 const { data: service } = await useAsyncData(`service-${slug}`, () => {
-	return useDirectus(
-		readItems('services', {
-			fields: [
-				'*',
-				'categories.service_categories_id.id',
-				'categories.service_categories_id.name',
-				'categories.service_categories_id.slug',
-				'vendor.id',
-				'vendor.name',
-				'hosting_modes.hosting_modes_id.id',
-				'hosting_modes.hosting_modes_id.name',
-				'score_privacy',
-				'score_autonomy',
-				'score_transparency',
-				'score_governance',
-				'score_overall',
-			],
+		return useDirectus(
+			readItems('services', {
+				fields: [
+					'*',
+					'categories.service_categories_id.id',
+					'categories.service_categories_id.name',
+					'categories.service_categories_id.slug',
+					'vendor.id',
+					'vendor.name',
+					'organization.id',
+					'organization.name',
+					'organization.country',
+					'organization.ownership_type',
+					'organization.website_url',
+					'organization.vendor_information',
+					'organization.business_id',
+					'organization.business_description',
+					'organization.business_logo',
+					'organization.linkedin_profile',
+					'organization.linkedin_industry_category',
+					'organization.naics',
+					'organization.naics_description',
+					'organization.sic_code',
+					'organization.sic_code_description',
+					'organization.number_of_employees_range',
+					'organization.yearly_revenue_range',
+					'organization.ticker',
+					'organization.city_name',
+					'organization.region_name',
+					'organization.street',
+					'organization.zip_code',
+					'organization.locations_distribution',
+					'hosting_modes.hosting_modes_id.id',
+					'hosting_modes.hosting_modes_id.name',
+					'score_privacy',
+					'score_autonomy',
+					'score_transparency',
+					'score_governance',
+					'score_overall',
+				],
 			filter: {
 				slug: { _eq: slug },
 				status: { _eq: 'published' },
@@ -372,6 +395,18 @@ const activeTab = ref('overview');
 					<span v-if="alternatives && alternatives.length" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700">
 						{{ alternatives.length }}
 					</span>
+				</button>
+				<button
+					v-if="service.organization"
+					@click="activeTab = 'organization'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'organization'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Organization
 				</button>
 			</nav>
 		</div>
@@ -753,14 +788,24 @@ const activeTab = ref('overview');
 					</dl>
 				</div>
 
-				<!-- Organization Info -->
-				<div class="border rounded-lg p-6 dark:border-gray-700">
+				<!-- Organization Card -->
+				<OrganizationCard v-if="service.organization" :organization="service.organization" />
+
+				<!-- Legacy Vendor Info (if no organization) -->
+				<div v-else-if="service.vendor" class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4">Organization</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="service.vendor">
+						<div>
 							<dt class="text-gray-500 dark:text-gray-400">Vendor</dt>
 							<dd class="font-medium">{{ service.vendor.name }}</dd>
 						</div>
+					</dl>
+				</div>
+
+				<!-- Additional Organization Info -->
+				<div v-if="service.jurisdiction || service.ownership || service.governance_model || service.primary_business_model" class="border rounded-lg p-6 dark:border-gray-700">
+					<h3 class="text-lg font-semibold mb-4">Business Info</h3>
+					<dl class="space-y-3 text-sm">
 						<div v-if="service.jurisdiction">
 							<dt class="text-gray-500 dark:text-gray-400">Jurisdiction</dt>
 							<dd class="font-medium">{{ service.jurisdiction }}</dd>
@@ -1029,6 +1074,19 @@ const activeTab = ref('overview');
 			</div>
 			<div v-else class="text-center py-12">
 				<p class="text-gray-500 dark:text-gray-400">No alternative services found in the same categories.</p>
+			</div>
+		</div>
+
+		<!-- Organization Tab Content -->
+		<div v-show="activeTab === 'organization' && service.organization">
+			<div class="max-w-4xl">
+				<OrganizationCard :organization="service.organization" variant="full" />
+				
+				<!-- Vendor Information (if provided manually) -->
+				<div v-if="service.organization.vendor_information" class="mt-6 prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4">Additional Information</h2>
+					<div v-html="service.organization.vendor_information"></div>
+				</div>
 			</div>
 		</div>
 	</BlockContainer>

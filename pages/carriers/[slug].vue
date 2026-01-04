@@ -16,6 +16,24 @@ const { data: carrier } = await useAsyncData(`carrier-${slug}`, () => {
 				'host_network.id',
 				'host_network.name',
 				'host_network.slug',
+				'organization.id',
+				'organization.name',
+				'organization.country',
+				'organization.ownership_type',
+				'organization.website_url',
+				'organization.vendor_information',
+				'organization.business_id',
+				'organization.business_description',
+				'organization.business_logo',
+				'organization.linkedin_profile',
+				'organization.linkedin_industry_category',
+				'organization.naics',
+				'organization.naics_description',
+				'organization.number_of_employees_range',
+				'organization.yearly_revenue_range',
+				'organization.ticker',
+				'organization.city_name',
+				'organization.region_name',
 				'privacy_score',
 				'autonomy_score',
 				'transparency_score',
@@ -572,6 +590,8 @@ const activeTab = ref('overview');
 
 			<!-- Right Column: Technical Details -->
 			<div class="space-y-6">
+				<!-- Organization Card -->
+				<OrganizationCard v-if="carrier.organization" :organization="carrier.organization" />
 				<!-- Network Information -->
 				<div class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4">Network Information</h3>

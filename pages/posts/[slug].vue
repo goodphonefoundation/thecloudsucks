@@ -2,7 +2,8 @@
 import type { PostType, SEO, Team, Category } from '~/types';
 
 const { fileUrl } = useFiles();
-const { params, path } = useRoute();
+const route = useRoute();
+const slug = route.params.slug as string;
 
 const componentMap: Record<PostType, any> = {
 	blog: resolveComponent('PostBlog'),
@@ -10,43 +11,25 @@ const componentMap: Record<PostType, any> = {
 	video: resolveComponent('PostVideo'),
 };
 
-const { data: page } = await useAsyncData(
-	path,
-	() => {
-		return useDirectus(
-			readItems('posts', {
-				// @ts-ignore
-				filter: { slug: { _eq: params.slug as string } },
-				limit: 1,
-				fields: [
-					'title',
-					'summary',
-					'slug',
-					'content',
-					'date_published',
-					'image',
-					'type',
-					'client',
-					'cost',
-					'built_with',
-					'video_url',
-					'discourse_topic_id',
-					'discourse_topic_url',
-					'discourse_latest_comment',
-					{
-						gallery: [{ directus_files_id: ['id', 'title', 'description'] }],
-						author: ['name', 'job_title', 'image'],
-						category: ['title', 'slug', 'color'],
-						seo: ['title', 'meta_description'],
-					},
-				],
-			}),
-		);
-	},
-	{
-		transform: (data) => data[0],
-	},
-);
+const { data: page } = await useAsyncData(`post-${slug}`, () => {
+	return useDirectus(
+		readItems('posts', {
+			filter: {
+				slug: { _eq: slug },
+			},
+			limit: 1,
+			fields: [
+				'*',
+				{
+					gallery: [{ directus_files_id: ['id', 'title', 'description'] }],
+					author: ['name', 'job_title', 'image'],
+					category: ['title', 'slug', 'color'],
+					seo: ['title', 'meta_description'],
+				},
+			],
+		}),
+	).then((items: any[]) => items[0] || null);
+});
 
 // Compute metadata here to make it easier to populate all the different SEO tags
 const metadata = computed(() => {
@@ -107,6 +90,9 @@ useServerSeoMeta({
 <template>
 	<div>
 		<!-- Use the component map to render the correct component based on the type of the post -->
-		<component :is="componentMap[page.type as PostType]" v-if="page && page.type" :page="page" />
+		<component :is="componentMap[page?.type as PostType]" v-if="page && page.type" :page="page" />
+		<div v-else-if="!page" class="p-8 text-center">
+			<p>Post not found</p>
+		</div>
 	</div>
 </template>

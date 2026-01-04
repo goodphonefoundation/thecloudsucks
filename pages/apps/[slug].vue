@@ -6,7 +6,34 @@ const slug = route.params.slug as string;
 const { data: app } = await useAsyncData(`app-${slug}`, () => {
 	return useDirectus(
 		readItems('mobile_apps', {
-			fields: ['*', 'categories.mobile_app_categories_id.id', 'categories.mobile_app_categories_id.name'],
+			fields: [
+				'*',
+				'categories.mobile_app_categories_id.id',
+				'categories.mobile_app_categories_id.name',
+				'organization.id',
+				'organization.name',
+				'organization.country',
+				'organization.ownership_type',
+				'organization.website_url',
+				'organization.vendor_information',
+				'organization.business_id',
+				'organization.business_description',
+				'organization.business_logo',
+				'organization.linkedin_profile',
+				'organization.linkedin_industry_category',
+				'organization.naics',
+				'organization.naics_description',
+				'organization.sic_code',
+				'organization.sic_code_description',
+				'organization.number_of_employees_range',
+				'organization.yearly_revenue_range',
+				'organization.ticker',
+				'organization.city_name',
+				'organization.region_name',
+				'organization.street',
+				'organization.zip_code',
+				'organization.locations_distribution',
+			],
 			filter: {
 				slug: { _eq: slug },
 				status: { _eq: 'active' },
@@ -172,7 +199,19 @@ const activeTab = ref('overview');
 			
 			<div>
 				<h1 class="text-4xl font-bold mb-3 text-gray-900 dark:text-white text-center">{{ app.name }}</h1>
-				<p v-if="app.developer_name" class="text-xl text-gray-600 dark:text-gray-400 mb-2 text-center">
+				<p v-if="app.organization?.name" class="text-xl text-gray-600 dark:text-gray-400 mb-2 text-center">
+					by 
+					<NuxtLink 
+						v-if="app.organization.website_url" 
+						:to="app.organization.website_url" 
+						target="_blank"
+						class="hover:text-primary"
+					>
+						{{ app.organization.name }}
+					</NuxtLink>
+					<span v-else>{{ app.organization.name }}</span>
+				</p>
+				<p v-else-if="app.developer_name" class="text-xl text-gray-600 dark:text-gray-400 mb-2 text-center">
 					by {{ app.developer_name }}
 				</p>
 				<p class="text-xl text-gray-600 dark:text-gray-400 mb-4 text-center">
@@ -324,6 +363,18 @@ const activeTab = ref('overview');
 						{{ alternatives.length }}
 					</span>
 				</button>
+				<button
+					v-if="app.organization"
+					@click="activeTab = 'organization'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'organization'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Organization
+				</button>
 			</nav>
 		</div>
 
@@ -372,6 +423,8 @@ const activeTab = ref('overview');
 
 			<!-- Sidebar -->
 			<div class="space-y-6">
+				<!-- Organization Card -->
+				<OrganizationCard v-if="app.organization" :organization="app.organization" />
 				<!-- Platform Support -->
 				<div v-if="app.platforms_supported" class="border dark:border-gray-700 rounded-lg p-6">
 					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Platforms</h3>
@@ -584,6 +637,19 @@ const activeTab = ref('overview');
 			</div>
 			<div v-else class="text-center py-12">
 				<p class="text-gray-500 dark:text-gray-400">No alternative apps found in the same categories.</p>
+			</div>
+		</div>
+
+		<!-- Organization Tab Content -->
+		<div v-show="activeTab === 'organization' && app.organization">
+			<div class="max-w-4xl">
+				<OrganizationCard :organization="app.organization" variant="full" />
+				
+				<!-- Vendor Information (if provided manually) -->
+				<div v-if="app.organization?.vendor_information" class="mt-6 prose dark:prose-invert max-w-none">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Additional Information</h2>
+					<div v-html="app.organization.vendor_information"></div>
+				</div>
 			</div>
 		</div>
 	</BlockContainer>

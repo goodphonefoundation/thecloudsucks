@@ -8,7 +8,27 @@ const slug = route.params.slug as string;
 const { data: os } = await useAsyncData(`os-${slug}`, () => {
 	return useDirectus(
 		readItems('operating_systems', {
-			fields: ['*'],
+			fields: [
+				'*',
+				'organization.id',
+				'organization.name',
+				'organization.country',
+				'organization.ownership_type',
+				'organization.website_url',
+				'organization.vendor_information',
+				'organization.business_id',
+				'organization.business_description',
+				'organization.business_logo',
+				'organization.linkedin_profile',
+				'organization.linkedin_industry_category',
+				'organization.naics',
+				'organization.naics_description',
+				'organization.number_of_employees_range',
+				'organization.yearly_revenue_range',
+				'organization.ticker',
+				'organization.city_name',
+				'organization.region_name',
+			],
 			filter: {
 				slug: { _eq: slug },
 				status: { _eq: 'published' },
@@ -287,6 +307,8 @@ const getScorePercentage = (score: number | null | undefined) => {
 
 			<!-- Right Column: Technical Details -->
 			<div class="space-y-6">
+				<!-- Organization Card -->
+				<OrganizationCard v-if="os.organization" :organization="os.organization" />
 				<!-- Classification -->
 				<div class="border rounded-lg p-6 dark:border-gray-700">
 					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Classification</h3>
