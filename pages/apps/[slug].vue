@@ -10,6 +10,13 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 				'*',
 				'categories.mobile_app_categories_id.id',
 				'categories.mobile_app_categories_id.name',
+				'mobsf_metadata',
+				'mobsf_permissions',
+				'mobsf_manifest_findings',
+				'mobsf_binary_analysis',
+				'mobsf_components',
+				'mobsf_scan_date',
+				'mobsf_security_score',
 				'organization.id',
 				'organization.name',
 				'organization.country',
@@ -375,6 +382,25 @@ const activeTab = ref('overview');
 				>
 					Organization
 				</button>
+				<button
+					v-if="app.mobsf_metadata"
+					@click="activeTab = 'security'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'security'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Security Report
+					<span v-if="app.mobsf_security_score !== null" class="ml-2 px-2 py-0.5 text-xs rounded-full" :class="[
+						app.mobsf_security_score >= 80 ? 'bg-red-200 dark:bg-red-900' :
+						app.mobsf_security_score >= 50 ? 'bg-yellow-200 dark:bg-yellow-900' :
+						'bg-green-200 dark:bg-green-900'
+					]">
+						{{ app.mobsf_security_score }}
+					</span>
+				</button>
 			</nav>
 		</div>
 
@@ -649,6 +675,256 @@ const activeTab = ref('overview');
 				<div v-if="app.organization?.vendor_information" class="mt-6 prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Additional Information</h2>
 					<div v-html="app.organization.vendor_information"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Security Report Tab Content -->
+		<div v-show="activeTab === 'security' && app.mobsf_metadata">
+			<div class="space-y-8">
+				<!-- Security Score Overview -->
+				<div class="border dark:border-gray-700 rounded-lg p-6">
+					<div class="flex items-center justify-between mb-4">
+						<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Security Analysis</h2>
+						<div class="text-right">
+							<div class="text-4xl font-bold" :class="[
+								app.mobsf_security_score >= 70 ? 'text-green-600 dark:text-green-400' :
+								app.mobsf_security_score >= 40 ? 'text-yellow-600 dark:text-yellow-400' :
+								'text-red-600 dark:text-red-400'
+							]">
+								{{ app.mobsf_security_score }}/100
+							</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Security Score</div>
+							<div v-if="app.mobsf_scan_date" class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+								Scanned: {{ new Date(app.mobsf_scan_date).toLocaleDateString() }}
+							</div>
+						</div>
+					</div>
+					<p class="text-sm text-gray-600 dark:text-gray-400">
+						Higher scores indicate better security. This report was generated using MobSF static analysis and scorecard.
+					</p>
+				</div>
+
+				<!-- App Metadata -->
+				<div v-if="app.mobsf_metadata" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">App Information</h3>
+					<div class="grid md:grid-cols-2 gap-4">
+						<div>
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Package Name:</span>
+							<span class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ app.mobsf_metadata.package_name }}</span>
+						</div>
+						<div>
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Version:</span>
+							<span class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ app.mobsf_metadata.version_name }} ({{ app.mobsf_metadata.version_code }})</span>
+						</div>
+						<div>
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Target SDK:</span>
+							<span class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ app.mobsf_metadata.target_sdk }}</span>
+						</div>
+						<div>
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Min SDK:</span>
+							<span class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ app.mobsf_metadata.min_sdk }}</span>
+						</div>
+						<div>
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">File Size:</span>
+							<span class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ app.mobsf_metadata.size }}</span>
+						</div>
+						<div>
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">MD5:</span>
+							<span class="text-sm text-gray-600 dark:text-gray-400 ml-2 font-mono text-xs">{{ app.mobsf_metadata.md5 }}</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Permissions Analysis -->
+				<div v-if="app.mobsf_permissions" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Permissions Analysis</h3>
+					
+					<!-- Malware Permissions Summary -->
+					<div v-if="app.mobsf_permissions.malware_permissions" class="mb-6">
+						<div class="flex items-center justify-between mb-3">
+							<h4 class="font-semibold text-gray-900 dark:text-white">Permission Summary</h4>
+						</div>
+						<div class="grid md:grid-cols-2 gap-4 mb-4">
+							<div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+								<div class="text-2xl font-bold text-red-600 dark:text-red-400">{{ app.mobsf_permissions.malware_permissions.total_malware_permissions || 0 }}</div>
+								<div class="text-sm text-gray-600 dark:text-gray-400">Malware-Associated</div>
+							</div>
+							<div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+								<div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ app.mobsf_permissions.malware_permissions.total_other_permissions || 0 }}</div>
+								<div class="text-sm text-gray-600 dark:text-gray-400">Other Permissions</div>
+							</div>
+						</div>
+
+						<!-- Top Malware Permissions -->
+						<div v-if="app.mobsf_permissions.malware_permissions.top_malware_permissions?.length" class="mb-4">
+							<h5 class="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">⚠️ High-Risk Permissions</h5>
+							<div class="space-y-2">
+								<div v-for="perm in app.mobsf_permissions.malware_permissions.top_malware_permissions" :key="perm" class="text-xs font-mono bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded">
+									{{ perm }}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- All Permissions Table -->
+					<div v-if="app.mobsf_permissions.permissions && Object.keys(app.mobsf_permissions.permissions).length" class="overflow-x-auto">
+						<h4 class="font-semibold text-gray-900 dark:text-white mb-3">All Permissions</h4>
+						<table class="min-w-full text-sm">
+							<thead class="bg-gray-50 dark:bg-gray-800">
+								<tr>
+									<th class="px-4 py-2 text-left font-medium text-gray-700 dark:text-gray-300">Permission</th>
+									<th class="px-4 py-2 text-left font-medium text-gray-700 dark:text-gray-300">Status</th>
+									<th class="px-4 py-2 text-left font-medium text-gray-700 dark:text-gray-300">Description</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+								<tr v-for="(details, perm) in app.mobsf_permissions.permissions" :key="perm">
+									<td class="px-4 py-2 font-mono text-xs">{{ perm }}</td>
+									<td class="px-4 py-2">
+										<span :class="[
+											'px-2 py-1 text-xs rounded-full',
+											details.status === 'dangerous' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
+											details.status === 'normal' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+											'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
+										]">
+											{{ details.status || 'unknown' }}
+										</span>
+									</td>
+									<td class="px-4 py-2 text-gray-600 dark:text-gray-400">{{ details.description }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- Certificate Information -->
+				<div v-if="app.mobsf_certificate?.certificate_analysis" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Code Signing Certificate</h3>
+					
+					<!-- Certificate Summary -->
+					<div v-if="app.mobsf_certificate.certificate_analysis.certificate_summary" class="grid md:grid-cols-3 gap-4 mb-6">
+						<div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-red-600 dark:text-red-400">{{ app.mobsf_certificate.certificate_analysis.certificate_summary.high || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">High Severity Issues</div>
+						</div>
+						<div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ app.mobsf_certificate.certificate_analysis.certificate_summary.warning || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Warnings</div>
+						</div>
+						<div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ app.mobsf_certificate.certificate_analysis.certificate_summary.info || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Info</div>
+						</div>
+					</div>
+
+					<!-- Certificate Details -->
+					<div v-if="app.mobsf_certificate.certificate_analysis.certificate_info" class="mb-6">
+						<h4 class="font-semibold text-gray-900 dark:text-white mb-3">Certificate Details</h4>
+						<div class="bg-gray-50 dark:bg-gray-800 p-4 rounded text-sm font-mono whitespace-pre-line text-gray-600 dark:text-gray-400">
+							{{ app.mobsf_certificate.certificate_analysis.certificate_info }}
+						</div>
+					</div>
+
+					<!-- Certificate Findings -->
+					<div v-if="app.mobsf_certificate.certificate_analysis.certificate_findings?.length" class="space-y-3">
+						<h4 class="font-semibold text-gray-900 dark:text-white mb-3">Certificate Security Issues</h4>
+						<div v-for="(finding, idx) in app.mobsf_certificate.certificate_analysis.certificate_findings" :key="idx" class="border-l-4 p-4 rounded" :class="[
+							finding[0] === 'high' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
+							finding[0] === 'warning' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
+							'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+						]">
+							<div class="flex items-start justify-between mb-2">
+								<h5 class="font-semibold text-gray-900 dark:text-white">{{ finding[2] }}</h5>
+								<span :class="[
+									'px-2 py-1 text-xs rounded-full uppercase font-semibold',
+									finding[0] === 'high' ? 'bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200' :
+									finding[0] === 'warning' ? 'bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200' :
+									'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200'
+								]">
+									{{ finding[0] }}
+								</span>
+							</div>
+							<p class="text-sm text-gray-600 dark:text-gray-400">{{ finding[1] }}</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Manifest Findings -->
+				<div v-if="app.mobsf_manifest_findings?.manifest_findings?.length" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Security Findings</h3>
+					
+					<!-- Summary Stats -->
+					<div v-if="app.mobsf_manifest_findings.manifest_summary" class="grid md:grid-cols-3 gap-4 mb-6">
+						<div class="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-red-600 dark:text-red-400">{{ app.mobsf_manifest_findings.manifest_summary.high || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">High Severity</div>
+						</div>
+						<div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ app.mobsf_manifest_findings.manifest_summary.warning || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Warnings</div>
+						</div>
+						<div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ app.mobsf_manifest_findings.manifest_summary.info || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Info</div>
+						</div>
+					</div>
+
+					<!-- Findings List -->
+					<div class="space-y-3">
+						<div v-for="finding in app.mobsf_manifest_findings.manifest_findings" :key="finding.rule" class="border-l-4 p-4 rounded" :class="[
+							finding.severity === 'high' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
+							finding.severity === 'warning' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
+							'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+						]">
+							<div class="flex items-start justify-between mb-2">
+								<h4 class="font-semibold text-gray-900 dark:text-white" v-html="finding.title"></h4>
+								<span :class="[
+									'px-2 py-1 text-xs rounded-full uppercase font-semibold',
+									finding.severity === 'high' ? 'bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200' :
+									finding.severity === 'warning' ? 'bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200' :
+									'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200'
+								]">
+									{{ finding.severity }}
+								</span>
+							</div>
+							<p class="text-sm text-gray-600 dark:text-gray-400">{{ finding.description }}</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Components -->
+				<div v-if="app.mobsf_components" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">App Components</h3>
+					<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+						<div v-if="app.mobsf_components.activities" class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.mobsf_components.activities?.length || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Activities</div>
+						</div>
+						<div v-if="app.mobsf_components.services" class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.mobsf_components.services?.length || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Services</div>
+						</div>
+						<div v-if="app.mobsf_components.receivers" class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.mobsf_components.receivers?.length || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Receivers</div>
+						</div>
+						<div v-if="app.mobsf_components.libraries" class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.mobsf_components.libraries?.length || 0 }}</div>
+							<div class="text-sm text-gray-600 dark:text-gray-400">Libraries</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Binary Analysis Summary -->
+				<div v-if="app.mobsf_binary_analysis?.length" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Binary Analysis</h3>
+					<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ app.mobsf_binary_analysis.length }} native libraries analyzed</p>
+					<div class="space-y-2 max-h-96 overflow-y-auto">
+						<div v-for="(lib, idx) in app.mobsf_binary_analysis" :key="idx" class="text-xs font-mono bg-gray-50 dark:bg-gray-800 px-3 py-2 rounded">
+							{{ lib.name }}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
