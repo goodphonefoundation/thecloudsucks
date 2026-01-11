@@ -1085,7 +1085,7 @@ const activeTab = ref('overview');
 				<OrganizationCard :organization="service.organization" variant="full" />
 				
 				<!-- Vendor Information (if provided manually) -->
-				<div v-if="service.organization.vendor_information" class="mt-6 prose dark:prose-invert max-w-none">
+				<div v-if="service.organization?.vendor_information" class="mt-6 prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4">Additional Information</h2>
 					<div v-html="service.organization.vendor_information"></div>
 				</div>
