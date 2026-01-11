@@ -23,6 +23,7 @@ const componentMap: Record<BlockType, any> = {
 	block_steps: resolveComponent('BlocksSteps'),
 	block_columns: resolveComponent('BlocksColumns'),
 	block_divider: resolveComponent('BlocksDivider'),
+	block_whitepaper_content: resolveComponent('BlocksWhitepaperContent'),
 };
 
 const props = defineProps<{
@@ -39,7 +40,13 @@ const blocks = computed(() => {
 <template>
 	<div id="content" class="mx-auto">
 		<template v-for="block in blocks" :key="block.id">
-			<component :is="componentMap[block.collection]" v-if="block && block.collection" :data="block.item" />
+			<component 
+				:is="componentMap[block.collection]" 
+				v-if="block && block.collection" 
+				:data="block.item" 
+				:block-id="block.id"
+				:collection="block.collection" 
+			/>
 		</template>
 		<!-- Discourse Community Posts -->
 		<BlocksDiscoursePosts v-if="page.permalink === '/'" />

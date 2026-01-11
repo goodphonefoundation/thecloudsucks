@@ -19,6 +19,7 @@ import type { BlockOsShowcase } from './block-os-showcase';
 import type { BlockLatestServices } from './block-latest-services';
 import type { BlockMobileAppsShowcase } from './block-mobile-apps-showcase';
 import type { BlockSelfhostedShowcase } from './block-selfhosted-showcase';
+import type { BlockWhitepaperContent } from './block-whitepaper-content';
 
 export type BlockType =
 	| 'block_services_showcase'
@@ -41,7 +42,8 @@ export type BlockType =
 	| 'block_team'
 	| 'block_testimonials'
 	| 'block_video'
-	| 'block_divider';
+	| 'block_divider'
+	| 'block_whitepaper_content';
 
 export type Block =
 	| BlockServicesShowcase
@@ -64,4 +66,5 @@ export type Block =
 	| BlockTeam
 	| BlockTestimonial
 	| BlockVideo
-	| BlockDivider;
+	| BlockDivider
+	| BlockWhitepaperContent;

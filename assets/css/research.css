@@ -1,0 +1,229 @@
+/* Technical Documentation / Research Hub Theme */
+
+:root {
+	--color-tech-primary: #0d7ff2;
+	--color-tech-bg-dark: #0a0f14;
+	--color-tech-surface: #16222c;
+	--color-tech-border: #223649;
+	--color-tech-muted: #90adcb;
+	--color-tech-highlight: #445566;
+}
+
+/* Typography Utilities */
+.jetbrains-text {
+	font-family: 'JetBrains Mono', monospace;
+	font-feature-settings: 'liga' 0;
+}
+
+.space-grotesk-text {
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Border Effects */
+.pixel-border {
+	box-shadow: 0 0 0 2px var(--color-tech-bg-dark), 0 0 0 4px var(--color-tech-border);
+}
+
+.tech-border-glow {
+	box-shadow: 0 0 0 1px var(--color-tech-border);
+	transition: box-shadow 0.2s ease;
+}
+
+.tech-border-glow:hover {
+	box-shadow: 0 0 0 1px var(--color-tech-primary);
+}
+
+/* Status Indicators */
+.status-pulse {
+	animation: status-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes status-pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+.status-dot-glow {
+	box-shadow: 0 0 8px currentColor;
+}
+
+/* Chapter Navigation Active State */
+.chapter-active {
+	background-color: var(--color-tech-surface);
+	border-left: 2px solid var(--color-tech-primary);
+}
+
+/* Research Callout Boxes */
+.research-callout {
+	background-color: var(--color-tech-surface);
+	border: 1px solid var(--color-tech-border);
+	position: relative;
+	overflow: hidden;
+}
+
+.research-callout::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 4px;
+	background-color: var(--color-tech-primary);
+}
+
+.research-callout-warning::before {
+	background-color: #f59e0b;
+}
+
+.research-callout-error::before {
+	background-color: #ef4444;
+}
+
+/* Technical Document Styling */
+.tech-document {
+	color: var(--color-tech-muted);
+	line-height: 1.75;
+}
+
+.tech-document h1,
+.tech-document h2,
+.tech-document h3 {
+	color: white;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+.tech-document p {
+	margin-bottom: 1.5rem;
+}
+
+.tech-document strong {
+	color: white;
+}
+
+.tech-document code {
+	font-family: 'JetBrains Mono', monospace;
+	background-color: var(--color-tech-surface);
+	padding: 0.25rem 0.5rem;
+	border: 1px solid var(--color-tech-border);
+	font-size: 0.875em;
+}
+
+.tech-document blockquote {
+	border-left: 4px solid var(--color-tech-primary);
+	padding-left: 1.5rem;
+	margin: 2rem 0;
+	color: white;
+	font-style: italic;
+}
+
+/* Progress Bar */
+.progress-bar {
+	background-color: var(--color-tech-border);
+	height: 4px;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.progress-bar-fill {
+	background-color: var(--color-tech-primary);
+	height: 100%;
+	transition: width 0.3s ease;
+}
+
+/* Search Bar */
+.tech-search {
+	background-color: var(--color-tech-surface);
+	border: 1px solid var(--color-tech-border);
+	transition: border-color 0.2s ease;
+}
+
+.tech-search:focus-within {
+	border-color: var(--color-tech-primary);
+	outline: none;
+}
+
+/* Button Styles */
+.tech-button {
+	background-color: var(--color-tech-primary);
+	color: white;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.1em;
+	padding: 0.5rem 1rem;
+	border-radius: 0.125rem;
+	transition: all 0.2s ease;
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+.tech-button:hover {
+	background-color: #0a6ed8;
+	transform: translateY(-1px);
+}
+
+.tech-button-secondary {
+	background-color: var(--color-tech-surface);
+	border: 1px solid var(--color-tech-border);
+	color: var(--color-tech-muted);
+}
+
+.tech-button-secondary:hover {
+	background-color: var(--color-tech-primary);
+	color: white;
+	border-color: var(--color-tech-primary);
+}
+
+/* Chapter Divider */
+.chapter-divider {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin: 2rem 0;
+}
+
+.chapter-divider::before,
+.chapter-divider::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background-color: var(--color-tech-border);
+}
+
+/* Backdrop Blur Support */
+.backdrop-blur-tech {
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+
+/* Scrollbar Styling */
+.tech-scrollbar::-webkit-scrollbar {
+	width: 6px;
+}
+
+.tech-scrollbar::-webkit-scrollbar-track {
+	background-color: var(--color-tech-bg-dark);
+}
+
+.tech-scrollbar::-webkit-scrollbar-thumb {
+	background-color: var(--color-tech-border);
+	border-radius: 3px;
+}
+
+.tech-scrollbar::-webkit-scrollbar-thumb:hover {
+	background-color: var(--color-tech-primary);
+}
+
+/* Line Clamp Utilities */
+.line-clamp-3 {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}

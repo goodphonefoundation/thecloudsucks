@@ -18,6 +18,15 @@ export default {
 	],
 	theme: {
 		extend: {
+			colors: {
+				'tech-primary': '#0d7ff2',
+				'tech-bg-light': '#f5f7f8',
+				'tech-bg-dark': '#0a0f14',
+				'tech-surface': '#16222c',
+				'tech-border': '#223649',
+				'tech-muted': '#90adcb',
+				'tech-highlight': '#445566',
+			},
 			borderRadius: {
 				card: 'var(--border-radius-card)',
 				button: 'var(--border-radius-button)',

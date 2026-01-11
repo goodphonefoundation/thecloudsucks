@@ -1,0 +1,23 @@
+services:
+  trigger-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: trigger-worker-prod
+    environment:
+      # Trigger.dev profile written at container start points to webapp container
+      - TRIGGER_ACCESS_TOKEN=${TRIGGER_ACCESS_TOKEN}
+      - TRIGGER_API_URL=http://trigger-webapp-1:3000
+      - TRIGGER_PROJECT_REF=${TRIGGER_PROJECT_REF:-proj_lgmtzendqoebtfksmogz}
+      # Task Environment Variables
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - DIRECTUS_URL=${DIRECTUS_URL}
+      - DIRECTUS_SERVER_TOKEN=${DIRECTUS_SERVER_TOKEN}
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - webapp
+
+networks:
+  webapp:
+    external: true

@@ -16,3 +16,5 @@ directus
 .idea
 node-compile-cache
 .pnpm-store
+
+.trigger

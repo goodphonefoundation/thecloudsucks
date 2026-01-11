@@ -19,4 +19,5 @@ export type * from './block-os-showcase';
 export type * from './block-latest-services';
 export type * from './block-mobile-apps-showcase';
 export type * from './block-selfhosted-showcase';
+export type * from './block-whitepaper-content';
 export type * from './block';

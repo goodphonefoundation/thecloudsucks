@@ -14,20 +14,18 @@ export interface Theme {
 }
 
 export const theme = {
-	primary: 'violet',
+	primary: 'blue',
 	gray: 'slate',
-	borderRadius: 'lg',
+	borderRadius: 'sm',
 	googleFonts: {
-		Inter: true,
-		'Fira Code': true,
-		Poppins: [400, 500, 600, 700, 800, 900],
-		'Nothing You Could Do': true,
+		'Space Grotesk': [300, 400, 500, 600, 700],
+		'JetBrains Mono': [400, 500],
 	},
 	fonts: {
-		display: 'Poppins',
-		sans: 'Inter',
-		code: 'Fira Code',
-		signature: 'Nothing You Could Do',
+		display: 'Space Grotesk',
+		sans: 'Space Grotesk',
+		code: 'JetBrains Mono',
+		signature: 'JetBrains Mono',
 	},
 } as Theme;
 
