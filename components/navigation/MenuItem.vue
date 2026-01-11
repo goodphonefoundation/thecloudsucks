@@ -52,14 +52,14 @@ watch(
 			leave-to-class="translate-y-1 opacity-0"
 		>
 			<PopoverPanel
-				class="absolute z-10 w-screen max-w-md mt-4 overflow-hidden bg-gray-800 shadow-lg rounded-panel top-full"
+				class="absolute z-10 w-screen max-w-md mt-4 overflow-hidden bg-white dark:bg-gray-800 shadow-lg rounded-panel top-full border border-slate-200 dark:border-gray-700"
 			>
 				<div class="p-4">
 					<NuxtLink
 						v-for="childItem in item.children as NavigationItem[]"
 						:key="childItem.id"
 						:href="getNavItemUrl(childItem) as RouteLocationRaw"
-						class="relative flex p-4 leading-6 transition duration-150 rounded-panel group gap-x-6 hover:bg-gray-900"
+						class="relative flex p-4 leading-6 transition duration-150 rounded-panel group gap-x-6 hover:bg-slate-100 dark:hover:bg-gray-900"
 					>
 						<div
 							class="flex items-center justify-center flex-none p-2 mt-1 border rounded-button h-11 w-11 border-primary"
@@ -71,10 +71,10 @@ watch(
 							/>
 						</div>
 						<div class="">
-							<p class="block font-medium text-white font-display">
+							<p class="block font-medium text-slate-900 dark:text-white font-display">
 								{{ childItem.title }}
 							</p>
-							<p v-if="childItem.label" class="mt-1 text-sm leading-tight text-gray-400">
+							<p v-if="childItem.label" class="mt-1 text-sm leading-tight text-slate-600 dark:text-gray-400">
 								{{ childItem.label }}
 							</p>
 						</div>
@@ -87,8 +87,7 @@ watch(
 
 <style lang="postcss">
 .menu-link {
-	@apply text-slate-500 hover:text-[#0d7ff2] text-sm font-medium leading-normal transition-colors inline-flex items-center outline-none;
-	font-family: 'Space Grotesk', sans-serif;
+	@apply text-slate-500 dark:text-gray-300 hover:text-[#0d7ff2] dark:hover:text-[#0d7ff2] text-sm font-medium leading-normal transition-colors inline-flex items-center outline-none font-display;
 }
 
 .menu-link[aria-current="page"] {

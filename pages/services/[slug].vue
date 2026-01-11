@@ -432,7 +432,7 @@ const activeTab = ref('overview');
 						<NuxtLink
 							v-for="cat in service.categories"
 							:key="cat.id"
-							:to="`/services?category=${cat.service_categories_id.slug}`"
+							:to="`/services/categories/${cat.service_categories_id.slug}`"
 							class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
 						>
 							{{ cat.service_categories_id.name }}
