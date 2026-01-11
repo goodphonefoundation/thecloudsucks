@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { theme, globals } = useAppConfig();
+const { theme } = useAppConfig();
 const searchModal = ref<any>(null);
 const colorMode = useColorMode();
 
@@ -12,6 +12,18 @@ const openSearch = () => {
 const toggleTheme = () => {
 	colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 };
+
+// Fetch globals from Directus
+const { data: globals } = await useAsyncData(
+	'globals',
+	() => {
+		return useDirectus(
+			readSingleton('globals', {
+				fields: ['title', 'logo_on_dark_bg', 'logo_on_light_bg'],
+			}),
+		);
+	},
+);
 
 const {
 	data: navigation,
@@ -63,9 +75,15 @@ const {
 		<div class="max-w-7xl mx-auto flex items-center justify-between">
 			<!-- Logo -->
 			<NuxtLink href="/" class="flex items-center gap-2">
-				<div class="px-2 py-1 bg-purple-600 rounded text-white text-sm font-bold font-display">
-					<span v-if="globals?.title">{{ globals.title.split(' ')[0] }}</span>
-					<span v-if="globals?.title" class="text-purple-300">{{ globals.title.split(' ')[1] || 'OS' }}</span>
+				<NuxtImg 
+					v-if="globals?.value?.logo_on_dark_bg" 
+					:src="globals.value.logo_on_dark_bg" 
+					alt="Logo" 
+					class="h-8"
+				/>
+				<div v-else class="px-2 py-1 bg-purple-600 rounded text-white text-sm font-bold font-display">
+					<span v-if="globals?.value?.title">{{ globals.value.title.split(' ')[0] }}</span>
+					<span v-if="globals?.value?.title" class="text-purple-300">{{ globals.value.title.split(' ')[1] || 'OS' }}</span>
 				</div>
 			</NuxtLink>
 
