@@ -12,21 +12,35 @@ This document explains how to run the Trigger.dev production worker in Docker fo
 
 ### 1. Configure Environment Variables
 
-Create a `.env` file in the project root with your actual values:
+Copy the example file and add your actual values:
+
+```powershell
+Copy-Item .env.worker.example .env.worker
+```
+
+Then edit `.env.worker` with your actual values:
 
 ```env
 # Trigger.dev Configuration
-TRIGGER_SECRET_KEY=tr_prod_sgdN9Gzgnnz9CnZdwdD9
+TRIGGER_API_URL=http://localhost:8030
+TRIGGER_SECRET_KEY=your_trigger_secret_key
 
 # Perplexity AI Configuration
-PERPLEXITY_API_KEY=your_actual_perplexity_api_key
+PERPLEXITY_API_KEY=your_perplexity_api_key
 
 # Directus Configuration
 DIRECTUS_URL=https://directus.thecloud.sucks
-DIRECTUS_SERVER_TOKEN=your_actual_directus_token
+DIRECTUS_SERVER_TOKEN=your_directus_token
+
+# Typesense Configuration
+TYPESENSE_HOST=search.thecloud.sucks
+TYPESENSE_PORT=443
+TYPESENSE_PROTOCOL=https
+TYPESENSE_API_KEY=your_typesense_api_key
 ```
 
-**Important:** Replace `your_actual_*` placeholders with your real API keys.
+**Important:** Replace `your_*` placeholders with your real API keys.
+**Note:** The `.env.worker` file is in `.gitignore` and will not be committed.
 
 ### 2. Build the Worker Image
 

@@ -13,6 +13,11 @@ services:
       - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
       - DIRECTUS_URL=${DIRECTUS_URL}
       - DIRECTUS_SERVER_TOKEN=${DIRECTUS_SERVER_TOKEN}
+      # Typesense Configuration
+      - TYPESENSE_HOST=${TYPESENSE_HOST}
+      - TYPESENSE_PORT=${TYPESENSE_PORT}
+      - TYPESENSE_PROTOCOL=${TYPESENSE_PROTOCOL}
+      - TYPESENSE_API_KEY=${TYPESENSE_API_KEY}
       - NODE_ENV=production
     restart: unless-stopped
     networks:
