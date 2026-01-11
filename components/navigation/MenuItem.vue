@@ -87,10 +87,10 @@ watch(
 
 <style lang="postcss">
 .menu-link {
-	@apply text-slate-500 dark:text-gray-300 hover:text-[#0d7ff2] dark:hover:text-[#0d7ff2] text-sm font-medium leading-normal transition-colors inline-flex items-center outline-none font-display;
+	@apply text-gray-300 hover:text-white text-base font-medium leading-normal transition-colors inline-flex items-center outline-none font-display;
 }
 
 .menu-link[aria-current="page"] {
-	@apply text-[#0d7ff2] font-bold;
+	@apply text-white font-semibold;
 }
 </style>

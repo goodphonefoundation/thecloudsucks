@@ -1,11 +1,16 @@
 <script setup lang="ts">
 const { theme, globals } = useAppConfig();
 const searchModal = ref<any>(null);
+const colorMode = useColorMode();
 
 const openSearch = () => {
 	if (searchModal.value) {
 		searchModal.value.open();
 	}
+};
+
+const toggleTheme = () => {
+	colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
 };
 
 const {
@@ -54,44 +59,49 @@ const {
 );
 </script>
 <template>
-	<header class="sticky top-0 z-50 w-full border-b border-solid border-slate-200 dark:border-gray-700 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-6 md:px-10 py-3">
-		<div class="max-w-screen-xl mx-auto flex items-center justify-between">
-			<!-- Logo Section -->
-			<div class="flex items-center gap-8">
-				<NuxtLink href="/" class="flex items-center gap-3 text-[#0d7ff2]">
-					<div class="size-8 bg-[#0d7ff2] flex items-center justify-center rounded-sm">
-						<Icon name="heroicons:command-line-20-solid" class="text-white size-5" />
-					</div>
-					<h2 v-if="globals?.title" class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight uppercase font-display">
-						{{ globals.title }}
-					</h2>
-				</NuxtLink>
-				<nav class="hidden lg:flex items-center gap-8 font-display" aria-label="Global">
-					<NavigationMenuItem v-for="item in navigation?.items" :key="item.id" :item="item" />
-				</nav>
-			</div>
+	<header class="sticky top-0 z-50 w-full bg-slate-900 dark:bg-slate-900 px-6 py-4">
+		<div class="max-w-7xl mx-auto flex items-center justify-between">
+			<!-- Logo -->
+			<NuxtLink href="/" class="flex items-center gap-2">
+				<div class="px-2 py-1 bg-purple-600 rounded text-white text-sm font-bold font-display">
+					<span v-if="globals?.title">{{ globals.title.split(' ')[0] }}</span>
+					<span v-if="globals?.title" class="text-purple-300">{{ globals.title.split(' ')[1] || 'OS' }}</span>
+				</div>
+			</NuxtLink>
 
-			<!-- Actions -->
-			<div class="flex items-center gap-6">
-				<label class="hidden md:flex flex-col min-w-48 !h-10">
-					<div class="flex w-full flex-1 items-stretch rounded h-full">
-						<div class="text-slate-400 dark:text-gray-400 flex border-none bg-white dark:bg-gray-800 items-center justify-center pl-4 rounded-l border-y border-l border-slate-200 dark:border-gray-700">
-							<Icon name="heroicons:magnifying-glass" class="size-5" />
-						</div>
-						<input 
-							class="form-input flex w-full min-w-0 flex-1 border-none bg-white dark:bg-gray-800 text-slate-900 dark:text-white focus:ring-1 focus:ring-[#0d7ff2] h-full placeholder:text-slate-400 dark:placeholder:text-gray-400 px-4 rounded-r text-sm font-normal border-y border-r border-slate-200 dark:border-gray-700" 
-							placeholder="Search..."
-							@click="openSearch"
-							readonly
-						/>
-					</div>
-				</label>
+			<!-- Center Navigation -->
+			<nav class="hidden lg:flex items-center gap-8 font-display" aria-label="Global">
+				<NavigationMenuItem v-for="item in navigation?.items" :key="item.id" :item="item" />
+			</nav>
+
+			<!-- Right Actions -->
+			<div class="flex items-center gap-4">
+				<!-- Theme Toggle -->
 				<button 
-					class="flex min-w-[120px] cursor-pointer items-center justify-center rounded h-10 px-4 bg-red-500 text-white text-sm font-bold leading-normal uppercase tracking-widest hover:bg-red-600 transition-all font-display"
+					@click="toggleTheme"
+					class="p-2 text-white hover:text-purple-400 transition-colors"
+					aria-label="Toggle theme"
+				>
+					<Icon v-if="colorMode.value === 'dark'" name="heroicons:sun-20-solid" class="size-5" />
+					<Icon v-else name="heroicons:moon-20-solid" class="size-5" />
+				</button>
+
+				<!-- Let's Talk Button -->
+				<button 
+					class="hidden md:flex px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded font-display font-semibold text-sm transition-colors"
 					@click="$router.push('/privacy-pack')"
 				>
-					<span class="truncate">Switch Now</span>
+					Let's Talk
 				</button>
+
+				<!-- Login Button -->
+				<a 
+					href="https://directus.thecloud.sucks"
+					target="_blank"
+					class="hidden md:flex px-6 py-2.5 text-purple-400 hover:text-white font-display font-semibold text-sm transition-colors"
+				>
+					Login
+				</a>
 			</div>
 		</div>
 		<NavigationMobileMenu v-if="navigation" :navigation="navigation" />
