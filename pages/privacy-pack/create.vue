@@ -1,10 +1,10 @@
 <script setup lang="ts">
 definePageMeta({
-	layout: 'default',
+	layout: 'minimal',
 });
 
 useHead({
-	title: 'Create Your PrivacyPack',
+	title: 'Create Your Big Tech Switch Pact',
 });
 
 interface Service {
@@ -191,17 +191,21 @@ const copyShareLink = async () => {
 </script>
 
 <template>
-	<div class="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white py-12">
+	<div class="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
 		<BlockContainer>
-			<!-- Header -->
-			<div class="text-center mb-12">
-				<NuxtLink to="/privacy-pack" class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-4">
+			<!-- Breadcrumb -->
+			<div class="py-6 border-b border-gray-800">
+				<NuxtLink to="/" class="inline-flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
 					</svg>
-					Back to PrivacyPack
+					Back to Main Site
 				</NuxtLink>
-				<h1 class="text-4xl font-bold text-green-400 mb-2 font-mono">Create Your PrivacyPack</h1>
+			</div>
+
+			<!-- Header -->
+			<div class="text-center py-12">
+				<h1 class="text-4xl font-bold text-green-400 mb-2 font-mono">Create Your Switch Pact</h1>
 				<p class="text-gray-400">Select the services you've switched from and to</p>
 			</div>
 

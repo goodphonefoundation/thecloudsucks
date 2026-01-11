@@ -1,10 +1,10 @@
 <script setup lang="ts">
 definePageMeta({
-	layout: 'default',
+	layout: 'minimal',
 });
 
 useHead({
-	title: 'PrivacyPack - Share Your Privacy Wins',
+	title: 'Big Tech Switch Pact - Share Your Big Tech Exit',
 });
 
 // Example card
@@ -30,6 +30,16 @@ const exampleSwitches = [
 <template>
 	<div class="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
 		<BlockContainer>
+			<!-- Breadcrumb -->
+			<div class="py-6 border-b border-gray-800">
+				<NuxtLink to="/" class="inline-flex items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+					</svg>
+					Back to Main Site
+				</NuxtLink>
+			</div>
+
 			<!-- Hero Section -->
 			<div class="text-center py-20">
 				<div class="flex items-center justify-center gap-4 mb-6">
@@ -42,9 +52,9 @@ const exampleSwitches = [
 							/>
 						</svg>
 					</div>
-					<h1 class="text-5xl font-bold text-green-400 font-mono">PrivacyPack</h1>
+					<h1 class="text-5xl font-bold text-green-400 font-mono">Big Tech Switch Pact</h1>
 				</div>
-				<p class="text-2xl text-gray-300 mb-4">Your privacy wins, in one card</p>
+				<p class="text-2xl text-gray-300 mb-4">Your Big Tech exit, in one card</p>
 				<p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10">
 					Show which mainstream apps you've switched from and which privacy-respecting tools you've adopted.
 					Share your privacy journey with the world.

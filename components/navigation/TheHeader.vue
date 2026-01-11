@@ -90,7 +90,7 @@ const {
 					class="flex min-w-[120px] cursor-pointer items-center justify-center rounded h-10 px-4 bg-green-500 text-gray-900 text-sm font-bold leading-normal uppercase tracking-widest hover:bg-green-600 transition-all"
 					@click="$router.push('/privacy-pack')"
 				>
-					<span class="truncate">PrivacyPack</span>
+					<span class="truncate">Switch Now</span>
 				</button>
 			</div>
 		</div>

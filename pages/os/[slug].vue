@@ -10,6 +10,7 @@ const { data: os } = await useAsyncData(`os-${slug}`, () => {
 		readItems('operating_systems', {
 			fields: [
 				'*',
+				'assessment_type',
 				'organization.id',
 				'organization.name',
 				'organization.country',
@@ -140,6 +141,7 @@ const getScorePercentage = (score: number | null | undefined) => {
 				
 				<!-- Main Badges -->
 				<div class="flex flex-wrap gap-2">
+					<AssessmentTypeBadge :assessment-type="os.assessment_type" />
 					<span
 						v-if="os.is_open_source"
 						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"

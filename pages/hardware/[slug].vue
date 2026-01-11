@@ -10,6 +10,7 @@ const { data: hardware } = await useAsyncData(`hardware-${slug}`, () => {
 		readItems('hardware_models', {
 			fields: [
 				'*',
+				'assessment_type',
 				'brand.id',
 				'brand.name',
 				'brand.slug',
@@ -230,6 +231,7 @@ const activeTab = ref('overview');
 				
 				<!-- Main Badges -->
 				<div class="flex flex-wrap gap-2">
+					<AssessmentTypeBadge :assessment-type="hardware.assessment_type" />
 					<span
 						v-if="hardware.hardware_type"
 						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 capitalize"

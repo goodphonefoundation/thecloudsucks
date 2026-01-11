@@ -35,9 +35,9 @@ const { fileUrl } = useFiles();
 						/>
 					</svg>
 				</div>
-				<h2 class="text-2xl font-bold text-green-400">PrivacyPack</h2>
+				<h2 class="text-2xl font-bold text-green-400">Big Tech Switch Pact</h2>
 			</div>
-			<p class="text-gray-400 text-sm">YOUR PRIVACY WINS, IN ONE CARD</p>
+			<p class="text-gray-400 text-sm">YOUR BIG TECH EXIT, IN ONE CARD</p>
 		</div>
 
 		<!-- Service Switches -->

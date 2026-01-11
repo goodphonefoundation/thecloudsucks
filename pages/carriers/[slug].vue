@@ -10,6 +10,7 @@ const { data: carrier } = await useAsyncData(`carrier-${slug}`, () => {
 		readItems('carriers', {
 			fields: [
 				'*',
+				'assessment_type',
 				'categories.carrier_categories_id.id',
 				'categories.carrier_categories_id.name',
 				'categories.carrier_categories_id.slug',
@@ -209,6 +210,7 @@ const activeTab = ref('overview');
 
 					<!-- Main Badges -->
 					<div class="flex flex-wrap gap-2">
+						<AssessmentTypeBadge :assessment-type="carrier.assessment_type" />
 						<span
 							v-if="carrier.mvno_status === 'mvno'"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"

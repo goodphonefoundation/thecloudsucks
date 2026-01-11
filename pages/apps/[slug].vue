@@ -8,6 +8,7 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 		readItems('mobile_apps', {
 			fields: [
 				'*',
+				'assessment_type',
 				'categories.mobile_app_categories_id.id',
 				'categories.mobile_app_categories_id.name',
 				'mobsf_metadata',
@@ -227,6 +228,7 @@ const activeTab = ref('overview');
 				
 				<!-- Main Badges -->
 				<div class="flex flex-wrap gap-2 justify-center">
+					<AssessmentTypeBadge :assessment-type="app.assessment_type" />
 					<span
 						v-if="app.category"
 						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 capitalize"

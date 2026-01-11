@@ -8,6 +8,7 @@ const { data: alternative } = await useAsyncData(`selfhosted-${slug}`, () => {
 		readItems('selfhosted_alternatives', {
 			fields: [
 				'*',
+				'assessment_type',
 				'organization.id',
 				'organization.name',
 				'organization.country',
@@ -197,6 +198,7 @@ const activeTab = ref('overview');
 				
 				<!-- Main Badges -->
 				<div class="flex flex-wrap gap-2 justify-center">
+					<AssessmentTypeBadge :assessment-type="alternative.assessment_type" />
 					<span
 						v-if="alternative.category"
 						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 capitalize"
