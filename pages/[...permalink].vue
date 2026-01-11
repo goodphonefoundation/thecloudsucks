@@ -192,6 +192,7 @@ const { data: page } = await useAsyncData(
 								},
 							],
 							block_whitepaper_content: ['*'],
+							block_privacy_pack_builder: ['id', 'headline', 'content', 'cta_text', 'cta_url'],
 							},
 						},
 						],

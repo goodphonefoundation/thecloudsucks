@@ -45,6 +45,7 @@ const { data: service } = await useAsyncData(`service-${slug}`, () => {
 					'score_transparency',
 					'score_governance',
 					'score_overall',
+					'assessment_type',
 				],
 			filter: {
 				slug: { _eq: slug },
@@ -233,6 +234,7 @@ const activeTab = ref('overview');
 
 					<!-- Main Badges -->
 					<div class="flex flex-wrap gap-2">
+						<AssessmentTypeBadge :assessment-type="service.assessment_type" />
 						<span
 							v-if="service.is_open_source"
 							class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"

@@ -43,7 +43,8 @@ export type BlockType =
 	| 'block_testimonials'
 	| 'block_video'
 	| 'block_divider'
-	| 'block_whitepaper_content';
+	| 'block_whitepaper_content'
+	| 'block_privacy_pack_builder';
 
 export type Block =
 	| BlockServicesShowcase

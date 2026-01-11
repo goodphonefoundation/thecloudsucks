@@ -87,6 +87,11 @@ watch(
 
 <style lang="postcss">
 .menu-link {
-	@apply text-white hover:bg-gray-700 transition duration-150 font-medium hover:text-white py-2 px-3 inline-flex items-center font-display outline-none rounded-button;
+	@apply text-slate-500 hover:text-[#0d7ff2] text-sm font-medium leading-normal transition-colors inline-flex items-center outline-none;
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+.menu-link[aria-current="page"] {
+	@apply text-[#0d7ff2] font-bold;
 }
 </style>
