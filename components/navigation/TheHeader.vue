@@ -75,10 +75,10 @@ const {
 		<div class="max-w-7xl mx-auto flex items-center justify-between">
 			<!-- Logo -->
 			<NuxtLink href="/" class="flex items-center gap-2">
-				<NuxtImg 
-					v-if="globals?.value?.logo_on_dark_bg" 
-					:src="globals.value.logo_on_dark_bg" 
-					alt="Logo" 
+				<NuxtImg
+					v-if="globals?.value?.logo_on_dark_bg"
+					:src="globals.value.logo_on_dark_bg"
+					alt="Logo"
 					class="h-8"
 				/>
 				<div v-else class="px-2 py-1 bg-purple-600 rounded text-white text-sm font-bold font-display">
@@ -95,7 +95,7 @@ const {
 			<!-- Right Actions -->
 			<div class="flex items-center gap-4">
 				<!-- Theme Toggle -->
-				<button 
+				<button
 					@click="toggleTheme"
 					class="p-2 text-white hover:text-purple-400 transition-colors"
 					aria-label="Toggle theme"
@@ -105,7 +105,7 @@ const {
 				</button>
 
 				<!-- Let's Talk Button -->
-				<button 
+				<button
 					class="hidden md:flex px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded font-display font-semibold text-sm transition-colors"
 					@click="$router.push('/privacy-pack')"
 				>
@@ -113,8 +113,8 @@ const {
 				</button>
 
 				<!-- Login Button -->
-				<a 
-					href="https://directus.thecloud.sucks"
+				<a
+					href="https://directus.brax.guide"
 					target="_blank"
 					class="hidden md:flex px-6 py-2.5 text-purple-400 hover:text-white font-display font-semibold text-sm transition-colors"
 				>

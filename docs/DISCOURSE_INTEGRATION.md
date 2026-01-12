@@ -9,7 +9,7 @@ This document describes the Discourse community forum integration that displays 
 Added to `.env`:
 
 ```env
-DISCOURSE_API_URL="https://community.thecloud.sucks"
+DISCOURSE_API_URL="https://community.brax.guide"
 DISCOURSE_API_KEY="020d14f29412d490811d7339e2f36f38ade8220fcb6498afb7eb7201b4b07cbd"
 ```
 
@@ -17,8 +17,8 @@ DISCOURSE_API_KEY="020d14f29412d490811d7339e2f36f38ade8220fcb6498afb7eb7201b4b07
 
 Created a scheduled flow that automatically fetches Discourse posts every 30 minutes:
 
-**Flow Name:** Fetch Discourse Posts  
-**URL:** https://directus.thecloud.sucks/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c
+**Flow Name:** Fetch Discourse Posts
+**URL:** https://directus.brax.guide/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c
 
 **Operations:**
 
@@ -105,7 +105,7 @@ You can add the Discourse posts carousel to any page:
 
 You can manually trigger the flow in Directus to test it:
 
-1. Go to: https://directus.thecloud.sucks/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c
+1. Go to: https://directus.brax.guide/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c
 2. Click the "Test Flow" button in the top right
 3. Check the `globals` collection to see the updated `discourse_posts` field
 

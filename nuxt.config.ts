@@ -119,7 +119,7 @@ export default defineNuxtConfig({
 
 	vite: {
 		server: {
-			allowedHosts: ['host.docker.internal', 'dev.thecloud.sucks', 'thecloud.sucks', 'localhost', 'directus.thecloud.sucks', 'directus-dev.thecloud.sucks'],
+			allowedHosts: ['host.docker.internal', 'dev.base.guide', 'base.guide', 'localhost', 'directus.base.guide', 'directus-dev.base.guide'],
 		},
 	},
 

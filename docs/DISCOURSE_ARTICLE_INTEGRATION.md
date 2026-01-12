@@ -69,7 +69,7 @@ Create a new flow in Directus:
 
 #### Operation 1: Condition Check
 - Type: Condition
-- Rule: 
+- Rule:
 ```json
 {
   "$and": [
@@ -86,15 +86,15 @@ Create a new flow in Directus:
 module.exports = async function(data) {
   const axios = require('axios');
   const article = data.$trigger.payload;
-  
+
   const discourseUrl = process.env.DISCOURSE_API_URL;
   const apiKey = process.env.DISCOURSE_API_KEY;
   const apiUsername = 'system'; // or your bot username
-  
+
   // Create excerpt from article summary or content
-  const excerpt = article.summary || 
+  const excerpt = article.summary ||
     (article.content ? article.content.substring(0, 200) + '...' : '');
-  
+
   // Create the topic
   const response = await axios.post(
     `${discourseUrl}/posts.json`,
@@ -112,7 +112,7 @@ module.exports = async function(data) {
       }
     }
   );
-  
+
   return {
     topic_id: response.data.topic_id,
     topic_url: `${discourseUrl}/t/${response.data.topic_slug}/${response.data.topic_id}`
@@ -156,7 +156,7 @@ For blog posts (`components/post/PostBlog.vue`):
 <template>
   <div>
     <!-- Existing article content -->
-    
+
     <!-- Add at the bottom -->
     <PostDiscourseComments
       :topic-id="page.discourse_topic_id"
@@ -276,7 +276,7 @@ interface Props {
 
 Required in `.env`:
 ```env
-DISCOURSE_API_URL=https://community.thecloud.sucks
+DISCOURSE_API_URL=https://community.brax.guide
 DISCOURSE_API_KEY=your-api-key-here
 NUXT_PUBLIC_SITE_URL=https://yourdomain.com
 ```

@@ -19,7 +19,7 @@ This workflow receives post data via webhook and creates posts in Discourse.
 
 **Node:** HTTP Request
 - **Method:** POST
-- **URL:** `https://community.thecloud.sucks/posts.json`
+- **URL:** `https://community.brax.guide/posts.json`
 - **Authentication:** Generic Credential Type
   - **Header Name:** `Api-Key`
   - **Value:** `YOUR_DISCOURSE_API_KEY`
@@ -45,7 +45,7 @@ const response = $input.item.json;
 return {
   json: {
     discourse_topic_id: response.topic_id,
-    discourse_topic_url: `https://community.thecloud.sucks/t/${response.topic_slug}/${response.topic_id}`,
+    discourse_topic_url: `https://community.brax.guide/t/${response.topic_slug}/${response.topic_id}`,
     post_id: $('Webhook').item.json.post_id
   }
 };
@@ -68,7 +68,7 @@ return {
   "post_id": "46165ced-9763-488b-a444-1712426b2316",
   "title": "Top 10 Messaging Apps for Privacy in 2025",
   "content": "In an era where our digital conversations are increasingly monitored...",
-  "url": "https://thecloud.sucks/posts/top-10-messaging-apps-for-privacy-in-2025",
+  "url": "https://brax.guide/posts/top-10-messaging-apps-for-privacy-in-2025",
   "category": 5
 }
 ```
@@ -81,7 +81,7 @@ $body = @{
     post_id = "46165ced-9763-488b-a444-1712426b2316"
     title = "Test Post from n8n"
     content = "This is a test post created via n8n workflow"
-    url = "https://thecloud.sucks/posts/test"
+    url = "https://brax.guide/posts/test"
     category = 5
 } | ConvertTo-Json
 
@@ -104,7 +104,7 @@ The Nuxt app can trigger this when needed for manual topic creation.
 
 Configure in n8n:
 - **DISCOURSE_API_KEY** - Your Discourse API key
-- **DISCOURSE_URL** - https://community.thecloud.sucks
+- **DISCOURSE_URL** - https://community.brax.guide
 
 ## Advantages
 

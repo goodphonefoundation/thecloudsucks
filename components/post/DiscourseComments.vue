@@ -18,7 +18,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const discourseUrl = 'https://community.thecloud.sucks';
+const discourseUrl = 'https://community.brax.guide';
 const hasDiscourse = computed(() => !!props.topicId);
 const hasComments = computed(() => Array.isArray(props.comments) && props.comments.length > 0);
 

@@ -1,7 +1,7 @@
 import { createDirectus, rest, readItems, createItem, staticToken } from '@directus/sdk';
 import type { ServiceResearchData } from './perplexity';
 
-const DIRECTUS_URL = process.env.DIRECTUS_URL || 'https://directus.thecloud.sucks';
+const DIRECTUS_URL = process.env.DIRECTUS_URL || 'https://directus.brax.guide';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_SERVER_TOKEN || '';
 
 // Temporarily disabled for deployment - will be set in Trigger.dev dashboard
@@ -70,10 +70,10 @@ export async function getOrCreateCategories(categoryNames: string[]): Promise<st
 
 		const existingNames = existingCategories.map((cat: any) => cat.name);
 		const existingIds = existingCategories.map((cat: any) => cat.id);
-		
+
 		// Find categories that need to be created
 		const newCategoryNames = categoryNames.filter(name => !existingNames.includes(name));
-		
+
 		// Create new categories
 		const newCategoryIds: string[] = [];
 		for (const name of newCategoryNames) {
@@ -104,7 +104,7 @@ export async function getOrCreateCategories(categoryNames: string[]): Promise<st
 export async function createService(serviceData: ServiceResearchData): Promise<{ id: string; url: string }> {
 	try {
 		const slug = generateSlug(serviceData.name);
-		
+
 		// Get category IDs
 		const categoryIds = await getOrCreateCategories(serviceData.categories || []);
 
@@ -194,7 +194,7 @@ export async function createMultipleServices(services: ServiceResearchData[]): P
 		try {
 			// Check for duplicates
 			const isDuplicate = await checkDuplicateService(service.name, service.website_url);
-			
+
 			if (isDuplicate) {
 				results.push({
 					service,
@@ -206,7 +206,7 @@ export async function createMultipleServices(services: ServiceResearchData[]): P
 
 			// Create the service
 			const { id, url } = await createService(service);
-			
+
 			results.push({
 				service,
 				status: 'created',

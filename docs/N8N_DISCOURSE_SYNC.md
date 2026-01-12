@@ -35,7 +35,7 @@ This filters out the initial post (post_number 1) and only processes actual comm
 
 **Node:** HTTP Request
 - **Method:** GET
-- **URL:** `https://community.thecloud.sucks/t/{{ $json.topic.id }}.json`
+- **URL:** `https://community.brax.guide/t/{{ $json.topic.id }}.json`
 - **Authentication:** Generic Credential Type
   - **Header Name:** `Api-Key`
   - **Value:** `YOUR_DISCOURSE_API_KEY`

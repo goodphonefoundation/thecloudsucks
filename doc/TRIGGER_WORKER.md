@@ -29,11 +29,11 @@ TRIGGER_SECRET_KEY=your_trigger_secret_key
 PERPLEXITY_API_KEY=your_perplexity_api_key
 
 # Directus Configuration
-DIRECTUS_URL=https://directus.thecloud.sucks
+DIRECTUS_URL=https://directus.brax.guide
 DIRECTUS_SERVER_TOKEN=your_directus_token
 
 # Typesense Configuration
-TYPESENSE_HOST=search.thecloud.sucks
+TYPESENSE_HOST=search.brax.guide
 TYPESENSE_PORT=443
 TYPESENSE_PROTOCOL=https
 TYPESENSE_API_KEY=your_typesense_api_key

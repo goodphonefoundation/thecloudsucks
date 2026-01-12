@@ -15,7 +15,7 @@ This n8n workflow automatically fetches app metadata from Google Play Store and 
 ### Option 1: Web Form (Recommended for Manual Use)
 Once the workflow is activated, access the form at:
 ```
-https://n8n.thecloud.sucks/form/google-play-import
+https://n8n.brax.guide/form/google-play-import
 ```
 
 The form provides a simple interface where you can:
@@ -26,7 +26,7 @@ The form provides a simple interface where you can:
 ### Option 2: Webhook API (For Automation)
 Programmatic access via webhook:
 ```
-POST https://n8n.thecloud.sucks/webhook/google-play-import
+POST https://n8n.brax.guide/webhook/google-play-import
 ```
 
 #### Request Payload
@@ -167,7 +167,7 @@ POST https://n8n.thecloud.sucks/webhook/google-play-import
 ### Test Cases
 
 #### Via Web Form
-1. Open form: https://n8n.thecloud.sucks/form/google-play-import
+1. Open form: https://n8n.brax.guide/form/google-play-import
 2. Paste URL: `https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms`
 3. Click submit
 4. Verify success message appears
@@ -175,34 +175,34 @@ POST https://n8n.thecloud.sucks/webhook/google-play-import
 #### Via Webhook API
 1. **App on both stores**: Signal (`org.thoughtcrime.securesms`)
    ```bash
-   curl -X POST https://n8n.thecloud.sucks/webhook/google-play-import \
+   curl -X POST https://n8n.brax.guide/webhook/google-play-import \
      -H "Content-Type: application/json" \
      -d '{"google_play_url":"https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms"}'
    ```
 
 2. **App only on Google Play**: Instagram (`com.instagram.android`)
    ```bash
-   curl -X POST https://n8n.thecloud.sucks/webhook/google-play-import \
+   curl -X POST https://n8n.brax.guide/webhook/google-play-import \
      -H "Content-Type: application/json" \
      -d '{"google_play_url":"https://play.google.com/store/apps/details?id=com.instagram.android"}'
    ```
 
 3. **Invalid URL**:
    ```bash
-   curl -X POST https://n8n.thecloud.sucks/webhook/google-play-import \
+   curl -X POST https://n8n.brax.guide/webhook/google-play-import \
      -H "Content-Type: application/json" \
      -d '{"google_play_url":"https://invalid-url.com"}'
    ```
 
 4. **Update existing app**: Re-import Signal
    ```bash
-   curl -X POST https://n8n.thecloud.sucks/webhook/google-play-import \
+   curl -X POST https://n8n.brax.guide/webhook/google-play-import \
      -H "Content-Type: application/json" \
      -d '{"google_play_url":"https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms"}'
    ```
 
 ## Activation Steps
-1. Open n8n UI: https://n8n.thecloud.sucks
+1. Open n8n UI: https://n8n.brax.guide
 2. Navigate to workflow "Google Play App Enrichment"
 3. Click "Active" toggle to enable the workflow
 4. Test the webhook endpoint with sample data

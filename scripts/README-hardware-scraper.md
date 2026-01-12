@@ -13,7 +13,7 @@ Brand-level container with:
 - Description and metadata
 - O2M relationship to hardware_models
 
-**View in Directus**: [Hardware Brands Collection](https://directus.thecloud.sucks/admin/content/hardware_brands)
+**View in Directus**: [Hardware Brands Collection](https://directus.brax.guide/admin/content/hardware_brands)
 
 #### `hardware_models`
 Individual device models with:
@@ -40,7 +40,7 @@ Individual device models with:
   - Tier, recommended use, audience level
   - Scores and justifications (privacy, autonomy, transparency, governance)
 
-**View in Directus**: [Hardware Models Collection](https://directus.thecloud.sucks/admin/content/hardware_models)
+**View in Directus**: [Hardware Models Collection](https://directus.brax.guide/admin/content/hardware_models)
 
 ## GSMArena Scraper
 
@@ -162,10 +162,10 @@ Apple (Brand)
 A test entry has been created:
 
 - **Brand**: Samsung (ID: `74aebfb1-8f82-4680-bb68-39fb1d70ed93`)
-  - [View in Directus](https://directus.thecloud.sucks/admin/content/hardware_brands/74aebfb1-8f82-4680-bb68-39fb1d70ed93)
+  - [View in Directus](https://directus.brax.guide/admin/content/hardware_brands/74aebfb1-8f82-4680-bb68-39fb1d70ed93)
 
 - **Model**: Galaxy M17 5G (ID: `6402f59e-e242-4eb6-982e-35296354ec81`)
-  - [View in Directus](https://directus.thecloud.sucks/admin/content/hardware_models/6402f59e-e242-4eb6-982e-35296354ec81)
+  - [View in Directus](https://directus.brax.guide/admin/content/hardware_models/6402f59e-e242-4eb6-982e-35296354ec81)
   - Contains full specifications scraped from GSMArena
   - All 40+ technical specification fields populated
   - Assessment fields ready for manual entry
@@ -195,12 +195,12 @@ Update any existing UI components that reference `hardware_items`:
 
 ## Benefits
 
-✅ **Clear Hierarchy**: Brand → Models structure matches real-world organization  
-✅ **Comprehensive Data**: 40+ specification fields from authoritative source  
-✅ **Automated Entry**: Scraper eliminates manual data entry for technical specs  
-✅ **Maintained Assessments**: Existing privacy/repairability framework preserved  
-✅ **Scalable**: Easy to add new brands and models  
-✅ **Traceable**: GSMArena URL stored for source attribution  
+✅ **Clear Hierarchy**: Brand → Models structure matches real-world organization
+✅ **Comprehensive Data**: 40+ specification fields from authoritative source
+✅ **Automated Entry**: Scraper eliminates manual data entry for technical specs
+✅ **Maintained Assessments**: Existing privacy/repairability framework preserved
+✅ **Scalable**: Easy to add new brands and models
+✅ **Traceable**: GSMArena URL stored for source attribution
 
 ## Files
 
@@ -209,8 +209,8 @@ Update any existing UI components that reference `hardware_items`:
 
 ## Collections in Directus
 
-- [hardware_brands](https://directus.thecloud.sucks/admin/content/hardware_brands)
-- [hardware_models](https://directus.thecloud.sucks/admin/content/hardware_models)
+- [hardware_brands](https://directus.brax.guide/admin/content/hardware_brands)
+- [hardware_models](https://directus.brax.guide/admin/content/hardware_models)
 
 ---
 

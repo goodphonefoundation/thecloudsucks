@@ -1,6 +1,6 @@
 # Add Discourse Fields to Posts Collection
 
-Follow these steps in the Directus admin panel at https://directus.thecloud.sucks/admin
+Follow these steps in the Directus admin panel at https://directus.brax.guide/admin
 
 ## Navigate to Data Model
 1. Click **Settings** (gear icon) in the sidebar
@@ -34,7 +34,7 @@ Follow these steps in the Directus admin panel at https://directus.thecloud.suck
    - **Type**: String
    - **Field**: Input
    - **Interface Options**:
-     - Placeholder: "https://community.thecloud.sucks/t/..."
+     - Placeholder: "https://community.brax.guide/t/..."
      - Icon Suffix: (leave empty)
    - **Width**: Half
    - **Note**: "Full URL to the Discourse topic"

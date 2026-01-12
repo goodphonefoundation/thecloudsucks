@@ -103,7 +103,7 @@ const { fileUrl } = useFiles();
 		<div v-if="showBranding" class="mt-8 pt-6 border-t border-gray-800 text-center">
 			<p class="text-xs text-gray-500">
 				Created at
-				<span class="text-green-400 font-semibold">thecloud.sucks</span>
+				<span class="text-green-400 font-semibold">brax.guide</span>
 			</p>
 		</div>
 	</div>

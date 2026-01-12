@@ -25,7 +25,7 @@ Your `.env` file should contain:
 
 ```env
 # Directus Configuration
-DIRECTUS_URL="https://directus.thecloud.sucks"
+DIRECTUS_URL="https://directus.brax.guide"
 DIRECTUS_SERVER_TOKEN="your_directus_token"
 
 # Perplexity AI Configuration
@@ -139,7 +139,7 @@ Services are created in Directus with:
 After the task completes:
 
 1. Check the task output for service URLs
-2. Visit each service in Directus: `https://directus.thecloud.sucks/admin/content/services/{id}`
+2. Visit each service in Directus: `https://directus.brax.guide/admin/content/services/{id}`
 3. Review and validate:
    - Service information accuracy
    - URLs are correct and working
@@ -201,7 +201,7 @@ To run the task on a schedule:
 1. In `trigger/fetch-social-services.ts`, add a schedule trigger:
    ```typescript
    import { schedules } from "@trigger.dev/sdk/v3";
-   
+
    export const scheduledFetch = schedules.task({
      id: "scheduled-fetch-social-services",
      cron: "0 0 * * 1", // Every Monday at midnight

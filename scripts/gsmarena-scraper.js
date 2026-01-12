@@ -1,6 +1,6 @@
 /**
  * GSMArena Phone Scraper
- * 
+ *
  * Scrapes phone specifications from GSMArena and populates Directus hardware collections
  * Usage: node gsmarena-scraper.js <gsmarena_url>
  * Example: node gsmarena-scraper.js https://www.gsmarena.com/samsung_galaxy_m17_5g-14221.php
@@ -9,7 +9,7 @@
 const axios = require('axios');
 
 // Configuration
-const DIRECTUS_URL = process.env.DIRECTUS_URL || 'https://directus.thecloud.sucks';
+const DIRECTUS_URL = process.env.DIRECTUS_URL || 'https://directus.brax.guide';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN;
 
 if (!DIRECTUS_TOKEN) {
@@ -31,7 +31,7 @@ const directusApi = axios.create({
  */
 function extractPhoneSpecs() {
   const specs = {};
-  
+
   // Extract title
   const titleEl = document.querySelector('h1.specs-phone-name-title');
   if (titleEl) {
@@ -40,7 +40,7 @@ function extractPhoneSpecs() {
     const nameParts = specs.name.split(' ');
     specs.brandName = nameParts[0];
   }
-  
+
   // Helper function to extract cell value by row label
   function getCellValue(labelText) {
     const rows = document.querySelectorAll('table tr');
@@ -55,7 +55,7 @@ function extractPhoneSpecs() {
     }
     return null;
   }
-  
+
   // Network specs
   specs.network_technology = getCellValue('Technology');
   specs.network_2g_bands = getCellValue('2G bands');
@@ -63,7 +63,7 @@ function extractPhoneSpecs() {
   specs.network_4g_bands = getCellValue('4G bands');
   specs.network_5g_bands = getCellValue('5G bands');
   specs.network_speed = getCellValue('Speed');
-  
+
   // Launch specs
   specs.release_status = getCellValue('Status');
   const announced = getCellValue('Announced');
@@ -84,31 +84,31 @@ function extractPhoneSpecs() {
       console.error('Error parsing date:', e);
     }
   }
-  
+
   // Body specs
   specs.dimensions = getCellValue('Dimensions');
   specs.weight = getCellValue('Weight');
   specs.build_materials = getCellValue('Build');
   specs.sim_type = getCellValue('SIM');
-  
+
   // IP rating (may be in separate row)
   const ipRating = getCellValue('');
   if (ipRating && ipRating.includes('IP')) {
     specs.ip_rating = ipRating;
   }
-  
+
   // Display specs
   specs.display_type = getCellValue('Type');
   specs.display_size = getCellValue('Size');
   specs.display_resolution = getCellValue('Resolution');
   specs.display_protection = getCellValue('Protection');
-  
+
   // Platform specs
   specs.os = getCellValue('OS');
   specs.chipset = getCellValue('Chipset');
   specs.cpu = getCellValue('CPU');
   specs.gpu = getCellValue('GPU');
-  
+
   // Memory specs
   specs.memory_card_slot = getCellValue('Card slot');
   const internalStorage = getCellValue('Internal');
@@ -125,7 +125,7 @@ function extractPhoneSpecs() {
       specs.internal_storage = JSON.stringify(variants);
     }
   }
-  
+
   // Camera specs
   const mainCamera = getCellValue('Triple') || getCellValue('Dual') || getCellValue('Single');
   if (mainCamera) {
@@ -138,7 +138,7 @@ function extractPhoneSpecs() {
   if (mainVideo) {
     specs.main_camera_video = mainVideo;
   }
-  
+
   // Selfie camera
   const selfieCamera = document.querySelectorAll('table')[6]; // Selfie camera table
   if (selfieCamera) {
@@ -147,7 +147,7 @@ function extractPhoneSpecs() {
       specs.selfie_camera = selfieSingle;
     }
   }
-  
+
   // Extract selfie camera video separately
   const allRows = Array.from(document.querySelectorAll('table tr'));
   for (let i = 0; i < allRows.length; i++) {
@@ -165,11 +165,11 @@ function extractPhoneSpecs() {
       break;
     }
   }
-  
+
   // Sound specs
   specs.loudspeaker = getCellValue('Loudspeaker');
   specs.audio_jack = getCellValue('3.5mm jack');
-  
+
   // Comms specs
   specs.wlan = getCellValue('WLAN');
   specs.bluetooth = getCellValue('Bluetooth');
@@ -177,21 +177,21 @@ function extractPhoneSpecs() {
   specs.nfc = getCellValue('NFC');
   specs.radio = getCellValue('Radio');
   specs.usb = getCellValue('USB');
-  
+
   // Features
   specs.sensors = getCellValue('Sensors');
-  
+
   // Battery
   specs.battery_type = getCellValue('Type');
   const charging = getCellValue('Charging');
   if (charging) {
     specs.battery_charging = charging;
   }
-  
+
   // Misc
   specs.colors = getCellValue('Colors');
   specs.price = getCellValue('Price');
-  
+
   return specs;
 }
 
@@ -207,12 +207,12 @@ async function createOrGetBrand(brandName) {
         limit: 1
       }
     });
-    
+
     if (response.data.data && response.data.data.length > 0) {
       console.log(`Brand "${brandName}" already exists`);
       return response.data.data[0];
     }
-    
+
     // Create brand
     console.log(`Creating brand "${brandName}"`);
     const createResponse = await directusApi.post('/hardware_brands', {
@@ -220,7 +220,7 @@ async function createOrGetBrand(brandName) {
       slug: brandName.toLowerCase().replace(/\s+/g, '-'),
       status: 'active'
     });
-    
+
     return createResponse.data.data;
   } catch (error) {
     console.error('Error creating/getting brand:', error.response?.data || error.message);
@@ -236,16 +236,16 @@ async function createPhoneModel(specs, brandId, gsmarenaUrl) {
     // Extract GSMArena ID from URL
     const urlMatch = gsmarenaUrl.match(/-(\d+)\.php/);
     const gsmarenaId = urlMatch ? urlMatch[1] : null;
-    
+
     // Generate slug from name
     const slug = specs.name.toLowerCase()
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '');
-    
+
     // Check if model already exists
     const existingResponse = await directusApi.get('/hardware_models', {
       params: {
-        filter: { 
+        filter: {
           _and: [
             { brand: { _eq: brandId } },
             { slug: { _eq: slug } }
@@ -254,24 +254,24 @@ async function createPhoneModel(specs, brandId, gsmarenaUrl) {
         limit: 1
       }
     });
-    
+
     if (existingResponse.data.data && existingResponse.data.data.length > 0) {
       console.log(`Model "${specs.name}" already exists, updating...`);
       const existingId = existingResponse.data.data[0].id;
-      
+
       const updateResponse = await directusApi.patch(`/hardware_models/${existingId}`, {
         ...prepareModelData(specs, brandId, gsmarenaUrl, gsmarenaId, slug)
       });
-      
+
       return updateResponse.data.data;
     }
-    
+
     // Create new model
     console.log(`Creating model "${specs.name}"`);
     const createResponse = await directusApi.post('/hardware_models', {
       ...prepareModelData(specs, brandId, gsmarenaUrl, gsmarenaId, slug)
     });
-    
+
     return createResponse.data.data;
   } catch (error) {
     console.error('Error creating phone model:', error.response?.data || error.message);
@@ -293,7 +293,7 @@ function prepareModelData(specs, brandId, gsmarenaUrl, gsmarenaId, slug) {
     status: 'active',
     short_description: `${specs.name} with ${specs.chipset || 'chipset'} and ${specs.battery_type || 'battery'}`,
     summary: `${specs.name} smartphone with ${specs.display_type || 'display'} and ${specs.os || 'OS'}`,
-    
+
     // Technical specs
     release_date: specs.release_date || null,
     release_status: specs.release_status || null,
@@ -302,44 +302,44 @@ function prepareModelData(specs, brandId, gsmarenaUrl, gsmarenaId, slug) {
     build_materials: specs.build_materials || null,
     sim_type: specs.sim_type || null,
     ip_rating: specs.ip_rating || null,
-    
+
     display_type: specs.display_type || null,
     display_size: specs.display_size || null,
     display_resolution: specs.display_resolution || null,
     display_protection: specs.display_protection || null,
-    
+
     os: specs.os || null,
     chipset: specs.chipset || null,
     cpu: specs.cpu || null,
     gpu: specs.gpu || null,
-    
+
     memory_card_slot: specs.memory_card_slot || null,
     internal_storage: specs.internal_storage ? JSON.parse(specs.internal_storage) : null,
-    
+
     main_camera: specs.main_camera ? JSON.parse(specs.main_camera) : null,
     main_camera_features: specs.main_camera_features || null,
     main_camera_video: specs.main_camera_video || null,
     selfie_camera: specs.selfie_camera || null,
     selfie_camera_video: specs.selfie_camera_video || null,
-    
+
     loudspeaker: specs.loudspeaker || null,
     audio_jack: specs.audio_jack || null,
-    
+
     wlan: specs.wlan || null,
     bluetooth: specs.bluetooth || null,
     positioning: specs.positioning || null,
     nfc: specs.nfc || null,
     radio: specs.radio || null,
     usb: specs.usb || null,
-    
+
     sensors: specs.sensors || null,
-    
+
     battery_type: specs.battery_type || null,
     battery_charging: specs.battery_charging || null,
-    
+
     colors: specs.colors || null,
     price: specs.price || null,
-    
+
     network_technology: specs.network_technology || null,
     network_2g_bands: specs.network_2g_bands || null,
     network_3g_bands: specs.network_3g_bands || null,
@@ -358,7 +358,7 @@ async function scrapeGSMArena(url) {
   console.log(`Starting scrape of: ${url}`);
   console.log('Note: You need to run the Playwright browser_evaluate MCP call separately');
   console.log('Use the extractPhoneSpecs() function provided in this script');
-  
+
   // For demonstration, we'll use the extracted specs from the user's context
   // In a real implementation, this would come from Playwright MCP
   const specs = {
@@ -414,31 +414,31 @@ async function scrapeGSMArena(url) {
     network_5g_bands: "1, 3, 5, 7, 8, 28, 40, 41, 66, 77, 78 SA/NSA/Sub6",
     network_speed: "HSPA, LTE, 5G"
   };
-  
+
   // Create or get brand
   const brand = await createOrGetBrand(specs.brandName);
-  
+
   // Create phone model
   const model = await createPhoneModel(specs, brand.id, url);
-  
+
   console.log('\nScraping completed successfully!');
   console.log(`Brand ID: ${brand.id}`);
   console.log(`Model ID: ${model.id}`);
   console.log(`View model: ${DIRECTUS_URL}/admin/content/hardware_models/${model.id}`);
-  
+
   return { brand, model };
 }
 
 // Main execution
 if (require.main === module) {
   const url = process.argv[2];
-  
+
   if (!url) {
     console.error('Usage: node gsmarena-scraper.js <gsmarena_url>');
     console.error('Example: node gsmarena-scraper.js https://www.gsmarena.com/samsung_galaxy_m17_5g-14221.php');
     process.exit(1);
   }
-  
+
   scrapeGSMArena(url)
     .then(() => {
       console.log('\nDone!');

@@ -110,7 +110,7 @@ To display additional service data:
 
 ### View the Results
 
-- **Admin Panel**: https://directus.thecloud.sucks/admin/content/pages/ac35a4c6-ca73-48c4-9c02-37a50d4bc736
+- **Admin Panel**: https://directus.brax.guide/admin/content/pages/ac35a4c6-ca73-48c4-9c02-37a50d4bc736
 - **Frontend**: Visit `/services` on your Nuxt site
 
 ### Troubleshooting

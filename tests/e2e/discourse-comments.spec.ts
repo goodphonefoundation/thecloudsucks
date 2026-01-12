@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = process.env.BASE_URL ?? 'https://thecloud.sucks';
+const BASE_URL = process.env.BASE_URL ?? 'https://brax.guide';
 const SLUG = process.env.POST_SLUG ?? 'action-flow-test';
 
 // Helper to navigate to a post

@@ -4,7 +4,7 @@ The Discourse posts carousel is now live on your home page!
 
 ## 🎉 What's Ready
 
-1. **Discourse API** - Connected to `https://community.thecloud.sucks/`
+1. **Discourse API** - Connected to `https://community.brax.guide/`
 2. **Automated Sync** - Fetches latest posts every 30 minutes
 3. **Home Page Display** - Carousel automatically shows at the bottom of `/`
 4. **Demo Page** - Also available at `/community`
@@ -23,7 +23,7 @@ The Discourse posts carousel is now live on your home page!
 
 3. **Initial Data Load:** The flow will run automatically, but you can test it manually:
    - Go to
-     [Directus Flow Settings](https://directus.thecloud.sucks/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c)
+     [Directus Flow Settings](https://directus.brax.guide/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c)
    - The flow is scheduled and will populate data automatically
 
 ## 📍 Where It Appears
@@ -62,4 +62,4 @@ See `DISCOURSE_INTEGRATION.md` for complete details, troubleshooting, and custom
 ---
 
 **Need help?** Check `DISCOURSE_INTEGRATION.md` or visit your flow at:
-https://directus.thecloud.sucks/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c
+https://directus.brax.guide/admin/settings/flows/6c14cf97-4259-48ae-b60a-19943d578b3c
