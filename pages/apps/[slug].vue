@@ -11,6 +11,27 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 				'assessment_type',
 				'categories.mobile_app_categories_id.id',
 				'categories.mobile_app_categories_id.name',
+				'privacy_assessment',
+				'privacy_assessment_notes',
+				'ethical_design_assessment',
+				'ethical_design_notes',
+				'scam_risk_assessment',
+				'scam_risk_notes',
+				'mental_health_assessment',
+				'mental_health_notes',
+				'autonomy_assessment',
+				'autonomy_assessment_notes',
+				'control_ownership_assessment',
+				'control_ownership_assessment_notes',
+				'human_impact_assessment',
+				'human_impact_assessment_notes',
+				'resilience_assessment',
+				'resilience_assessment_notes',
+				'transparency_assessment',
+				'transparency_assessment_notes',
+				'assessment_overall_score',
+				'assessment_completion_date',
+				'assessment_version',
 				'mobsf_metadata',
 				'mobsf_permissions',
 				'mobsf_manifest_findings',
@@ -41,6 +62,53 @@ const { data: app } = await useAsyncData(`app-${slug}`, () => {
 				'organization.street',
 				'organization.zip_code',
 				'organization.locations_distribution',
+				'organization.governance_leadership_concentration',
+				'organization.governance_legal_accountability',
+				'organization.governance_transparency',
+				'organization.governance_stakeholder_representation',
+				'organization.governance_succession_planning',
+				'organization.governance_funding_transparency',
+				'organization.governance_resistance_to_pressure',
+				'organization.governance_model',
+				'organization.governance_risk_indicators',
+				'organization.governance_positive_signals',
+				'organization.governance_assessment_notes',
+				'organization.governance_assessment_date',
+				'organization.governance_assessment_version',
+				'organization.governance_overall_score',
+				'organization.business_model',
+				'organization.funding_transparency',
+				'organization.bus_factor_risk',
+				'github_governance_assessment.id',
+				'github_governance_assessment.repo_url',
+				'github_governance_assessment.fork_count',
+				'github_governance_assessment.open_issues_count',
+				'github_governance_assessment.license',
+				'github_governance_assessment.contributor_count_total',
+				'github_governance_assessment.contributor_count_period',
+				'github_governance_assessment.top_contributor_percentage',
+				'github_governance_assessment.has_governance_file',
+				'github_governance_assessment.has_code_of_conduct',
+				'github_governance_assessment.has_contributing_guide',
+				'github_governance_assessment.score_overall',
+				'github_governance_assessment.score_contribution_diversity',
+				'github_governance_assessment.score_decision_transparency',
+				'github_governance_assessment.score_fork_viability',
+				'github_governance_assessment.date_updated',
+				'github_governance_assessment.ai_summary',
+				'feature_values.id',
+				'feature_values.feature_id.id',
+				'feature_values.feature_id.name',
+				'feature_values.feature_id.slug',
+				'feature_values.feature_id.data_type',
+				'feature_values.feature_id.display_section',
+				'feature_values.feature_id.icon',
+				'feature_values.value_boolean',
+				'feature_values.value_text',
+				'feature_values.value_dropdown',
+				'feature_values.value_number',
+				'feature_values.notes',
+				'feature_values.confidence',
 			],
 			filter: {
 				slug: { _eq: slug },
@@ -97,11 +165,11 @@ const { data: alternatives } = await useAsyncData(`app-alternatives-${slug}`, as
 				'short_description',
 				'app_icon_light',
 				'tier',
-				'is_open_source',
-				'end_to_end_encryption',
-				'requires_phone_number',
 				'categories.mobile_app_categories_id.id',
 				'categories.mobile_app_categories_id.name',
+				'feature_values.feature_id.slug',
+				'feature_values.value_boolean',
+				'feature_values.value_dropdown',
 			],
 			filter: {
 				status: { _eq: 'active' },
@@ -149,12 +217,24 @@ const formatField = (value: any) => {
 const getTierLabel = (tier: string | null | undefined) => {
 	if (!tier) return null;
 	const labels: Record<string, string> = {
-		A_Sovereign: 'A - Sovereign',
-		B_Aligned: 'B - Aligned',
-		C_Transitional: 'C - Transitional',
-		D_Extractive: 'D - Extractive',
+		A_Sovereign: 'Tier A – Recommended',
+		B_Aligned: 'Tier B – Generally Good',
+		C_Transitional: 'Tier C – Use with Caution',
+		D_Extractive: 'Tier D – Avoid',
 	};
 	return labels[tier] || tier;
+};
+
+// Helper to get tier description
+const getTierDescription = (tier: string | null | undefined) => {
+	if (!tier) return null;
+	const descriptions: Record<string, string> = {
+		A_Sovereign: 'Tools that put users in control. These products respect privacy, give users real choices, and avoid unnecessary lock-in. Data can be accessed, moved, or self-hosted, and the system is transparent enough to trust over time.',
+		B_Aligned: 'Tools that work well but have some limitations. These options follow good practices and avoid major harms, but still rely on some centralized control or impose moderate exit costs. They are reasonable choices for most people today.',
+		C_Transitional: 'Tools that improve on mainstream platforms but still constrain users. These products make efforts toward better privacy or openness, but meaningful lock-in, gatekeeping, or dependency remains. They may be acceptable in some contexts, but trade-offs are significant.',
+		D_Extractive: 'Tools that primarily benefit the platform, not the user. These systems rely on surveillance, restrictive control, or dependency. Users have little transparency or ability to leave without loss. They represent the extractive end of the ecosystem.',
+	};
+	return descriptions[tier] || null;
 };
 
 // Helper to format recommendation label
@@ -173,6 +253,219 @@ const getRecommendationLabel = (rec: string | null | undefined) => {
 const { toHtml } = useMarkdown();
 const tradeoffsHtml = computed(() => toHtml(app.value?.tradeoffs));
 const longDescriptionHtml = computed(() => toHtml(app.value?.long_description));
+
+// Assessment data parsing
+const hasAssessment = computed(() => {
+	return app.value?.assessment_overall_score !== null && app.value?.assessment_overall_score !== undefined;
+});
+
+const privacySubcomponents = computed(() => {
+	if (!app.value?.privacy_assessment) return [];
+	const assessment = typeof app.value.privacy_assessment === 'string' 
+		? JSON.parse(app.value.privacy_assessment) 
+		: app.value.privacy_assessment;
+	return [
+		{ label: 'Data Minimization', score: assessment.data_minimization || 0, maxScore: 5 },
+		{ label: 'Transparency', score: assessment.transparency || 0, maxScore: 5 },
+		{ label: 'User Control', score: assessment.user_control || 0, maxScore: 5 },
+		{ label: 'Security Posture', score: assessment.security_posture || 0, maxScore: 5 },
+		{ label: 'Sharing Practices', score: assessment.sharing_practices || 0, maxScore: 5 },
+		{ label: 'Compliance', score: assessment.compliance || 0, maxScore: 5 },
+	];
+});
+
+const ethicalDesignSubcomponents = computed(() => {
+	if (!app.value?.ethical_design_assessment) return [];
+	const assessment = typeof app.value.ethical_design_assessment === 'string' 
+		? JSON.parse(app.value.ethical_design_assessment) 
+		: app.value.ethical_design_assessment;
+	return [
+		{ label: 'Algorithmic Fairness', score: assessment.algorithmic_fairness || 0, maxScore: 5 },
+		{ label: 'Informed Consent', score: assessment.informed_consent_quality || 0, maxScore: 5 },
+		{ label: 'Safety Protocols', score: assessment.safety_protocols || 0, maxScore: 5 },
+		{ label: 'Accountability', score: assessment.developer_accountability || 0, maxScore: 5 },
+		{ label: 'Dark Pattern Avoidance', score: assessment.dark_pattern_avoidance || 0, maxScore: 5 },
+	];
+});
+
+const scamRiskSubcomponents = computed(() => {
+	if (!app.value?.scam_risk_assessment) return [];
+	const assessment = typeof app.value.scam_risk_assessment === 'string' 
+		? JSON.parse(app.value.scam_risk_assessment) 
+		: app.value.scam_risk_assessment;
+	return [
+		{ label: 'Monetization Ethics', score: assessment.monetization_ethics || 0, maxScore: 5 },
+		{ label: 'Content Authenticity', score: assessment.content_authenticity || 0, maxScore: 5 },
+		{ label: 'Refund Clarity', score: assessment.withdrawal_refund_clarity || 0, maxScore: 5 },
+		{ label: 'Reputation History', score: assessment.reputation_history || 0, maxScore: 5 },
+		{ label: 'Review Reliability', score: assessment.user_review_reliability || 0, maxScore: 5 },
+	];
+});
+
+const mentalHealthSubcomponents = computed(() => {
+	if (!app.value?.mental_health_assessment) return [];
+	const assessment = typeof app.value.mental_health_assessment === 'string' 
+		? JSON.parse(app.value.mental_health_assessment) 
+		: app.value.mental_health_assessment;
+	return [
+		{ label: 'Low Addiction Risk', score: assessment.addiction_risk || 0, maxScore: 5 },
+		{ label: 'Harmful Content Protection', score: assessment.harmful_content_exposure || 0, maxScore: 5 },
+		{ label: 'Positive Impact', score: assessment.positive_impact_features || 0, maxScore: 5 },
+		{ label: 'Age-Appropriate Design', score: assessment.age_appropriate_design || 0, maxScore: 5 },
+	];
+});
+
+const privacyScore = computed(() => {
+	return privacySubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const ethicalDesignScore = computed(() => {
+	return ethicalDesignSubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const scamRiskScore = computed(() => {
+	return scamRiskSubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const mentalHealthScore = computed(() => {
+	return mentalHealthSubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+// New Assessment Dimensions
+const autonomySubcomponents = computed(() => {
+	if (!app.value?.autonomy_assessment) return [];
+	const assessment = typeof app.value.autonomy_assessment === 'string' 
+		? JSON.parse(app.value.autonomy_assessment) 
+		: app.value.autonomy_assessment;
+	return [
+		{ label: 'Vendor Lock-in Freedom', score: assessment.vendor_lock_in || 0, maxScore: 5 },
+		{ label: 'Platform Independence', score: assessment.platform_independence || 0, maxScore: 5 },
+		{ label: 'Data Portability', score: assessment.data_portability || 0, maxScore: 5 },
+		{ label: 'Alternative Choices', score: assessment.alternative_choices || 0, maxScore: 5 },
+		{ label: 'Minimal Dependencies', score: assessment.forced_dependencies || 0, maxScore: 5 },
+	];
+});
+
+const controlOwnershipSubcomponents = computed(() => {
+	if (!app.value?.control_ownership_assessment) return [];
+	const assessment = typeof app.value.control_ownership_assessment === 'string' 
+		? JSON.parse(app.value.control_ownership_assessment) 
+		: app.value.control_ownership_assessment;
+	return [
+		{ label: 'Data Ownership Rights', score: assessment.data_ownership_rights || 0, maxScore: 5 },
+		{ label: 'Access Control', score: assessment.access_control || 0, maxScore: 5 },
+		{ label: 'Deletion Rights', score: assessment.deletion_rights || 0, maxScore: 5 },
+		{ label: 'Modification Control', score: assessment.modification_control || 0, maxScore: 5 },
+		{ label: 'Identity Control', score: assessment.identity_control || 0, maxScore: 5 },
+		{ label: 'Intellectual Property', score: assessment.intellectual_property || 0, maxScore: 5 },
+	];
+});
+
+const humanImpactSubcomponents = computed(() => {
+	if (!app.value?.human_impact_assessment) return [];
+	const assessment = typeof app.value.human_impact_assessment === 'string' 
+		? JSON.parse(app.value.human_impact_assessment) 
+		: app.value.human_impact_assessment;
+	return [
+		{ label: 'Human Rights Support', score: assessment.human_rights_support || 0, maxScore: 5 },
+		{ label: 'Accessibility', score: assessment.accessibility || 0, maxScore: 5 },
+		{ label: 'Digital Wellbeing', score: assessment.digital_wellbeing || 0, maxScore: 5 },
+		{ label: 'Community Benefit', score: assessment.community_benefit || 0, maxScore: 5 },
+		{ label: 'Environmental Impact', score: assessment.environmental_impact || 0, maxScore: 5 },
+	];
+});
+
+const resilienceSubcomponents = computed(() => {
+	if (!app.value?.resilience_assessment) return [];
+	const assessment = typeof app.value.resilience_assessment === 'string' 
+		? JSON.parse(app.value.resilience_assessment) 
+		: app.value.resilience_assessment;
+	return [
+		{ label: 'Technical Resilience', score: assessment.technical_resilience || 0, maxScore: 5 },
+		{ label: 'Organizational Resilience', score: assessment.organizational_resilience || 0, maxScore: 5 },
+		{ label: 'Community Resilience', score: assessment.community_resilience || 0, maxScore: 5 },
+		{ label: 'Financial Resilience', score: assessment.financial_resilience || 0, maxScore: 5 },
+		{ label: 'Governance Resilience', score: assessment.governance_resilience || 0, maxScore: 5 },
+		{ label: 'Fork Viability', score: assessment.fork_viability || 0, maxScore: 5 },
+	];
+});
+
+const transparencySubcomponents = computed(() => {
+	if (!app.value?.transparency_assessment) return [];
+	const assessment = typeof app.value.transparency_assessment === 'string' 
+		? JSON.parse(app.value.transparency_assessment) 
+		: app.value.transparency_assessment;
+	return [
+		{ label: 'Code Transparency', score: assessment.code_transparency || 0, maxScore: 5 },
+		{ label: 'Operational Transparency', score: assessment.operational_transparency || 0, maxScore: 5 },
+		{ label: 'Financial Transparency', score: assessment.financial_transparency || 0, maxScore: 5 },
+		{ label: 'Governance Transparency', score: assessment.governance_transparency || 0, maxScore: 5 },
+		{ label: 'Data Practice Transparency', score: assessment.data_practice_transparency || 0, maxScore: 5 },
+		{ label: 'Audit Transparency', score: assessment.audit_transparency || 0, maxScore: 5 },
+	];
+});
+
+const autonomyScore = computed(() => {
+	return autonomySubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const controlOwnershipScore = computed(() => {
+	return controlOwnershipSubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const humanImpactScore = computed(() => {
+	return humanImpactSubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const resilienceScore = computed(() => {
+	return resilienceSubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+const transparencyScore = computed(() => {
+	return transparencySubcomponents.value.reduce((sum, item) => sum + (item.score || 0), 0);
+});
+
+// Feature grouping computed property
+const featuresBySection = computed(() => {
+	if (!app.value?.feature_values) return {};
+	
+	const grouped: Record<string, Array<{ feature: any; value: any }>> = {};
+	
+	app.value.feature_values.forEach((fv: any) => {
+		if (!fv.feature_id) return;
+		
+		const section = fv.feature_id.display_section || 'other';
+		
+		if (!grouped[section]) {
+			grouped[section] = [];
+		}
+		
+		grouped[section].push({
+			feature: fv.feature_id,
+			value: {
+				id: fv.id,
+				value_boolean: fv.value_boolean,
+				value_text: fv.value_text,
+				value_dropdown: fv.value_dropdown,
+				value_number: fv.value_number,
+				notes: fv.notes,
+				confidence: fv.confidence,
+			},
+		});
+	});
+	
+	return grouped;
+});
+
+const getSectionTitle = (section: string) => {
+	const titles: Record<string, string> = {
+		privacy_security: 'Privacy & Security',
+		technical: 'Technical',
+		user_experience: 'User Experience',
+		other: 'Other',
+	};
+	return titles[section] || section;
+};
 
 // Tab state
 const activeTab = ref('overview');
@@ -228,24 +521,11 @@ const activeTab = ref('overview');
 				
 				<!-- Main Badges -->
 				<div class="flex flex-wrap gap-2 justify-center">
-					<AssessmentTypeBadge :assessment-type="app.assessment_type" />
 					<span
 						v-if="app.category"
 						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 capitalize"
 					>
 						{{ formatField(app.category) }}
-					</span>
-					<span
-						v-if="app.is_open_source"
-						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-					>
-						Open Source
-					</span>
-					<span
-						v-if="app.end_to_end_encryption === 'yes'"
-						class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-					>
-						E2E Encrypted
 					</span>
 					<span
 						v-if="!app.requires_phone_number"
@@ -345,6 +625,18 @@ const activeTab = ref('overview');
 					</span>
 				</button>
 				<button
+					v-if="app.github_governance_assessment"
+					@click="activeTab = 'github'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'github'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					GitHub Analysis
+				</button>
+				<button
 					@click="activeTab = 'sources'"
 					:class="[
 						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
@@ -385,6 +677,17 @@ const activeTab = ref('overview');
 					Organization
 				</button>
 				<button
+					@click="activeTab = 'technical'"
+					:class="[
+						'pb-4 px-1 border-b-2 font-medium text-sm transition-colors',
+						activeTab === 'technical'
+							? 'border-primary text-primary'
+							: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+					]"
+				>
+					Technical Details
+				</button>
+				<button
 					v-if="app.mobsf_metadata"
 					@click="activeTab = 'security'"
 					:class="[
@@ -418,34 +721,194 @@ const activeTab = ref('overview');
 					<TypographyProse :content="longDescriptionHtml" />
 				</div>
 
-				<!-- Assessment -->
-				<div v-if="app.tier || app.recommended_use">
-					<div class="border dark:border-gray-700 rounded-lg p-6">
-						<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">GoodPhone Assessment</h2>
-						<div v-if="app.tier" class="mb-2">
-							<span
-								:class="[
-									'inline-flex items-center px-3 py-1.5 text-base font-semibold rounded-lg',
-									app.tier === 'A_Sovereign' && 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200',
-									app.tier === 'B_Aligned' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-									app.tier === 'C_Transitional' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-									app.tier === 'D_Extractive' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-								]"
-							>
-								{{ getTierLabel(app.tier) }}
-							</span>
-						</div>
-						<p v-if="app.recommended_use" class="text-sm text-gray-600 dark:text-gray-400">
-							{{ getRecommendationLabel(app.recommended_use) }}
-						</p>
-						<p v-if="app.summary" class="mt-4 text-gray-700 dark:text-gray-300">{{ app.summary }}</p>
-					</div>
+				<!-- Why People Use It -->
+				<div v-if="app.why_people_use_it">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Why People Use It</h2>
+					<p class="text-gray-700 dark:text-gray-300">{{ app.why_people_use_it }}</p>
 				</div>
 
 				<!-- Tradeoffs -->
 				<div v-if="tradeoffsHtml">
 					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Tradeoffs</h2>
 					<TypographyProse :content="tradeoffsHtml" />
+				</div>
+
+				<!-- Screenshots -->
+				<div v-if="app.playstore_screenshots && app.playstore_screenshots.length">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Screenshots</h2>
+					<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+						<a
+							v-for="(screenshot, index) in app.playstore_screenshots"
+							:key="index"
+							:href="screenshot"
+							target="_blank"
+							class="group relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors"
+						>
+							<img
+								:src="screenshot"
+								:alt="`${app.name} screenshot ${index + 1}`"
+								class="w-full h-auto object-cover aspect-[9/16] group-hover:scale-105 transition-transform duration-200"
+								loading="lazy"
+							/>
+							<div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-200 flex items-center justify-center">
+								<span class="opacity-0 group-hover:opacity-100 text-white text-sm font-medium">View Full Size</span>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<!-- Assessment -->
+				<div>
+					<div class="border dark:border-gray-700 rounded-lg p-6">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Brax Guide Recommendation</h2>
+						<div class="mb-2">
+							<span
+								v-if="app.brax_recommended_use"
+								:class="[
+									'inline-flex items-center px-3 py-1.5 text-base font-semibold rounded-lg',
+									app.brax_recommended_use === 'A_Sovereign' && 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200',
+									app.brax_recommended_use === 'B_Aligned' && 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+									app.brax_recommended_use === 'C_Transitional' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+									app.brax_recommended_use === 'D_Extractive' && 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+								]"
+							>
+								{{ getTierLabel(app.brax_recommended_use) }}
+							</span>
+						<span v-else class="inline-flex items-center px-3 py-1.5 text-base font-semibold rounded-lg bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+								Not Assessed
+							</span>
+						</div>
+						<p v-if="getTierDescription(app.brax_recommended_use)" class="mt-3 text-sm text-gray-600 dark:text-gray-400 italic">{{ getTierDescription(app.brax_recommended_use) }}</p>
+						<p v-if="app.summary" class="mt-4 text-gray-700 dark:text-gray-300">{{ app.summary }}</p>
+						<p v-else class="mt-4 text-gray-600 dark:text-gray-400 italic">No assessment summary available</p>
+						
+						<!-- Assessment Context -->
+						<div v-if="app.assessment_type || app.audience_level || app.confidence" class="mt-6 pt-6 border-t dark:border-gray-700">
+							<h3 class="text-sm font-semibold mb-3 text-gray-900 dark:text-white">Assessment Context</h3>
+							<div v-if="app.assessment_type" class="mb-4">
+								<AssessmentTypeBadge :assessment-type="app.assessment_type" />
+							</div>
+							<dl class="grid grid-cols-2 gap-4 text-sm">
+								<div v-if="app.audience_level">
+									<dt class="font-medium text-gray-700 dark:text-gray-300">Audience Level</dt>
+									<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.audience_level) }}</dd>
+								</div>
+								<div v-if="app.confidence">
+									<dt class="font-medium text-gray-700 dark:text-gray-300">Confidence</dt>
+									<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.confidence) }}</dd>
+								</div>
+							</dl>
+						</div>
+					</div>
+				</div>
+
+				<!-- Comprehensive Assessment Framework -->
+				<div v-if="hasAssessment" class="space-y-6">
+					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Comprehensive Assessment</h2>
+					
+					<!-- Overall Score Card -->
+					<AssessmentScoreCard
+						:overall-score="app.assessment_overall_score"
+						:privacy-score="privacyScore"
+						:ethical-design-score="ethicalDesignScore"
+						:scam-risk-score="scamRiskScore"
+						:mental-health-score="mentalHealthScore"
+						:autonomy-score="autonomyScore"
+						:control-ownership-score="controlOwnershipScore"
+						:transparency-score="transparencyScore"
+						:resilience-score="resilienceScore"
+						:human-impact-score="humanImpactScore"
+						:assessment-date="app.assessment_completion_date"
+						:assessment-version="app.assessment_version"
+					/>
+					
+					<!-- Dimension Details -->
+					<div class="space-y-4">
+						<AssessmentDimensionDetail
+							v-if="privacySubcomponents.length"
+							title="Privacy Protection"
+							:total-score="privacyScore"
+							:max-total="30"
+							:subcomponents="privacySubcomponents"
+							:notes="app.privacy_assessment_notes"
+							:default-expanded="false"
+						/>
+						
+						<AssessmentDimensionDetail
+							v-if="ethicalDesignSubcomponents.length"
+							title="Ethical Design & Governance"
+							:total-score="ethicalDesignScore"
+							:max-total="25"
+							:subcomponents="ethicalDesignSubcomponents"
+							:notes="app.ethical_design_notes"
+							:default-expanded="false"
+						/>
+						
+						<AssessmentDimensionDetail
+							v-if="scamRiskSubcomponents.length"
+							title="Scam & Manipulation Risk"
+							:total-score="scamRiskScore"
+							:max-total="25"
+							:subcomponents="scamRiskSubcomponents"
+							:notes="app.scam_risk_notes"
+							:default-expanded="false"
+						/>
+						
+						<AssessmentDimensionDetail
+							v-if="mentalHealthSubcomponents.length"
+							title="Mental Health Impact"
+							:total-score="mentalHealthScore"
+							:max-total="20"
+							:subcomponents="mentalHealthSubcomponents"
+							:notes="app.mental_health_notes"
+							:default-expanded="false"
+						/>
+						
+					<AssessmentDimensionDetail
+						title="Autonomy"
+						:total-score="autonomyScore"
+						:max-total="25"
+						:subcomponents="autonomySubcomponents"
+						:notes="app.autonomy_assessment_notes"
+						:default-expanded="false"
+					/>
+					
+					<AssessmentDimensionDetail
+						title="Control & Ownership"
+						:total-score="controlOwnershipScore"
+						:max-total="30"
+						:subcomponents="controlOwnershipSubcomponents"
+						:notes="app.control_ownership_assessment_notes"
+						:default-expanded="false"
+					/>
+					
+					<AssessmentDimensionDetail
+						title="Human Impact"
+						:total-score="humanImpactScore"
+						:max-total="25"
+						:subcomponents="humanImpactSubcomponents"
+						:notes="app.human_impact_assessment_notes"
+						:default-expanded="false"
+					/>
+					
+					<AssessmentDimensionDetail
+						title="Resilience"
+						:total-score="resilienceScore"
+						:max-total="30"
+						:subcomponents="resilienceSubcomponents"
+						:notes="app.resilience_assessment_notes"
+						:default-expanded="false"
+					/>
+					
+					<AssessmentDimensionDetail
+						title="Transparency"
+						:total-score="transparencyScore"
+						:max-total="30"
+						:subcomponents="transparencySubcomponents"
+						:notes="app.transparency_assessment_notes"
+						:default-expanded="false"
+					/>
+					</div>
 				</div>
 			</div>
 
@@ -468,46 +931,69 @@ const activeTab = ref('overview');
 					</div>
 				</div>
 
-				<!-- Privacy & Security -->
-				<div class="border dark:border-gray-700 rounded-lg p-6">
-					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Privacy & Security</h3>
+				<!-- Dynamic Features by Section -->
+				<div 
+					v-for="(features, section) in featuresBySection" 
+					:key="section" 
+					class="border dark:border-gray-700 rounded-lg p-6"
+				>
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{{ getSectionTitle(section) }}</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="app.end_to_end_encryption">
-							<dt class="font-medium text-gray-700 dark:text-gray-300">E2E Encryption</dt>
-							<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.end_to_end_encryption) }}</dd>
-						</div>
-						<div v-if="app.requires_phone_number !== null">
-							<dt class="font-medium text-gray-700 dark:text-gray-300">Phone Number</dt>
-							<dd class="text-gray-600 dark:text-gray-400">{{ app.requires_phone_number ? 'Required' : 'Not Required' }}</dd>
-						</div>
-						<div v-if="app.data_collection">
-							<dt class="font-medium text-gray-700 dark:text-gray-300">Data Collection</dt>
-							<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.data_collection) }}</dd>
-						</div>
-						<div v-if="app.is_open_source !== null">
-							<dt class="font-medium text-gray-700 dark:text-gray-300">Open Source</dt>
-							<dd class="text-gray-600 dark:text-gray-400">{{ app.is_open_source ? 'Yes' : 'No' }}</dd>
-						</div>
+						<FeaturesFeatureDisplay
+							v-for="item in features"
+							:key="item.value.id"
+							:feature="item.feature"
+							:value="item.value"
+						/>
 					</dl>
 				</div>
+
+				<!-- App Metadata -->
+				<div v-if="app.cloud_dependency || app.app_store_dependency || app.alternative_distribution?.length || app.replaces?.length" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">App Metadata</h3>
+					<dl class="space-y-3 text-sm">
+						<template v-if="app.cloud_dependency">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">Cloud Dependency</dt>
+							<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.cloud_dependency) }}</dd>
+						</template>
+						<template v-if="app.app_store_dependency">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">App Store</dt>
+							<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.app_store_dependency) }}</dd>
+						</template>
+						<template v-if="app.alternative_distribution?.length">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">Alternative Distribution</dt>
+							<dd class="text-gray-600 dark:text-gray-400">
+								<span v-for="(dist, index) in app.alternative_distribution" :key="index">
+									{{ formatField(dist) }}<span v-if="index < app.alternative_distribution.length - 1">, </span>
+								</span>
+							</dd>
+						</template>
+						<template v-if="app.replaces?.length">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">Replaces</dt>
+							<dd class="text-gray-600 dark:text-gray-400">{{ app.replaces.join(', ') }}</dd>
+						</template>
+					</dl>
+				</div>
+
 
 				<!-- Metadata -->
 				<div v-if="app.license || app.funding_model" class="border dark:border-gray-700 rounded-lg p-6">
 					<h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Details</h3>
 					<dl class="space-y-3 text-sm">
-						<div v-if="app.license">
+						<template v-if="app.license">
 							<dt class="font-medium text-gray-700 dark:text-gray-300">License</dt>
 							<dd class="text-gray-600 dark:text-gray-400">{{ app.license }}</dd>
-						</div>
-						<div v-if="app.funding_model">
+						</template>
+						<template v-if="app.funding_model">
 							<dt class="font-medium text-gray-700 dark:text-gray-300">Funding Model</dt>
 							<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.funding_model) }}</dd>
-						</div>
+						</template>
 					</dl>
 				</div>
 			</div>
 		</div>
 		</div>
+
 
 		<!-- Change Log Tab Content -->
 		<div v-show="activeTab === 'changelog'">
@@ -550,6 +1036,126 @@ const activeTab = ref('overview');
 			</div>
 			<div v-else class="text-center py-12">
 				<p class="text-gray-500 dark:text-gray-400">No change log entries available for this app.</p>
+			</div>
+		</div>
+
+		<!-- GitHub Analysis Tab Content -->
+		<div v-show="activeTab === 'github'">
+			<div v-if="app.github_governance_assessment" class="space-y-6">
+				<!-- Repository Overview -->
+				<div class="border rounded-lg p-6 dark:border-gray-700">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Repository Overview</h2>
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Contributors (Total)</div>
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.github_governance_assessment.contributor_count_total?.toLocaleString() || 'N/A' }}</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Forks</div>
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.github_governance_assessment.fork_count?.toLocaleString() || 'N/A' }}</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Open Issues</div>
+							<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.github_governance_assessment.open_issues_count?.toLocaleString() || 'N/A' }}</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">License</div>
+							<div class="text-lg font-bold text-gray-900 dark:text-white">{{ app.github_governance_assessment.license || 'Unknown' }}</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Top Contributor %</div>
+							<div class="text-lg font-bold text-gray-900 dark:text-white">{{ app.github_governance_assessment.top_contributor_percentage ? Number(app.github_governance_assessment.top_contributor_percentage).toFixed(1) : 'N/A' }}%</div>
+						</div>
+					</div>
+					<div v-if="app.github_governance_assessment.repo_url" class="mt-4">
+						<a :href="app.github_governance_assessment.repo_url" target="_blank" class="inline-flex items-center gap-2 text-primary hover:underline">
+							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+								<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+							</svg>
+							View Repository
+						</a>
+					</div>
+				</div>
+
+				<!-- Governance Scores -->
+				<div class="border rounded-lg p-6 dark:border-gray-700">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Governance Assessment</h2>
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Overall Score</div>
+							<div class="text-3xl font-bold" :class="[
+								app.github_governance_assessment.score_overall >= 3 ? 'text-green-600 dark:text-green-400' :
+								app.github_governance_assessment.score_overall >= 2 ? 'text-yellow-600 dark:text-yellow-400' :
+								'text-red-600 dark:text-red-400'
+							]">
+								{{ app.github_governance_assessment.score_overall || 'N/A' }}
+							</div>
+							<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">out of 4</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Contribution Diversity</div>
+							<div class="text-lg font-semibold text-gray-900 dark:text-white">
+								{{ app.github_governance_assessment.score_contribution_diversity || 'N/A' }} / 4
+							</div>
+							<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Higher is better</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Decision Transparency</div>
+							<div class="text-lg font-semibold text-gray-900 dark:text-white">
+								{{ app.github_governance_assessment.score_decision_transparency || 'N/A' }} / 4
+							</div>
+							<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Higher is better</div>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+							<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Fork Viability</div>
+							<div class="text-lg font-semibold text-gray-900 dark:text-white">
+								{{ app.github_governance_assessment.score_fork_viability || 'N/A' }} / 4
+							</div>
+							<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Higher is better</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Analysis Summary -->
+				<div v-if="app.github_governance_assessment.ai_summary" class="border rounded-lg p-6 dark:border-gray-700">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">AI-Generated Summary</h2>
+					<div class="prose dark:prose-invert max-w-none">
+						<p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ app.github_governance_assessment.ai_summary }}</p>
+					</div>
+				</div>
+
+				<!-- Repository Features -->
+				<div class="border rounded-lg p-6 dark:border-gray-700">
+					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Repository Features</h2>
+					<div class="flex flex-wrap gap-3">
+						<span v-if="app.github_governance_assessment.has_governance_file" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+							<svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+							</svg>
+							Governance File
+						</span>
+						<span v-if="app.github_governance_assessment.has_code_of_conduct" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+							<svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+							</svg>
+							Code of Conduct
+						</span>
+						<span v-if="app.github_governance_assessment.has_contributing_guide" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+							<svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+							</svg>
+							Contributing Guide
+						</span>
+					</div>
+				</div>
+
+				<!-- Last Updated -->
+				<div v-if="app.github_governance_assessment.date_updated" class="text-sm text-gray-500 dark:text-gray-400 text-center">
+					Analysis last updated: {{ new Date(app.github_governance_assessment.date_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) }}
+				</div>
+			</div>
+			<div v-else class="text-center py-12">
+				<p class="text-gray-500 dark:text-gray-400">No GitHub governance data available for this app.</p>
 			</div>
 		</div>
 
@@ -630,24 +1236,26 @@ const activeTab = ref('overview');
 								</span>
 							</div>
 							<div class="flex flex-wrap gap-2">
-								<span
-									v-if="alt.is_open_source"
-									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-								>
-									Open Source
-								</span>
-								<span
-									v-if="alt.end_to_end_encryption === 'yes'"
-									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-								>
-									E2E Encrypted
-								</span>
-								<span
-									v-if="!alt.requires_phone_number"
-									class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
-								>
-									No Phone Required
-								</span>
+								<template v-for="fv in alt.feature_values" :key="fv.feature_id?.slug">
+									<span
+										v-if="fv.feature_id?.slug === 'is_open_source' && fv.value_boolean"
+										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+									>
+										Open Source
+									</span>
+									<span
+										v-if="fv.feature_id?.slug === 'e2e_encryption' && fv.value_dropdown === 'yes'"
+										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+									>
+										E2E Encrypted
+									</span>
+									<span
+										v-if="fv.feature_id?.slug === 'requires_phone_number' && !fv.value_boolean"
+										class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+									>
+										No Phone Required
+									</span>
+								</template>
 							</div>
 						</div>
 					</div>
@@ -673,10 +1281,304 @@ const activeTab = ref('overview');
 			<div class="max-w-4xl">
 				<OrganizationCard :organization="app.organization" variant="full" />
 				
+				<!-- Governance Assessment -->
+				<div v-if="app.organization?.governance_overall_score !== null && app.organization?.governance_overall_score !== undefined" class="mt-6 space-y-6">
+					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Leadership & Governance Assessment</h2>
+					
+					<!-- Overall Score Card -->
+					<div class="border rounded-lg p-6 dark:border-gray-700">
+						<div class="flex items-center justify-between mb-4">
+							<div>
+								<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Overall Governance Score</h3>
+								<p v-if="app.organization.governance_model" class="text-sm text-gray-600 dark:text-gray-400">{{ app.organization.governance_model }}</p>
+							</div>
+							<div class="text-right">
+								<div class="text-4xl font-bold" :class="[
+									app.organization.governance_overall_score >= 21 ? 'text-green-600 dark:text-green-400' :
+									app.organization.governance_overall_score >= 14 ? 'text-yellow-600 dark:text-yellow-400' :
+									'text-red-600 dark:text-red-400'
+								]">
+									{{ app.organization.governance_overall_score }}
+								</div>
+								<div class="text-sm text-gray-600 dark:text-gray-400">out of 28</div>
+								<div v-if="app.organization.governance_assessment_date" class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+									Assessed: {{ new Date(app.organization.governance_assessment_date).toLocaleDateString() }}
+								</div>
+							</div>
+						</div>
+						<p class="text-sm text-gray-600 dark:text-gray-400">
+							Governance assessment measures structural safeguards against capture, coercion, and abuse of power.
+						</p>
+					</div>
+
+					<!-- Governance Dimensions -->
+					<div class="border rounded-lg p-6 dark:border-gray-700">
+						<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Governance Dimensions</h3>
+						<div class="grid md:grid-cols-2 gap-4">
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Leadership Concentration</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_leadership_concentration ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Decision-making authority distribution</div>
+							</div>
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Legal Accountability</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_legal_accountability ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Legal entity transparency</div>
+							</div>
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Governance Transparency</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_transparency ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Rules and decision visibility</div>
+							</div>
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Stakeholder Representation</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_stakeholder_representation ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Community influence on outcomes</div>
+							</div>
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Succession Planning</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_succession_planning ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Leadership continuity mechanisms</div>
+							</div>
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Funding Transparency</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_funding_transparency ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Funding sources and expectations</div>
+							</div>
+							<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Resistance to Pressure</div>
+								<div class="text-2xl font-bold text-gray-900 dark:text-white">{{ app.organization.governance_resistance_to_pressure ?? 'N/A' }} / 4</div>
+								<div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Structural resilience to coercion</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Positive Signals -->
+					<div v-if="app.organization.governance_positive_signals" class="border rounded-lg p-6 dark:border-gray-700">
+						<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Positive Governance Signals</h3>
+						<div class="prose dark:prose-invert max-w-none">
+							<div v-html="app.organization.governance_positive_signals"></div>
+						</div>
+					</div>
+
+					<!-- Risk Indicators -->
+					<div v-if="app.organization.governance_risk_indicators" class="border rounded-lg p-6 dark:border-gray-700 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/10">
+						<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Governance Risk Indicators</h3>
+						<div class="prose dark:prose-invert max-w-none">
+							<div v-html="app.organization.governance_risk_indicators"></div>
+						</div>
+					</div>
+
+					<!-- Assessment Notes -->
+					<div v-if="app.organization.governance_assessment_notes" class="border rounded-lg p-6 dark:border-gray-700">
+						<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Assessment Context</h3>
+						<div class="prose dark:prose-invert max-w-none">
+							<div v-html="app.organization.governance_assessment_notes"></div>
+						</div>
+						<div v-if="app.organization.governance_assessment_version" class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+							Framework version: {{ app.organization.governance_assessment_version }}
+						</div>
+					</div>
+				</div>
+				
+				<!-- Business Information -->
+				<div v-if="app.organization?.business_id || app.organization?.ticker || app.organization?.linkedin_profile || app.organization?.naics || app.organization?.sic_code" class="mt-6 space-y-6">
+					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Business Information</h2>
+					
+					<div class="border rounded-lg p-6 dark:border-gray-700">
+						<dl class="grid md:grid-cols-2 gap-4 text-sm">
+							<template v-if="app.organization.business_id">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">Business ID</dt>
+								<dd class="text-gray-600 dark:text-gray-400">{{ app.organization.business_id }}</dd>
+							</template>
+							<template v-if="app.organization.ticker">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">Stock Ticker</dt>
+								<dd class="text-gray-600 dark:text-gray-400">{{ app.organization.ticker }}</dd>
+							</template>
+							<template v-if="app.organization.linkedin_profile">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">LinkedIn</dt>
+								<dd class="text-gray-600 dark:text-gray-400">
+									<a :href="app.organization.linkedin_profile" target="_blank" class="text-primary hover:underline">
+										View Profile
+									</a>
+								</dd>
+							</template>
+							<template v-if="app.organization.linkedin_industry_category">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">Industry</dt>
+								<dd class="text-gray-600 dark:text-gray-400">{{ app.organization.linkedin_industry_category }}</dd>
+							</template>
+							<template v-if="app.organization.naics">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">NAICS Code</dt>
+								<dd class="text-gray-600 dark:text-gray-400">{{ app.organization.naics }}<span v-if="app.organization.naics_description"> - {{ app.organization.naics_description }}</span></dd>
+							</template>
+							<template v-if="app.organization.sic_code">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">SIC Code</dt>
+								<dd class="text-gray-600 dark:text-gray-400">{{ app.organization.sic_code }}<span v-if="app.organization.sic_code_description"> - {{ app.organization.sic_code_description }}</span></dd>
+							</template>
+						</dl>
+						<div v-if="app.organization.business_description" class="mt-4 pt-4 border-t dark:border-gray-700">
+							<h4 class="font-semibold text-gray-900 dark:text-white mb-2">Description</h4>
+							<p class="text-sm text-gray-700 dark:text-gray-300">{{ app.organization.business_description }}</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Company Size -->
+				<div v-if="app.organization?.number_of_employees_range || app.organization?.yearly_revenue_range" class="mt-6 space-y-6">
+					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Company Size</h2>
+					
+					<div class="border rounded-lg p-6 dark:border-gray-700">
+						<div class="grid md:grid-cols-2 gap-6">
+							<div v-if="app.organization.number_of_employees_range">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Employees</div>
+								<div class="text-xl font-bold text-gray-900 dark:text-white">{{ app.organization.number_of_employees_range }}</div>
+							</div>
+							<div v-if="app.organization.yearly_revenue_range">
+								<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Annual Revenue</div>
+								<div class="text-xl font-bold text-gray-900 dark:text-white">{{ app.organization.yearly_revenue_range }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Locations -->
+				<div v-if="app.organization?.country || app.organization?.city_name || app.organization?.street" class="mt-6 space-y-6">
+					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Location</h2>
+					
+					<div class="border rounded-lg p-6 dark:border-gray-700">
+						<div class="space-y-2 text-sm">
+							<div v-if="app.organization.street" class="text-gray-700 dark:text-gray-300">{{ app.organization.street }}</div>
+							<div class="text-gray-700 dark:text-gray-300">
+								<span v-if="app.organization.city_name">{{ app.organization.city_name }}</span><span v-if="app.organization.city_name && app.organization.region_name">, </span><span v-if="app.organization.region_name">{{ app.organization.region_name }}</span>
+								<span v-if="app.organization.zip_code"> {{ app.organization.zip_code }}</span>
+							</div>
+							<div v-if="app.organization.country" class="font-medium text-gray-900 dark:text-white">{{ app.organization.country }}</div>
+							<div v-if="app.organization.locations_distribution" class="mt-4 pt-4 border-t dark:border-gray-700">
+								<span class="font-medium text-gray-700 dark:text-gray-300">Locations: </span>
+								<span class="text-gray-600 dark:text-gray-400">{{ app.organization.locations_distribution }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Business Model -->
+				<div v-if="app.organization?.business_model || app.organization?.funding_transparency" class="mt-6 space-y-6">
+					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Business Model</h2>
+					
+					<div class="border rounded-lg p-6 dark:border-gray-700">
+						<dl class="grid md:grid-cols-2 gap-4 text-sm">
+							<template v-if="app.organization.business_model">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">Business Model</dt>
+								<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.organization.business_model) }}</dd>
+							</template>
+							<template v-if="app.organization.funding_transparency">
+								<dt class="font-medium text-gray-700 dark:text-gray-300">Funding Transparency</dt>
+								<dd class="text-gray-600 dark:text-gray-400 capitalize">{{ formatField(app.organization.funding_transparency) }}</dd>
+							</template>
+						</dl>
+					</div>
+				</div>
+
 				<!-- Vendor Information (if provided manually) -->
 				<div v-if="app.organization?.vendor_information" class="mt-6 prose dark:prose-invert max-w-none">
 					<h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Additional Information</h2>
 					<div v-html="app.organization.vendor_information"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Technical Details Tab Content -->
+		<div v-show="activeTab === 'technical'">
+			<div class="space-y-6">
+				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">Technical Details</h2>
+
+				<!-- Package & Distribution -->
+				<div class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Package Information</h3>
+					<dl class="grid md:grid-cols-2 gap-4 text-sm">
+						<template v-if="app.package_id">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">Package ID</dt>
+							<dd class="text-gray-600 dark:text-gray-400 font-mono">{{ app.package_id }}</dd>
+						</template>
+						<template v-if="app.alternative_distribution">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">Alternative Distribution</dt>
+							<dd class="text-gray-600 dark:text-gray-400">{{ app.alternative_distribution }}</dd>
+						</template>
+						<template v-if="app.app_store_dependency !== null && app.app_store_dependency !== undefined">
+							<dt class="font-medium text-gray-700 dark:text-gray-300">App Store Dependency</dt>
+							<dd class="text-gray-600 dark:text-gray-400">{{ app.app_store_dependency ? 'Yes' : 'No' }}</dd>
+						</template>
+					</dl>
+				</div>
+
+				<!-- Categories -->
+				<div v-if="app.primary_category || app.secondary_categories?.length" class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Categories</h3>
+					<div class="space-y-3">
+						<div v-if="app.primary_category">
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Primary: </span>
+							<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">{{ app.primary_category }}</span>
+						</div>
+						<div v-if="app.secondary_categories?.length">
+							<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Secondary: </span>
+							<div class="mt-2 flex flex-wrap gap-2">
+								<span v-for="category in app.secondary_categories" :key="category" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+									{{ category }}
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Platform Support -->
+				<div class="border dark:border-gray-700 rounded-lg p-6">
+					<h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Platform Support</h3>
+					<div class="grid md:grid-cols-2 gap-6">
+						<div v-if="app.android_url" class="flex items-start space-x-3">
+							<div class="flex-shrink-0">
+								<div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center">
+									<span class="text-xl">🤖</span>
+								</div>
+							</div>
+							<div>
+								<div class="font-medium text-gray-900 dark:text-white">Android</div>
+								<a :href="app.android_url" target="_blank" class="text-sm text-primary hover:underline">View on Play Store</a>
+							</div>
+						</div>
+						<div v-if="app.ios_url" class="flex items-start space-x-3">
+							<div class="flex-shrink-0">
+								<div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+									<span class="text-xl">🍎</span>
+								</div>
+							</div>
+							<div>
+								<div class="font-medium text-gray-900 dark:text-white">iOS</div>
+								<a :href="app.ios_url" target="_blank" class="text-sm text-primary hover:underline">View on App Store</a>
+							</div>
+						</div>
+						<div v-if="app.website_url" class="flex items-start space-x-3">
+							<div class="flex-shrink-0">
+								<div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+									<span class="text-xl">🌐</span>
+								</div>
+							</div>
+							<div>
+								<div class="font-medium text-gray-900 dark:text-white">Web</div>
+								<a :href="app.website_url" target="_blank" class="text-sm text-primary hover:underline break-all">{{ app.website_url }}</a>
+							</div>
+						</div>
+						<div v-if="app.repo_url" class="flex items-start space-x-3">
+							<div class="flex-shrink-0">
+								<div class="w-10 h-10 rounded-lg bg-gray-900 dark:bg-gray-700 flex items-center justify-center">
+									<span class="text-xl">💻</span>
+								</div>
+							</div>
+							<div>
+								<div class="font-medium text-gray-900 dark:text-white">Source Code</div>
+								<a :href="app.repo_url" target="_blank" class="text-sm text-primary hover:underline break-all">{{ app.repo_url }}</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
